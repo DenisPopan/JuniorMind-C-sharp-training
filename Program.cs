@@ -89,6 +89,11 @@ namespace SupportCases
         static void Main()
         {
             SupportTicket[] tickets = ReadSupportTickets();
+            if (tickets == null)
+            {
+                throw new ArgumentNullException(nameof(tickets));
+            }
+
             Quick3Sort(tickets, 0, tickets.Length - 1);
             Print(tickets);
             Console.Read();
