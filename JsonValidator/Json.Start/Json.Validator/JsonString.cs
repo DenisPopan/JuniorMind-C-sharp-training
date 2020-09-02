@@ -7,7 +7,22 @@ namespace Json
         public static bool IsJsonString(string input)
         {
             return HasContent(input)
-                && IsDoubleQuoted(input);
+                && IsDoubleQuoted(input)
+                && !ContainsControlCharacters(input);
+        }
+
+        private static bool ContainsControlCharacters(string input)
+        {
+            const byte maxAsciiValue = 32;
+            foreach (char letter in input)
+            {
+                if ((int)letter < maxAsciiValue)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool IsDoubleQuoted(string input)
