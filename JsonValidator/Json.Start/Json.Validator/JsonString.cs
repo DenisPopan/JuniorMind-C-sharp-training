@@ -34,7 +34,53 @@ namespace Json
         private static bool NextCharacterIsCorrect(string input, int charPosition)
         {
             char[] validChars = { '/', 'b', 'f', 'n', 'r', 't', 'u', '"', ' ', '\\' };
-            return Array.IndexOf(validChars, input[charPosition]) != -1;
+            if (Array.IndexOf(validChars, input[charPosition]) == -1)
+            {
+                return false;
+            }
+
+            return (input[charPosition] != 'u') || UnicodeCodeIsCorrect(input, charPosition + 1);
+        }
+
+        private static bool UnicodeCodeIsCorrect(string input, int codeStartPosition)
+        {
+            int codeEndPosition = codeStartPosition + 3;
+            if (codeEndPosition >= input.Length - 1)
+            {
+                return false;
+            }
+
+            for (int i = codeStartPosition; i <= codeEndPosition; i++)
+            {
+                char currentLetter = input[i];
+                if (!(LetterIsDigit(currentLetter) || LetterIsLowerCaseChar(currentLetter) || LetterIsUpperCaseChar(currentLetter)))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool LetterIsLowerCaseChar(char currentLetter)
+        {
+            const byte lowerCaseLettersAsciiCodeStart = 97;
+            const byte lowerCaseLettersAsciiCodeStop = 102;
+            return (int)currentLetter >= lowerCaseLettersAsciiCodeStart && (int)currentLetter <= lowerCaseLettersAsciiCodeStop;
+        }
+
+        private static bool LetterIsUpperCaseChar(char currentLetter)
+        {
+            const byte upperCaseLettersAsciiCodeStart = 65;
+            const byte upperCaseLettersAsciiCodeStop = 70;
+            return (int)currentLetter >= upperCaseLettersAsciiCodeStart && (int)currentLetter <= upperCaseLettersAsciiCodeStop;
+        }
+
+        private static bool LetterIsDigit(char currentLetter)
+        {
+            const byte digitsAsciiCodeStart = 48;
+            const byte digitsAsciiCodeStop = 57;
+            return (int)currentLetter >= digitsAsciiCodeStart && (int)currentLetter <= digitsAsciiCodeStop;
         }
 
         private static bool ContainsControlCharacters(string input)
