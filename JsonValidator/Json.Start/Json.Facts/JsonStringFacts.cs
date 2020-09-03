@@ -133,6 +133,11 @@ namespace Json.Facts
             Assert.False(IsJsonString(Quoted(@"a\u123")));
         }
 
+        [Fact]
+        public void IncorrectHexNumberShouldReturnFalse()
+        {
+            Assert.False(IsJsonString(Quoted(@"fos\uA46Q")));
+        }
         public static string Quoted(string text)
             => $"\"{text}\"";
     }
