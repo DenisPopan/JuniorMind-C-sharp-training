@@ -7,8 +7,34 @@ namespace Json
         public static bool IsJsonString(string input)
         {
             return HasContent(input)
-                && IsDoubleQuoted(input)
-                && !ContainsControlCharacters(input);
+                && ContentIsValid(input);
+        }
+
+        private static bool ContentIsValid(string input)
+        {
+            return IsDoubleQuoted(input)
+                && !ContainsControlCharacters(input)
+                && EscapedCharactersAreValid(input);
+        }
+
+        private static bool EscapedCharactersAreValid(string input)
+        {
+            int lastNonQuotesChar = input.Length - 2;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '\\' && !NextCharacterIsCorrect(input, i + 1) || input[lastNonQuotesChar] == '\\')
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool NextCharacterIsCorrect(string input, int charPosition)
+        {
+            char[] validChars = { '/', 'b', 'f', 'n', 'r', 't', 'u', '"', ' ', '\\' };
+            return Array.IndexOf(validChars, input[charPosition]) != -1;
         }
 
         private static bool ContainsControlCharacters(string input)
