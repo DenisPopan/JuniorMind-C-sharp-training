@@ -20,18 +20,18 @@ namespace Json
         private static bool EscapedCharactersAreValid(string input)
         {
             int lastNonQuotesChar = input.Length - 2;
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length - 1; i++)
             {
-                if (input[i] == '\\' && !NextCharacterIsCorrect(input, i + 1) || input[lastNonQuotesChar] == '\\')
+                if (input[i] == '\\' && !NextCharacterCanBeEscaped(input, i + 1))
                 {
                     return false;
                 }
             }
 
-            return true;
+            return input[lastNonQuotesChar] != '\\';
         }
 
-        private static bool NextCharacterIsCorrect(string input, int charPosition)
+        private static bool NextCharacterCanBeEscaped(string input, int charPosition)
         {
             char[] validChars = { '/', 'b', 'f', 'n', 'r', 't', 'u', '"', ' ', '\\' };
             if (Array.IndexOf(validChars, input[charPosition]) == -1)
@@ -53,7 +53,7 @@ namespace Json
             for (int i = codeStartPosition; i <= codeEndPosition; i++)
             {
                 char currentLetter = input[i];
-                if (!(LetterIsDigit(currentLetter) || LetterIsLowerCaseChar(currentLetter) || LetterIsUpperCaseChar(currentLetter)))
+                if (!(IsDigit(currentLetter) || IsLowerCaseChar(currentLetter) || IsUpperCaseChar(currentLetter)))
                 {
                     return false;
                 }
@@ -62,25 +62,19 @@ namespace Json
             return true;
         }
 
-        private static bool LetterIsLowerCaseChar(char currentLetter)
+        private static bool IsLowerCaseChar(char currentLetter)
         {
-            const byte lowerCaseLettersAsciiCodeStart = 97;
-            const byte lowerCaseLettersAsciiCodeStop = 102;
-            return (int)currentLetter >= lowerCaseLettersAsciiCodeStart && (int)currentLetter <= lowerCaseLettersAsciiCodeStop;
+            return currentLetter >= 'a' && currentLetter <= 'f';
         }
 
-        private static bool LetterIsUpperCaseChar(char currentLetter)
+        private static bool IsUpperCaseChar(char currentLetter)
         {
-            const byte upperCaseLettersAsciiCodeStart = 65;
-            const byte upperCaseLettersAsciiCodeStop = 70;
-            return (int)currentLetter >= upperCaseLettersAsciiCodeStart && (int)currentLetter <= upperCaseLettersAsciiCodeStop;
+            return currentLetter >= 'A' && currentLetter <= 'F';
         }
 
-        private static bool LetterIsDigit(char currentLetter)
+        private static bool IsDigit(char currentLetter)
         {
-            const byte digitsAsciiCodeStart = 48;
-            const byte digitsAsciiCodeStop = 57;
-            return (int)currentLetter >= digitsAsciiCodeStart && (int)currentLetter <= digitsAsciiCodeStop;
+            return currentLetter >= '0' && currentLetter <= '9';
         }
 
         private static bool ContainsControlCharacters(string input)
