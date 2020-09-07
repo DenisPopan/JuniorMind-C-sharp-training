@@ -7,7 +7,12 @@ namespace Json
         public static bool IsJsonNumber(string input)
         {
             return HasContent(input)
-                && HasOnlyDigits(input)
+                && ContentIsValid(input);
+        }
+
+        private static bool ContentIsValid(string input)
+        {
+             return HasOnlyDigits(input)
                 && !StartsWithZero(input);
         }
 
