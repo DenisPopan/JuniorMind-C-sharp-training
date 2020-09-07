@@ -6,13 +6,13 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return CanHaveASingleDigit(input)
+            return CanHaveMultipleDigits(input)
                 && !ContainsLetters(input);
         }
 
-        private static bool CanHaveASingleDigit(string input)
+        private static bool CanHaveMultipleDigits(string input)
         {
-            return input.Length == 1 && char.IsDigit(input[0]);
+            return input.Length >= 1 && char.IsDigit(input[0]);
         }
 
         private static bool ContainsLetters(string input)
