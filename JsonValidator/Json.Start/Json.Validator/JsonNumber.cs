@@ -7,7 +7,7 @@ namespace Json
         public static bool IsJsonNumber(string input)
         {
             return HasContent(input)
-                && HasAtLeastOneDigit(input);
+                && HasOnlyDigits(input);
         }
 
         private static bool HasContent(string input)
@@ -15,7 +15,7 @@ namespace Json
             return !string.IsNullOrEmpty(input);
         }
 
-        private static bool HasAtLeastOneDigit(string input)
+        private static bool HasOnlyDigits(string input)
         {
             foreach (char character in input)
             {
