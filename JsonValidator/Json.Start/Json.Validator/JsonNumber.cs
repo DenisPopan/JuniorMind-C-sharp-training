@@ -6,16 +6,17 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return CanHaveMultipleDigits(input);
+            return !IsNull(input)
+                && CanHaveMultipleDigits(input);
+        }
+
+        private static bool IsNull(string input)
+        {
+            return input == null;
         }
 
         private static bool CanHaveMultipleDigits(string input)
         {
-            if (input == null)
-            {
-                return false;
-            }
-
             foreach (char character in input)
             {
                 if (char.IsDigit(character))
