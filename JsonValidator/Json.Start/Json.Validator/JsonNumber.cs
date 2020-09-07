@@ -6,19 +6,13 @@ namespace Json
     {
         public static bool IsJsonNumber(string input)
         {
-            return !IsNull(input)
-                && !IsEmpty(input)
+            return HasContent(input)
                 && HasAtLeastOneDigit(input);
         }
 
-        private static bool IsEmpty(string input)
+        private static bool HasContent(string input)
         {
-            return input == "";
-        }
-
-        private static bool IsNull(string input)
-        {
-            return input == null;
+            return !string.IsNullOrEmpty(input);
         }
 
         private static bool HasAtLeastOneDigit(string input)
