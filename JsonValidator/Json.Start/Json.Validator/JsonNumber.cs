@@ -11,6 +11,11 @@ namespace Json
 
         private static bool CanHaveMultipleDigits(string input)
         {
+            if (input == null)
+            {
+                return false;
+            }
+
             foreach (char character in input)
             {
                 if (char.IsDigit(character))
