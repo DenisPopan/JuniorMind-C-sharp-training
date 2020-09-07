@@ -7,7 +7,14 @@ namespace Json
         public static bool IsJsonNumber(string input)
         {
             return HasContent(input)
-                && HasOnlyDigits(input);
+                && HasOnlyDigits(input)
+                && !StartsWithZero(input);
+        }
+
+        private static bool StartsWithZero(string input)
+        {
+            const byte minLength = 2;
+            return input[0] == '0' && input.Length >= minLength;
         }
 
         private static bool HasContent(string input)
