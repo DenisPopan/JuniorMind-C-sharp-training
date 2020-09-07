@@ -12,7 +12,7 @@ namespace Json
 
         private static bool CanHaveASingleDigit(string input)
         {
-            return true;
+            return input.Length == 1 && char.IsDigit(input[0]);
         }
 
         private static bool ContainsLetters(string input)
