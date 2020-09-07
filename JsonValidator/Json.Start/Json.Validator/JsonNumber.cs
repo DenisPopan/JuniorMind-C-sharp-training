@@ -7,7 +7,7 @@ namespace Json
         public static bool IsJsonNumber(string input)
         {
             return !IsNull(input)
-                && CanHaveMultipleDigits(input);
+                && HasAtLeastOneDigit(input);
         }
 
         private static bool IsNull(string input)
@@ -15,17 +15,17 @@ namespace Json
             return input == null;
         }
 
-        private static bool CanHaveMultipleDigits(string input)
+        private static bool HasAtLeastOneDigit(string input)
         {
             foreach (char character in input)
             {
-                if (char.IsDigit(character))
+                if (!char.IsDigit(character))
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
     }
 }
