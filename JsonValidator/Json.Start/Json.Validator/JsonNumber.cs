@@ -12,20 +12,57 @@ namespace Json
 
         private static bool ContentIsValid(string input)
         {
-            return NumberLengthIsAtLeastTwo(input) ? NumberIsValid(input) : char.IsDigit(input[0]);
+            if (input.Length == 1)
+            {
+                return char.IsDigit(input[0]);
+            }
+
+            return NumberIsValid(input);
         }
 
         private static bool NumberIsValid(string input)
         {
-            return (NumberStartIsValid(input)
-                || (input[0] == '0' && input[1] == '.'))
+            if (NumberIsFractional(input))
+            {
+                return FractionalNumberIsValid(input);
+            }
+
+            return NonFractionalNumberIsValid(input);
+        }
+
+        private static bool NumberIsFractional(string input)
+        {
+            return input.IndexOf('.') != -1;
+        }
+
+        private static bool NonFractionalNumberIsValid(string input)
+        {
+            return NumberStartIsValid(input)
                && HasOnlyAllowedCharacters(input);
         }
 
-        private static bool NumberLengthIsAtLeastTwo(string input)
+        private static bool FractionalNumberIsValid(string input)
         {
-            const byte numberMinLength = 2;
-            return input.Length >= numberMinLength;
+            if (input.Length <= 1)
+            {
+                return false;
+            }
+
+            int dotPosition = input.IndexOf('.');
+            string firstFractionalPart = "";
+            string secondFractionalPart = input.Substring(dotPosition + 1);
+            if (!FractionalNumberIsSmallerThanOne(input))
+            {
+                firstFractionalPart = input.Substring(0, dotPosition);
+                return NumberStartIsValid(firstFractionalPart) && HasOnlyAllowedCharacters(secondFractionalPart);
+            }
+
+            return HasOnlyAllowedCharacters(secondFractionalPart);
+        }
+
+        private static bool FractionalNumberIsSmallerThanOne(string input)
+        {
+            return input[0] == '.' || (input[0] == '0' && input[1] == '.');
         }
 
         private static bool NumberStartIsValid(string input)
@@ -64,10 +101,9 @@ namespace Json
 
         private static bool HasOnlyAllowedCharacters(string input)
         {
-            char[] allowedChars = { '.' };
             for (int i = 1; i < input.Length; i++)
             {
-                if (!char.IsDigit(input[i]) && Array.IndexOf(allowedChars, input[i]) == -1)
+                if (!char.IsDigit(input[i]))
                 {
                     return false;
                 }
