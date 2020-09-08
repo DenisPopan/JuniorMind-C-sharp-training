@@ -43,7 +43,7 @@ namespace Json
 
         private static bool FractionalNumberIsValid(string input)
         {
-            if (input.Length <= 1)
+            if (input.Length <= 1 || input[input.Length - 1] == '.')
             {
                 return false;
             }
