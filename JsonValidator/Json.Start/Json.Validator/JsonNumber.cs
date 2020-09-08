@@ -24,8 +24,21 @@ namespace Json
 
         private static bool NumberStartIsValid(string input)
         {
-            return !IsZero(input)
-                || IsNegative(input);
+            return (!IsZero(input)
+                || IsNegative(input))
+                && !IsNegativeAndStartsWithZero(input);
+        }
+
+        private static bool IsNegativeAndStartsWithZero(string input)
+        {
+            const byte minNumberLength = 3;
+            if (input.Length < minNumberLength)
+            {
+                return false;
+            }
+
+            const byte thirdPosition = 2;
+            return IsNegative(input) && input[1] == '0' && input[thirdPosition] == '0';
         }
 
         private static bool IsNegative(string input)

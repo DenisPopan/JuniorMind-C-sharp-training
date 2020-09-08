@@ -61,6 +61,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void CannotBeMinusZeroZero()
+        {
+            Assert.False(IsJsonNumber("-00"));
+        }
+
+        [Fact]
         public void CanBeFractional()
         {
             Assert.True(IsJsonNumber("12.34"));
