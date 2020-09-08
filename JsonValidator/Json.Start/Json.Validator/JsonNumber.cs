@@ -31,7 +31,7 @@ namespace Json
         {
             foreach (char character in input)
             {
-                if (!char.IsDigit(character))
+                if (!char.IsDigit(character) && character != '-')
                 {
                     return false;
                 }
