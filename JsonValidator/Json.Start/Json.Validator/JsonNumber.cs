@@ -13,7 +13,7 @@ namespace Json
         private static bool ContentIsValid(string input)
         {
             return NumberLengthIsAtLeastTwo(input) ? NumberStartIsValid(input)
-               && HasOnlyDigits(input) : char.IsDigit(input[0]);
+               && HasOnlyAllowedCharacters(input) : char.IsDigit(input[0]);
         }
 
         private static bool NumberLengthIsAtLeastTwo(string input)
@@ -43,11 +43,12 @@ namespace Json
             return !string.IsNullOrEmpty(input);
         }
 
-        private static bool HasOnlyDigits(string input)
+        private static bool HasOnlyAllowedCharacters(string input)
         {
+            char[] allowedChars = { '.' };
             for (int i = 1; i < input.Length; i++)
             {
-                if (!char.IsDigit(input[i]) && input[i] != '.')
+                if (!char.IsDigit(input[i]) && Array.IndexOf(allowedChars, input[i]) == -1)
                 {
                     return false;
                 }
