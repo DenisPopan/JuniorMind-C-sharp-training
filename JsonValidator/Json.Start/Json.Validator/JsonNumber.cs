@@ -47,7 +47,7 @@ namespace Json
         {
             for (int i = 1; i < input.Length; i++)
             {
-                if (!char.IsDigit(input[i]))
+                if (!char.IsDigit(input[i]) && input[i] != '.')
                 {
                     return false;
                 }
