@@ -12,8 +12,14 @@ namespace Json
 
         private static bool ContentIsValid(string input)
         {
-            return NumberLengthIsAtLeastTwo(input) ? NumberStartIsValid(input)
-               && HasOnlyAllowedCharacters(input) : char.IsDigit(input[0]);
+            return NumberLengthIsAtLeastTwo(input) ? NumberIsValid(input) : char.IsDigit(input[0]);
+        }
+
+        private static bool NumberIsValid(string input)
+        {
+            return (NumberStartIsValid(input)
+                || (input[0] == '0' && input[1] == '.'))
+               && HasOnlyAllowedCharacters(input);
         }
 
         private static bool NumberLengthIsAtLeastTwo(string input)
