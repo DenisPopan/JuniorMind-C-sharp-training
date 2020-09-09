@@ -101,7 +101,7 @@ namespace Json
 
         private static bool HasOnlyAllowedCharacters(string input)
         {
-            char[] allowedCharacters = { 'e' };
+            char[] allowedCharacters = { 'e', 'E' };
             for (int i = 1; i < input.Length; i++)
             {
                 if (!char.IsDigit(input[i]) && Array.IndexOf(allowedCharacters, input[i]) == -1)
