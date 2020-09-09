@@ -127,9 +127,10 @@ namespace Json
 
         private static bool ExponentIsValid(string input, int exponentSymbolPosition)
         {
+            char[] validCharacters = { '+' };
             for (int i = exponentSymbolPosition + 1; i < input.Length; i++)
             {
-                if (!char.IsDigit(input[i]) && input[i] != '+')
+                if (!char.IsDigit(input[i]) && Array.IndexOf(validCharacters, input[i]) == -1)
                 {
                     return false;
                 }
