@@ -81,12 +81,12 @@ namespace Json
             }
 
             const byte thirdPosition = 2;
-            return IsNegative(input) && input[1] == '0' && input[thirdPosition] == '0';
+            return input[0] == '-' && input[1] == '0' && input[thirdPosition] == '0';
         }
 
         private static bool IsNegative(string input)
         {
-            return input[0] == '-';
+            return input[0] == '-' && char.IsDigit(input[1]);
         }
 
         private static bool IsZero(string input)
@@ -101,16 +101,46 @@ namespace Json
 
         private static bool HasOnlyAllowedCharacters(string input)
         {
-            char[] allowedCharacters = { 'e', 'E' };
-            for (int i = 1; i < input.Length; i++)
+            int index = 1;
+            while (index < input.Length)
             {
-                if (!char.IsDigit(input[i]) && Array.IndexOf(allowedCharacters, input[i]) == -1)
+                if (IsExponentSymbol(input[index]))
+                {
+                    break;
+                }
+
+                if (!char.IsDigit(input[index]))
+                {
+                    return false;
+                }
+
+                index++;
+            }
+
+            if (index == input.Length)
+            {
+                return true;
+            }
+
+            return ExponentIsValid(input, index);
+        }
+
+        private static bool ExponentIsValid(string input, int exponentSymbolPosition)
+        {
+            for (int i = exponentSymbolPosition + 1; i < input.Length; i++)
+            {
+                if (!char.IsDigit(input[i]))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private static bool IsExponentSymbol(char character)
+        {
+            return character == 'e' || character == 'E';
         }
     }
 }
