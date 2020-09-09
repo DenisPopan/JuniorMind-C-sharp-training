@@ -132,8 +132,7 @@ namespace Json
 
         private static bool ExponentIsValid(string input, int exponentStartPosition)
         {
-            char[] validCharacters = { '+', '-' };
-            if (Array.IndexOf(validCharacters, input[exponentStartPosition]) != -1)
+            if (IsSymbol(input[exponentStartPosition]))
             {
                 exponentStartPosition++;
 
@@ -152,6 +151,11 @@ namespace Json
             }
 
             return true;
+        }
+
+        private static bool IsSymbol(char character)
+        {
+            return character == '+' || character == '-';
         }
 
         private static bool IsExponentSymbol(char character)
