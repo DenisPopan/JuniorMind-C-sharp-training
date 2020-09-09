@@ -169,5 +169,17 @@ namespace Json.Facts
             Assert.True(IsJsonNumber("235.3e-0"));
             Assert.False(IsJsonNumber("456.28e07"));
         }
+
+        [Fact]
+        public void ExponentCannotHaveMultipleSymbols()
+        {
+            Assert.False(IsJsonNumber("4986.28e--7"));
+            Assert.False(IsJsonNumber("135.28e++12"));
+            Assert.False(IsJsonNumber("9.28ee12"));
+            Assert.False(IsJsonNumber("96.28ee--901"));
+            Assert.False(IsJsonNumber("58787.28e+-22"));
+            Assert.False(IsJsonNumber("36.28e-+68"));
+            Assert.False(IsJsonNumber("6.28e+12e"));
+        }
     }
 }
