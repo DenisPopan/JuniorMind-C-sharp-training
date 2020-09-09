@@ -122,19 +122,28 @@ namespace Json
                 return true;
             }
 
-            return ExponentIsValid(input, index);
-        }
-
-        private static bool ExponentIsValid(string input, int exponentSymbolPosition)
-        {
-            char[] validCharacters = { '+', '-' };
-            if (!char.IsDigit(input[exponentSymbolPosition + 1])
-                && (Array.IndexOf(validCharacters, input[exponentSymbolPosition + 1]) == -1))
+            if (index + 1 >= input.Length)
             {
                 return false;
             }
 
-            for (int i = exponentSymbolPosition + 2; i < input.Length; i++)
+            return ExponentIsValid(input, index + 1);
+        }
+
+        private static bool ExponentIsValid(string input, int exponentStartPosition)
+        {
+            char[] validCharacters = { '+', '-' };
+            if (Array.IndexOf(validCharacters, input[exponentStartPosition]) != -1)
+            {
+                exponentStartPosition++;
+
+                if (exponentStartPosition >= input.Length)
+                {
+                    return false;
+                }
+            }
+
+            for (int i = exponentStartPosition; i < input.Length; i++)
             {
                 if (!char.IsDigit(input[i]))
                 {
