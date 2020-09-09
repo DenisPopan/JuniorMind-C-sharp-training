@@ -87,7 +87,7 @@ namespace Json
 
         private static bool NumberStartIsValid(string input)
         {
-            return (!IsZero(input)
+            return (IsNonZeroDigit(input)
                 || IsNegative(input))
                 && !IsNegativeAndStartsWithZero(input);
         }
@@ -109,9 +109,9 @@ namespace Json
             return input[0] == '-' && char.IsDigit(input[1]);
         }
 
-        private static bool IsZero(string input)
+        private static bool IsNonZeroDigit(string input)
         {
-            return input[0] == '0';
+            return input[0] >= '1' && input[0] <= '9';
         }
 
         private static bool HasContent(string input)

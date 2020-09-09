@@ -31,6 +31,12 @@ namespace Json.Facts
         }
 
         [Fact]
+        public void DoesNotStartWithALetter()
+        {
+            Assert.False(IsJsonNumber("a820"));
+        }
+
+        [Fact]
         public void IsNotNull()
         {
             Assert.False(IsJsonNumber(null));
