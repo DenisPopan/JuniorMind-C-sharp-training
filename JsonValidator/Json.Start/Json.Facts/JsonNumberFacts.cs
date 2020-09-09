@@ -173,13 +173,13 @@ namespace Json.Facts
             Assert.True(IsJsonNumber("235.3e0"));
             Assert.True(IsJsonNumber("235.3e+0"));
             Assert.True(IsJsonNumber("235.3e-0"));
-            Assert.False(IsJsonNumber("456.28e07"));
+            Assert.True(IsJsonNumber("456.28e07"));
         }
 
         [Fact]
         public void ExponentCannotHaveMultipleSymbols()
         {
-            Assert.False(IsJsonNumber("4986.28e--7"));
+            Assert.False(IsJsonNumber("-4986.28e--7"));
             Assert.False(IsJsonNumber("135.28e++12"));
             Assert.False(IsJsonNumber("9.28ee12"));
             Assert.False(IsJsonNumber("96.28ee--901"));

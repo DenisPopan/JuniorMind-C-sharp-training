@@ -43,7 +43,8 @@ namespace Json
 
         private static bool FractionalNumberIsValid(string input)
         {
-            if (input.Length <= 1 || input[input.Length - 1] == '.')
+            // Fractional number must not end with a dot
+            if (input[input.Length - 1] == '.')
             {
                 return false;
             }
@@ -51,6 +52,8 @@ namespace Json
             int dotPosition = input.IndexOf('.');
             string firstFractionalPart = "";
             string secondFractionalPart = input.Substring(dotPosition + 1);
+
+            // Fractional part must begin with a digit
             if (!char.IsDigit(secondFractionalPart[0]))
             {
                 return false;
@@ -60,18 +63,18 @@ namespace Json
             {
                 firstFractionalPart = input.Substring(0, dotPosition);
                 return NumberStartIsValid(firstFractionalPart)
-                    && HasOnlyDigits(firstFractionalPart)
+                    && HasOnlyDigits(firstFractionalPart.Substring(1))
                     && HasOnlyAllowedCharacters(secondFractionalPart);
             }
 
             return HasOnlyAllowedCharacters(secondFractionalPart);
         }
 
-        private static bool HasOnlyDigits(string firstFractionalPart)
+        private static bool HasOnlyDigits(string number)
         {
-            for (int i = 1; i < firstFractionalPart.Length; i++)
+            for (int i = 0; i < number.Length; i++)
             {
-                if (!char.IsDigit(firstFractionalPart[i]))
+                if (!char.IsDigit(number[i]))
                 {
                     return false;
                 }
@@ -89,10 +92,10 @@ namespace Json
         {
             return (IsNonZeroDigit(input)
                 || IsNegative(input))
-                && !IsNegativeAndStartsWithZero(input);
+                && !IsNegativeAndHasTwoZeros(input);
         }
 
-        private static bool IsNegativeAndStartsWithZero(string input)
+        private static bool IsNegativeAndHasTwoZeros(string input)
         {
             const byte minNumberLength = 3;
             if (input.Length < minNumberLength)
@@ -122,6 +125,25 @@ namespace Json
         private static bool HasOnlyAllowedCharacters(string input)
         {
             int index = 1;
+            FindExponentSymbolIndex(input, ref index);
+
+            // Number has only digits
+            if (index == input.Length)
+            {
+                return true;
+            }
+
+            // Exponent symbol is at the end of the number
+            if (index + 1 >= input.Length || index == -1)
+            {
+                return false;
+            }
+
+            return ExponentIsValid(input, index + 1);
+        }
+
+        private static void FindExponentSymbolIndex(string input, ref int index)
+        {
             while (index < input.Length)
             {
                 if (IsExponentSymbol(input[index]))
@@ -131,54 +153,32 @@ namespace Json
 
                 if (!char.IsDigit(input[index]))
                 {
-                    return false;
+                    index = -1;
+                    break;
                 }
 
                 index++;
             }
-
-            if (index == input.Length)
-            {
-                return true;
-            }
-
-            if (index + 1 >= input.Length)
-            {
-                return false;
-            }
-
-            return ExponentIsValid(input, index + 1);
         }
 
         private static bool ExponentIsValid(string input, int exponentStartPosition)
         {
-            if (IsSymbol(input[exponentStartPosition]))
+            if (IsPlusOrMinusOperator(input[exponentStartPosition]))
             {
                 exponentStartPosition++;
 
+                // Operator is at the end of the number
                 if (exponentStartPosition >= input.Length)
                 {
                     return false;
                 }
             }
 
-            if (input[exponentStartPosition] == '0' && exponentStartPosition != input.Length - 1)
-            {
-                return false;
-            }
-
-            for (int i = exponentStartPosition; i < input.Length; i++)
-            {
-                if (!char.IsDigit(input[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            // The rest of the exponent must be composed of digits
+            return HasOnlyDigits(input.Substring(exponentStartPosition));
         }
 
-        private static bool IsSymbol(char character)
+        private static bool IsPlusOrMinusOperator(char character)
         {
             return character == '+' || character == '-';
         }
