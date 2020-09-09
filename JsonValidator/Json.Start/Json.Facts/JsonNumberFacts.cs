@@ -152,5 +152,13 @@ namespace Json.Facts
         {
             Assert.False(IsJsonNumber("22e3.3"));
         }
+
+        [Fact]
+        public void FractionalPartStartsOnlyWithADigit()
+        {
+            Assert.False(IsJsonNumber("235.a3e12"));
+            Assert.False(IsJsonNumber("665.e-8"));
+            Assert.False(IsJsonNumber("67.-9"));
+        }
     }
 }

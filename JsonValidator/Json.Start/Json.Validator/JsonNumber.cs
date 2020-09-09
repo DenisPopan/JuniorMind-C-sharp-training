@@ -51,6 +51,11 @@ namespace Json
             int dotPosition = input.IndexOf('.');
             string firstFractionalPart = "";
             string secondFractionalPart = input.Substring(dotPosition + 1);
+            if (!char.IsDigit(secondFractionalPart[0]))
+            {
+                return false;
+            }
+
             if (!FractionalNumberIsSmallerThanOne(input))
             {
                 firstFractionalPart = input.Substring(0, dotPosition);
