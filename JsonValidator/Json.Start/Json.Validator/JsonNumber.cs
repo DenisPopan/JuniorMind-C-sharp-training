@@ -133,7 +133,7 @@ namespace Json
                 return true;
             }
 
-            // Exponent symbol is at the end of the number
+            // Exponent symbol is at the end of the number or there was a non digit char before it
             if (index + 1 >= input.Length || index == -1)
             {
                 return false;
