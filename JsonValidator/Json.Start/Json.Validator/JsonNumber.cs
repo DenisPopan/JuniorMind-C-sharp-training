@@ -54,10 +54,25 @@ namespace Json
             if (!FractionalNumberIsSmallerThanOne(input))
             {
                 firstFractionalPart = input.Substring(0, dotPosition);
-                return NumberStartIsValid(firstFractionalPart) && HasOnlyAllowedCharacters(secondFractionalPart);
+                return NumberStartIsValid(firstFractionalPart)
+                    && HasOnlyDigits(firstFractionalPart)
+                    && HasOnlyAllowedCharacters(secondFractionalPart);
             }
 
             return HasOnlyAllowedCharacters(secondFractionalPart);
+        }
+
+        private static bool HasOnlyDigits(string firstFractionalPart)
+        {
+            for (int i = 1; i < firstFractionalPart.Length; i++)
+            {
+                if (!char.IsDigit(firstFractionalPart[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static bool FractionalNumberIsSmallerThanOne(string input)
