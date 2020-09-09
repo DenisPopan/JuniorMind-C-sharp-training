@@ -160,5 +160,14 @@ namespace Json.Facts
             Assert.False(IsJsonNumber("665.e-8"));
             Assert.False(IsJsonNumber("67.-9"));
         }
+
+        [Fact]
+        public void ExponentCanBeZero()
+        {
+            Assert.True(IsJsonNumber("235.3e0"));
+            Assert.True(IsJsonNumber("235.3e+0"));
+            Assert.True(IsJsonNumber("235.3e-0"));
+            Assert.False(IsJsonNumber("456.28e07"));
+        }
     }
 }

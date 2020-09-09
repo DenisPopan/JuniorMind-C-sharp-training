@@ -162,6 +162,11 @@ namespace Json
                 }
             }
 
+            if (input[exponentStartPosition] == '0' && exponentStartPosition != input.Length - 1)
+            {
+                return false;
+            }
+
             for (int i = exponentStartPosition; i < input.Length; i++)
             {
                 if (!char.IsDigit(input[i]))
