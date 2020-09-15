@@ -4,7 +4,7 @@ namespace FootballTeamsRanking
 {
     public class Ranking
     {
-        readonly Team[] teams;
+        Team[] teams;
 
         public Ranking(Team[] teams)
         {
@@ -18,12 +18,19 @@ namespace FootballTeamsRanking
 
         public (string, int) TeamInfo(int teamPosition)
         {
-            if (teamPosition >= teams.Length || teamPosition < 1)
+            if (teamPosition > teams.Length || teamPosition < 1)
             {
                 return ("", 0);
             }
 
             return (teams[teamPosition - 1].Name, teams[teamPosition - 1].Points);
+        }
+
+        public void AddTeam(Team team)
+        {
+            int newSize = teams.Length + 1;
+            Array.Resize(ref teams, newSize);
+            teams[newSize - 1] = team;
         }
     }
 }

@@ -62,5 +62,16 @@ namespace FootballTeamsRanking.Test
             Assert.Equal(("", 0), ranking.TeamInfo(6));
         }
 
+        [Fact]
+
+        public void AddsNewTeamWhenRankingIsEmpty()
+        {
+            Team team = new Team("Argentina", 28);
+            Team[] teams = { };
+            Ranking ranking = new Ranking(teams);
+            ranking.AddTeam(team);
+            Assert.Equal(("Argentina", 28), ranking.TeamInfo(1));
+        }
+
     }
 }
