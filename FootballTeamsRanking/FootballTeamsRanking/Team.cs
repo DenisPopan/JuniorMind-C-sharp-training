@@ -10,5 +10,15 @@ namespace FootballTeamsRanking
             this.name = name;
             this.points = points;
         }
+
+        public string Name
+        {
+            get => name;
+        }
+
+        public int Points
+        {
+            get => points;
+        }
     }
 }

@@ -16,9 +16,14 @@ namespace FootballTeamsRanking
             return Array.IndexOf(teams, team) + 1;
         }
 
-        public Team TeamInfo(int teamPosition)
+        public (string, int) TeamInfo(int teamPosition)
         {
-            return teams[teamPosition - 1];
+            if (teamPosition >= teams.Length || teamPosition < 1)
+            {
+                return ("", 0);
+            }
+
+            return (teams[teamPosition - 1].Name, teams[teamPosition - 1].Points);
         }
     }
 }
