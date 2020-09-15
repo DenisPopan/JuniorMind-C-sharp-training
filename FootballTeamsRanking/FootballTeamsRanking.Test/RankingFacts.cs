@@ -20,6 +20,20 @@ namespace FootballTeamsRanking.Test
             Assert.Equal(4, ranking.TeamPosition(team3));
             Assert.Equal(5, ranking.TeamPosition(team1));
         }
-        
+
+        [Fact]
+        public void UnrankedTeamShouldHaveIndexZero()
+        {
+            Team team1 = new Team("Barcelona", 12);
+            Team team2 = new Team("Real Madrid", 22);
+            Team team3 = new Team("Bayern Munchen", 16);
+            Team team4 = new Team("Argentina", 30);
+            Team team5 = new Team("Brazil", 28);
+            Team team6 = new Team("Belgium", 13);
+            Team[] teams = { team4, team5, team2, team3, team1 };
+            Ranking ranking = new Ranking(teams);
+            Assert.Equal(0, ranking.TeamPosition(team6));
+        }
+
     }
 }
