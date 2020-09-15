@@ -10,5 +10,10 @@ namespace FootballTeamsRanking
         {
             this.teams = teams;
         }
+
+        public int TeamPosition(Team team)
+        {
+            return Array.IndexOf(teams, team) + 1;
+        }
     }
 }
