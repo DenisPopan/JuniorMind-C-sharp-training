@@ -1,9 +1,14 @@
-using System;
-
 namespace FootballTeamsRanking
 {
     public class Team
     {
+        readonly string name;
+        readonly int points;
 
+        public Team(string name, int points)
+        {
+            this.name = name;
+            this.points = points;
+        }
     }
 }
