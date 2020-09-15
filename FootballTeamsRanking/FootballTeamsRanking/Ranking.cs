@@ -15,5 +15,10 @@ namespace FootballTeamsRanking
         {
             return Array.IndexOf(teams, team) + 1;
         }
+
+        public Team TeamInfo(int teamPosition)
+        {
+            return teams[teamPosition - 1];
+        }
     }
 }
