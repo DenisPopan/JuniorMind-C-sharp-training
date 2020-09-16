@@ -33,12 +33,7 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
-            int teamPosition = 0;
-            while (teamPosition < teams.Length && teams[teamPosition].Points > team.Points)
-            {
-                teamPosition++;
-            }
-
+            int teamPosition = BinarySearchTeamPosition(teams, team);
             int newSize = teams.Length + 1;
             Array.Resize(ref teams, newSize);
             for (int i = teams.Length - 1; i > teamPosition; i--)
@@ -47,6 +42,36 @@ namespace FootballTeamsRanking
             }
 
             teams[teamPosition] = team;
+        }
+
+        private int BinarySearchTeamPosition(Team[] teams, Team searchedTeam)
+        {
+            int left = 0;
+            int right = teams.Length - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (searchedTeam.Points > teams[mid].Points)
+                {
+                    right = mid - 1;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+
+            if (right < 0)
+            {
+                return 0;
+            }
+
+            if (left > teams.Length - 1)
+            {
+                return teams.Length;
+            }
+
+            return left;
         }
     }
 }
