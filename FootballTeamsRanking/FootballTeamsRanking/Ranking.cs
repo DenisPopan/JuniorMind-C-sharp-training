@@ -46,6 +46,11 @@ namespace FootballTeamsRanking
 
         public void UpdateRanking(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
         {
+            if (firstTeamScore == secondTeamScore)
+            {
+                return;
+            }
+
             if (firstTeam == null)
             {
                 throw new ArgumentNullException(nameof(firstTeam));
@@ -59,20 +64,7 @@ namespace FootballTeamsRanking
             int scoreDifference = Math.Abs(firstTeamScore - secondTeamScore);
             Team winnerTeam;
             Team loserTeam;
-            if (firstTeamScore > secondTeamScore)
-            {
-                winnerTeam = firstTeam;
-                loserTeam = secondTeam;
-            }
-            else if (firstTeamScore < secondTeamScore)
-            {
-                winnerTeam = secondTeam;
-                loserTeam = firstTeam;
-            }
-            else
-            {
-                return;
-            }
+            (winnerTeam, loserTeam) = DetermineWinnerAndLoserTeam(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
 
             Team winnerTeamCopy = new Team(winnerTeam.Name, winnerTeam.Points + scoreDifference);
             Team loserTeamCopy = new Team(loserTeam.Name, loserTeam.Points - scoreDifference);
@@ -82,23 +74,45 @@ namespace FootballTeamsRanking
 
             int newWinnerTeamPosition = BinarySearchTeamPosition(teams, winnerTeamCopy);
 
-            for (int i = currentWinnerTeamPosition; i > newWinnerTeamPosition; i--)
-            {
-                teams[i] = teams[i - 1];
-            }
+            RearrangeTeams(teams, currentWinnerTeamPosition, newWinnerTeamPosition, -1);
 
             teams[newWinnerTeamPosition] = winnerTeam;
             UpdatePoints(winnerTeam, scoreDifference);
 
             int newLoserTeamPosition = BinarySearchTeamPosition(teams, loserTeamCopy) - 1;
 
-            for (int i = currentLoserTeamPosition; i < newLoserTeamPosition; i++)
-            {
-                teams[i] = teams[i + 1];
-            }
+            RearrangeTeams(teams, currentLoserTeamPosition, newLoserTeamPosition, 1);
 
             teams[newLoserTeamPosition] = loserTeam;
             UpdatePoints(loserTeam, -scoreDifference);
+        }
+
+        private void RearrangeTeams(Team[] teams, int startPosition, int stopPosition, int step)
+        {
+            if (step < 0)
+            {
+                for (int i = startPosition; i > stopPosition; i--)
+                {
+                    teams[i] = teams[i - 1];
+                }
+            }
+            else
+            {
+                for (int i = startPosition; i < stopPosition; i++)
+                {
+                    teams[i] = teams[i - 1];
+                }
+            }
+        }
+
+        private (Team, Team) DetermineWinnerAndLoserTeam(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
+        {
+            if (firstTeamScore > secondTeamScore)
+            {
+                return (firstTeam, secondTeam);
+            }
+
+            return (secondTeam, firstTeam);
         }
 
         private void UpdatePoints(Team team, int points)
