@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace FootballTeamsRanking
 {
@@ -36,11 +37,7 @@ namespace FootballTeamsRanking
             int teamPosition = teams.Length == 0 ? 0 : BinarySearchTeamPosition(teams, team);
             int newSize = teams.Length + 1;
             Array.Resize(ref teams, newSize);
-            for (int i = teams.Length - 1; i > teamPosition; i--)
-            {
-                teams[i] = teams[i - 1];
-            }
-
+            RearrangeTeams(teams, teams.Length - 1, teamPosition);
             teams[teamPosition] = team;
         }
 
@@ -65,43 +62,25 @@ namespace FootballTeamsRanking
             Team winnerTeam;
             Team loserTeam;
             (winnerTeam, loserTeam) = DetermineWinnerAndLoserTeam(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
-
-            Team winnerTeamCopy = new Team(winnerTeam.Name, winnerTeam.Points + scoreDifference);
-            Team loserTeamCopy = new Team(loserTeam.Name, loserTeam.Points - scoreDifference);
-
+            UpdatePoints(winnerTeam, loserTeam, scoreDifference);
             int currentWinnerTeamPosition = TeamPosition(winnerTeam) - 1;
             int currentLoserTeamPosition = TeamPosition(loserTeam) - 1;
-
-            int newWinnerTeamPosition = BinarySearchTeamPosition(teams, winnerTeamCopy);
-
-            RearrangeTeams(teams, currentWinnerTeamPosition, newWinnerTeamPosition, -1);
-
-            teams[newWinnerTeamPosition] = winnerTeam;
-            UpdatePoints(winnerTeam, scoreDifference);
-
-            int newLoserTeamPosition = BinarySearchTeamPosition(teams, loserTeamCopy) - 1;
-
-            RearrangeTeams(teams, currentLoserTeamPosition, newLoserTeamPosition, 1);
-
-            teams[newLoserTeamPosition] = loserTeam;
-            UpdatePoints(loserTeam, -scoreDifference);
+            DeleteTeam(ref teams, currentWinnerTeamPosition);
+            AddTeam(winnerTeam);
+            DeleteTeam(ref teams, currentLoserTeamPosition);
+            AddTeam(loserTeam);
         }
 
-        private void RearrangeTeams(Team[] teams, int startPosition, int stopPosition, int step)
+        private void DeleteTeam(ref Team[] teams, int teamToDeletePosition)
         {
-            if (step < 0)
+            teams = teams.Where((e, i) => i != teamToDeletePosition).ToArray();
+        }
+
+        private void RearrangeTeams(Team[] teams, int startPosition, int stopPosition)
+        {
+            for (int i = startPosition; i > stopPosition; i--)
             {
-                for (int i = startPosition; i > stopPosition; i--)
-                {
-                    teams[i] = teams[i - 1];
-                }
-            }
-            else
-            {
-                for (int i = startPosition; i < stopPosition; i++)
-                {
-                    teams[i] = teams[i - 1];
-                }
+                teams[i] = teams[i - 1];
             }
         }
 
@@ -115,9 +94,10 @@ namespace FootballTeamsRanking
             return (secondTeam, firstTeam);
         }
 
-        private void UpdatePoints(Team team, int points)
+        private void UpdatePoints(Team winnerTeam, Team loserTeam, int points)
         {
-            team.Points += points;
+            winnerTeam.Points += points;
+            loserTeam.Points -= points;
         }
 
         private int BinarySearchTeamPosition(Team[] teams, Team searchedTeam)
