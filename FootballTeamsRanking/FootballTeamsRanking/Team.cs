@@ -3,12 +3,11 @@ namespace FootballTeamsRanking
     public class Team
     {
         readonly string name;
-        readonly int points;
 
         public Team(string name, int points)
         {
             this.name = name;
-            this.points = points;
+            this.Points = points;
         }
 
         public string Name
@@ -16,9 +15,6 @@ namespace FootballTeamsRanking
             get => name;
         }
 
-        public int Points
-        {
-            get => points;
-        }
+        public int Points { get; set; }
     }
 }

@@ -113,5 +113,22 @@ namespace FootballTeamsRanking.Test
             Assert.Equal(1, ranking.TeamPosition(teamAddedInTheBeginning));
             Assert.Equal(4, ranking.TeamPosition(teamAddedInBetween));
         }
+
+        [Fact]
+        public void RankingIsUpdatedCorrectlyAfterAMatch()
+        {
+            Team team1 = new Team("Barcelona", 12);
+            Team team2 = new Team("Real Madrid", 24);
+            Team team3 = new Team("Bayern Munchen", 16);
+            Team team4 = new Team("Argentina", 30);
+            Team team5 = new Team("Brazil", 28);
+            Team team6 = new Team("Romania", 21);
+            Team team7 = new Team("Portugal", 31);
+            Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
+            Ranking ranking = new Ranking(teams);
+            ranking.UpdateRanking(team1, team5, 7, 2);
+            Assert.Equal(6, ranking.TeamPosition(team1));
+            Assert.Equal(4, ranking.TeamPosition(team5));
+        }
     }
 }
