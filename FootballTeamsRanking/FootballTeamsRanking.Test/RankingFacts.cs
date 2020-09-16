@@ -93,5 +93,26 @@ namespace FootballTeamsRanking.Test
             Assert.Equal(8, ranking.TeamPosition(lowestPointsTeam));
             Assert.Equal(1, ranking.TeamPosition(highestPointsTeam));
         }
+
+        [Fact]
+        public void TeamsWithSamePointsAreRankedBasedOnTheirName()
+        {
+            Team team1 = new Team("Barcelona", 12);
+            Team team2 = new Team("Real Madrid", 12);
+            Team team3 = new Team("Bayern Munchen", 16);
+            Team team4 = new Team("Argentina", 30);
+            Team team5 = new Team("Brazil", 28);
+            Team teamAddedAtTheEnd = new Team("Romania", 12);
+            Team teamAddedInTheBeginning = new Team("Ankara", 30);
+            Team teamAddedInBetween = new Team("Bangladesh", 16);
+            Team[] teams = { team4, team5, team3, team1, team2 };
+            Ranking ranking = new Ranking(teams);
+            ranking.AddTeam(teamAddedAtTheEnd);
+            ranking.AddTeam(teamAddedInTheBeginning);
+            ranking.AddTeam(teamAddedInBetween);
+            Assert.Equal(8, ranking.TeamPosition(teamAddedAtTheEnd));
+            Assert.Equal(1, ranking.TeamPosition(teamAddedInTheBeginning));
+            Assert.Equal(4, ranking.TeamPosition(teamAddedInBetween));
+        }
     }
 }

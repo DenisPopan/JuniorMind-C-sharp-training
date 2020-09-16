@@ -51,7 +51,18 @@ namespace FootballTeamsRanking
             while (left <= right)
             {
                 int mid = (left + right) / 2;
-                if (searchedTeam.Points > teams[mid].Points)
+                if (searchedTeam.Points == teams[mid].Points)
+                {
+                    if (string.Compare(searchedTeam.Name, teams[mid].Name) == -1)
+                    {
+                        right = mid - 1;
+                    }
+                    else
+                    {
+                        left = mid + 1;
+                    }
+                }
+                else if (searchedTeam.Points > teams[mid].Points)
                 {
                     right = mid - 1;
                 }
