@@ -34,12 +34,9 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
-            for (int i = 0; i < teams.Length; i++)
+            if (AreNamesDuplicated(teams, team))
             {
-                if (team.CompareNames(teams[i]) == 0)
-                {
-                    return;
-                }
+                return;
             }
 
             int teamPosition = teams.Length == 0 ? 0 : BinarySearchTeamPosition(teams, team);
@@ -77,6 +74,19 @@ namespace FootballTeamsRanking
             AddTeam(winnerTeam);
             DeleteTeam(ref teams, currentLoserTeamPosition);
             AddTeam(loserTeam);
+        }
+
+        private bool AreNamesDuplicated(Team[] teams, Team team)
+        {
+            for (int i = 0; i < teams.Length; i++)
+            {
+                if (team.CompareNames(teams[i]) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private void DeleteTeam(ref Team[] teams, int teamToDeletePosition)
