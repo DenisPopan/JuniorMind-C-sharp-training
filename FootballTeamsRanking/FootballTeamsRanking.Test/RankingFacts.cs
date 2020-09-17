@@ -88,9 +88,15 @@ namespace FootballTeamsRanking.Test
             ranking.AddTeam(randomPointsTeam);
             ranking.AddTeam(lowestPointsTeam);
             ranking.AddTeam(highestPointsTeam);
-            Assert.Equal(5, ranking.TeamPosition(randomPointsTeam));
-            Assert.Equal(8, ranking.TeamPosition(lowestPointsTeam));
             Assert.Equal(1, ranking.TeamPosition(highestPointsTeam));
+            Assert.Equal(2, ranking.TeamPosition(team4));
+            Assert.Equal(3, ranking.TeamPosition(team5));
+            Assert.Equal(4, ranking.TeamPosition(team2));
+            Assert.Equal(5, ranking.TeamPosition(randomPointsTeam));
+            Assert.Equal(6, ranking.TeamPosition(team3));
+            Assert.Equal(7, ranking.TeamPosition(team1));
+            Assert.Equal(8, ranking.TeamPosition(lowestPointsTeam));
+            
         }
 
         [Fact]
@@ -109,9 +115,16 @@ namespace FootballTeamsRanking.Test
             ranking.AddTeam(teamAddedAtTheEnd);
             ranking.AddTeam(teamAddedInTheBeginning);
             ranking.AddTeam(teamAddedInBetween);
-            Assert.Equal(8, ranking.TeamPosition(teamAddedAtTheEnd));
             Assert.Equal(1, ranking.TeamPosition(teamAddedInTheBeginning));
+            Assert.Equal(2, ranking.TeamPosition(team4));
+            Assert.Equal(3, ranking.TeamPosition(team5));
             Assert.Equal(4, ranking.TeamPosition(teamAddedInBetween));
+            Assert.Equal(5, ranking.TeamPosition(team3));
+            Assert.Equal(6, ranking.TeamPosition(team1));
+            Assert.Equal(7, ranking.TeamPosition(team2));
+            Assert.Equal(8, ranking.TeamPosition(teamAddedAtTheEnd));
+            
+           
         }
 
         [Fact]
@@ -127,8 +140,13 @@ namespace FootballTeamsRanking.Test
             Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
             Ranking ranking = new Ranking(teams);
             ranking.UpdateRanking(team1, team5, 7, 2);
-            Assert.Equal(6, ranking.TeamPosition(team1));
+            Assert.Equal(1, ranking.TeamPosition(team7));
+            Assert.Equal(2, ranking.TeamPosition(team4));
+            Assert.Equal(3, ranking.TeamPosition(team2));
             Assert.Equal(4, ranking.TeamPosition(team5));
+            Assert.Equal(5, ranking.TeamPosition(team6));
+            Assert.Equal(6, ranking.TeamPosition(team1));
+            Assert.Equal(7, ranking.TeamPosition(team3));
         }
 
         [Fact]
@@ -145,10 +163,13 @@ namespace FootballTeamsRanking.Test
             Ranking ranking = new Ranking(teams);
             ranking.UpdateRanking(team7, team1, 1, 0);
             ranking.UpdateRanking(team2, team5, 1, 2);
-            Assert.Equal(7, ranking.TeamPosition(team1));
             Assert.Equal(1, ranking.TeamPosition(team7));
-            Assert.Equal(4, ranking.TeamPosition(team2));
+            Assert.Equal(2, ranking.TeamPosition(team4));
             Assert.Equal(3, ranking.TeamPosition(team5));
+            Assert.Equal(4, ranking.TeamPosition(team2));
+            Assert.Equal(5, ranking.TeamPosition(team6));
+            Assert.Equal(6, ranking.TeamPosition(team3));
+            Assert.Equal(7, ranking.TeamPosition(team1));
         }
 
         [Fact]
