@@ -17,14 +17,14 @@ namespace FootballTeamsRanking
             return Array.IndexOf(teams, team) + 1;
         }
 
-        public (string, int) TeamInfo(int teamPosition)
+        public Team TeamInfo(int teamPosition)
         {
             if (teamPosition > teams.Length || teamPosition < 1)
             {
-                return ("", 0);
+                return new Team("", 0);
             }
 
-            return (teams[teamPosition - 1].Name, teams[teamPosition - 1].Points);
+            return teams[teamPosition - 1];
         }
 
         public void AddTeam(Team team)
@@ -96,18 +96,18 @@ namespace FootballTeamsRanking
 
         private void UpdatePoints(Team winnerTeam, Team loserTeam, int points)
         {
-            winnerTeam.Points += points;
-            loserTeam.Points -= points;
+            winnerTeam.UpdateTeamPoints(points);
+            loserTeam.UpdateTeamPoints(-points);
         }
 
         private int BinarySearchTeamPosition(Team[] teams, Team searchedTeam)
         {
-            if (searchedTeam.Points > teams[0].Points)
+            if (searchedTeam.ComparePoints(teams[0]) == 1)
             {
                 return 0;
             }
 
-            if (searchedTeam.Points < teams[teams.Length - 1].Points)
+            if (searchedTeam.ComparePoints(teams[teams.Length - 1]) == -1)
             {
                 return teams.Length;
             }
@@ -117,9 +117,9 @@ namespace FootballTeamsRanking
             while (left <= right)
             {
                 int mid = (left + right) / 2;
-                if (searchedTeam.Points == teams[mid].Points)
+                if (searchedTeam.ComparePoints(teams[mid]) == 0)
                 {
-                    if (string.Compare(searchedTeam.Name, teams[mid].Name) == -1)
+                    if (searchedTeam.CompareNames(teams[mid]) == -1)
                     {
                         right = mid - 1;
                     }
@@ -128,7 +128,7 @@ namespace FootballTeamsRanking
                         left = mid + 1;
                     }
                 }
-                else if (searchedTeam.Points > teams[mid].Points)
+                else if (searchedTeam.ComparePoints(teams[mid]) == 1)
                 {
                     right = mid - 1;
                 }

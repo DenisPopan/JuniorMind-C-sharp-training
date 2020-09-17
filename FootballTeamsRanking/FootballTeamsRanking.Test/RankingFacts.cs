@@ -1,4 +1,5 @@
 ﻿using Xunit;
+
 namespace FootballTeamsRanking.Test
 {
     public class RankingFacts
@@ -45,7 +46,7 @@ namespace FootballTeamsRanking.Test
             Team team6 = new Team("Belgium", 13);
             Team[] teams = { team4, team5, team2, team3, team6, team1 };
             Ranking ranking = new Ranking(teams);
-            Assert.Equal((team6.Name, team6.Points), ranking.TeamInfo(5));
+            Assert.Equal(team6, ranking.TeamInfo(5));
         }
 
         [Fact]
@@ -58,7 +59,9 @@ namespace FootballTeamsRanking.Test
             Team team5 = new Team("Brazil", 28);
             Team[] teams = { team4, team5, team2, team3, team1 };
             Ranking ranking = new Ranking(teams);
-            Assert.Equal(("", 0), ranking.TeamInfo(6));
+            Team emptyTeam = new Team("", 0);
+            Assert.Equal(0, ranking.TeamInfo(6).CompareNames(emptyTeam));
+            Assert.Equal(0, ranking.TeamInfo(6).ComparePoints(emptyTeam));
         }
 
         [Fact]
@@ -69,7 +72,7 @@ namespace FootballTeamsRanking.Test
             Team[] teams = { };
             Ranking ranking = new Ranking(teams);
             ranking.AddTeam(team);
-            Assert.Equal(("Argentina", 28), ranking.TeamInfo(1));
+            Assert.Equal(team, ranking.TeamInfo(1));
         }
 
         [Fact]
