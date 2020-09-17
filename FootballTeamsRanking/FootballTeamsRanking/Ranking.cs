@@ -34,6 +34,14 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
+            for (int i = 0; i < teams.Length; i++)
+            {
+                if (team.CompareNames(teams[i]) == 0)
+                {
+                    return;
+                }
+            }
+
             int teamPosition = teams.Length == 0 ? 0 : BinarySearchTeamPosition(teams, team);
             int newSize = teams.Length + 1;
             Array.Resize(ref teams, newSize);
