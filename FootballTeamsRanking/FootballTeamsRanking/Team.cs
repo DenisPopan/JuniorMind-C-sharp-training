@@ -35,7 +35,9 @@ namespace FootballTeamsRanking
 
         public bool NameIsValid()
         {
-            return !TeamNameIsEmpty();
+            return !TeamNameIsEmpty() &&
+                TeamNameHasOnlyLetters() &&
+                TeamNameLengthIsAtLeastFour();
         }
 
         internal void UpdateTeamPoints(int extraPoints)
@@ -46,6 +48,19 @@ namespace FootballTeamsRanking
         private bool TeamNameIsEmpty()
         {
             return this.name == "";
+        }
+
+        private bool TeamNameHasOnlyLetters()
+        {
+            for (int i = 0; i < this.name.Length; i++)
+            {
+                if (!char.IsLetter(this.name[i]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }
