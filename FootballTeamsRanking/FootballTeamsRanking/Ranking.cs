@@ -18,7 +18,7 @@ namespace FootballTeamsRanking
 
         public Team TeamInfo(int teamPosition)
         {
-            if (teamPosition > teams.Length || teamPosition < 1)
+            if (teamPosition > teams.Length || teamPosition < 1 || teams.Length == 0)
             {
                 return new Team("", 0);
             }
@@ -33,7 +33,7 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
-            if (AreNamesDuplicated(team))
+            if (TeamNameAlreadyExists(team))
             {
                 return;
             }
@@ -47,16 +47,6 @@ namespace FootballTeamsRanking
 
         public void UpdateRanking(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
         {
-            if (firstTeam == null)
-            {
-                throw new ArgumentNullException(nameof(firstTeam));
-            }
-
-            if (secondTeam == null)
-            {
-                throw new ArgumentNullException(nameof(secondTeam));
-            }
-
             MatchResult matchResult = new MatchResult(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
             matchResult.UpdatePoints();
             SortTeams();
@@ -88,7 +78,7 @@ namespace FootballTeamsRanking
             team2 = temp;
         }
 
-        private bool AreNamesDuplicated(Team team)
+        private bool TeamNameAlreadyExists(Team team)
         {
             for (int i = 0; i < teams.Length; i++)
             {

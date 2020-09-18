@@ -65,6 +65,16 @@ namespace FootballTeamsRanking.Test
         }
 
         [Fact]
+        public void TeamInfoMethodShouldReturnNoInfoWhenRankingIsEmpty()
+        {
+            Team[] teams = {};
+            Ranking ranking = new Ranking(teams);
+            Team emptyTeam = new Team("", 0);
+            Assert.Equal(0, ranking.TeamInfo(6).CompareNames(emptyTeam));
+            Assert.Equal(0, ranking.TeamInfo(6).ComparePoints(emptyTeam));
+        }
+
+        [Fact]
 
         public void AddsNewTeamWhenRankingIsEmpty()
         {
