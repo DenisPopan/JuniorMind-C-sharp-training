@@ -47,9 +47,13 @@ namespace FootballTeamsRanking
             teams[teamPosition] = team;
         }
 
-        public void UpdateRanking(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
+        public void UpdateRanking(MatchResult matchResult)
         {
-            MatchResult matchResult = new MatchResult(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
+            if (matchResult == null)
+            {
+                throw new ArgumentNullException(nameof(matchResult));
+            }
+
             matchResult.UpdatePoints();
             SortTeams();
         }

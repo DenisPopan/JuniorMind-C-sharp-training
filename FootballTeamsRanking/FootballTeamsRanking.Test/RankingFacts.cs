@@ -191,7 +191,7 @@ namespace FootballTeamsRanking.Test
         }
 
         [Fact]
-        public void TeamsWithSamePointsAreRankedBasedOnTheirName()
+        public void TeamsWithSamePointsAreRankedByTheirName()
         {
             Team team1 = new Team("Barcelona", 12);
             Team team2 = new Team("Real Madrid", 12);
@@ -221,18 +221,19 @@ namespace FootballTeamsRanking.Test
         {
             Team team1 = new Team("Barcelona", 12);
             Team team2 = new Team("Real Madrid", 24);
-            Team team3 = new Team("Bayern Munchen", 16);
+            Team team3 = new Team("Bayern Munchen", 13);
             Team team4 = new Team("Argentina", 30);
             Team team5 = new Team("Brazil", 28);
             Team team6 = new Team("Romania", 21);
             Team team7 = new Team("Portugal", 31);
             Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
             Ranking ranking = new Ranking(teams);
-            ranking.UpdateRanking(team1, team5, 7, 2);
+            MatchResult matchResult = new MatchResult(team1, team5, 7, 2);
+            ranking.UpdateRanking(matchResult);
             Assert.Equal(1, ranking.TeamPosition(team7));
             Assert.Equal(2, ranking.TeamPosition(team4));
-            Assert.Equal(3, ranking.TeamPosition(team2));
-            Assert.Equal(4, ranking.TeamPosition(team5));
+            Assert.Equal(3, ranking.TeamPosition(team5));
+            Assert.Equal(4, ranking.TeamPosition(team2));
             Assert.Equal(5, ranking.TeamPosition(team6));
             Assert.Equal(6, ranking.TeamPosition(team1));
             Assert.Equal(7, ranking.TeamPosition(team3));
@@ -243,25 +244,31 @@ namespace FootballTeamsRanking.Test
         {
             Team team1 = new Team("Barcelona", 12);
             Team team2 = new Team("Real Madrid", 24);
-            Team team3 = new Team("Bayern Munchen", 16);
+            Team team3 = new Team("Bayern Munchen", 15);
             Team team4 = new Team("Argentina", 30);
             Team team5 = new Team("Brazil", 28);
             Team team6 = new Team("Romania", 21);
             Team team7 = new Team("Portugal", 31);
             Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
             Ranking ranking = new Ranking(teams);
-            ranking.UpdateRanking(team1, team5, 6, 3);
-            ranking.UpdateRanking(team2, team4, 3, 5);
-            ranking.UpdateRanking(team3, team6, 4, 4);
-            ranking.UpdateRanking(team7, team4, 6, 7);
-            ranking.UpdateRanking(team5, team1, 1, 0);
-            ranking.UpdateRanking(team3, team7, 8, 1);
+            MatchResult matchResult1 = new MatchResult(team1, team5, 6, 3);
+            MatchResult matchResult2 = new MatchResult(team2, team4, 3, 5);
+            MatchResult matchResult3 = new MatchResult(team3, team6, 4, 4);
+            MatchResult matchResult4 = new MatchResult(team7, team4, 6, 7);
+            MatchResult matchResult5 = new MatchResult(team5, team1, 1, 0);
+            MatchResult matchResult6 = new MatchResult(team3, team7, 8, 1);
+            ranking.UpdateRanking(matchResult1);
+            ranking.UpdateRanking(matchResult2);
+            ranking.UpdateRanking(matchResult3);
+            ranking.UpdateRanking(matchResult4);
+            ranking.UpdateRanking(matchResult5);
+            ranking.UpdateRanking(matchResult6);
             Assert.Equal(1, ranking.TeamPosition(team4));
             Assert.Equal(2, ranking.TeamPosition(team5));
-            Assert.Equal(3, ranking.TeamPosition(team3));
-            Assert.Equal(4, ranking.TeamPosition(team7));
-            Assert.Equal(5, ranking.TeamPosition(team2));
-            Assert.Equal(6, ranking.TeamPosition(team6));
+            Assert.Equal(3, ranking.TeamPosition(team7));
+            Assert.Equal(4, ranking.TeamPosition(team2));
+            Assert.Equal(5, ranking.TeamPosition(team6));
+            Assert.Equal(6, ranking.TeamPosition(team3));
             Assert.Equal(7, ranking.TeamPosition(team1));
         }
 
@@ -277,8 +284,10 @@ namespace FootballTeamsRanking.Test
             Team team7 = new Team("Portugal", 31);
             Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
             Ranking ranking = new Ranking(teams);
-            ranking.UpdateRanking(team7, team1, 1, 0);
-            ranking.UpdateRanking(team2, team5, 1, 2);
+            MatchResult matchResult1 = new MatchResult(team7, team1, 1, 0);
+            MatchResult matchResult2 = new MatchResult(team2, team5, 1, 1);
+            ranking.UpdateRanking(matchResult1);
+            ranking.UpdateRanking(matchResult2);
             Assert.Equal(1, ranking.TeamPosition(team7));
             Assert.Equal(2, ranking.TeamPosition(team4));
             Assert.Equal(3, ranking.TeamPosition(team5));
@@ -300,14 +309,15 @@ namespace FootballTeamsRanking.Test
             Team team7 = new Team("Portugal", 31);
             Team[] teams = { team7, team4, team5, team2, team6, team3, team1 };
             Ranking ranking = new Ranking(teams);
-            ranking.UpdateRanking(team7, team1, 1, 5);
-            Assert.Equal(1, ranking.TeamPosition(team4));
-            Assert.Equal(2, ranking.TeamPosition(team5));
-            Assert.Equal(3, ranking.TeamPosition(team7));
+            MatchResult matchResult1 = new MatchResult(team7, team5, 1, 5);
+            ranking.UpdateRanking(matchResult1);
+            Assert.Equal(1, ranking.TeamPosition(team5));
+            Assert.Equal(2, ranking.TeamPosition(team7));
+            Assert.Equal(3, ranking.TeamPosition(team4));
             Assert.Equal(4, ranking.TeamPosition(team2));
             Assert.Equal(5, ranking.TeamPosition(team6));
-            Assert.Equal(6, ranking.TeamPosition(team1));
-            Assert.Equal(7, ranking.TeamPosition(team3));
+            Assert.Equal(6, ranking.TeamPosition(team3));
+            Assert.Equal(7, ranking.TeamPosition(team1));
         }
     }
 }

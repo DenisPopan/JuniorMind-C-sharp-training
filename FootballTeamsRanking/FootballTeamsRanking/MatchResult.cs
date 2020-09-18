@@ -1,37 +1,35 @@
 ﻿namespace FootballTeamsRanking
 {
-    class MatchResult
+    public class MatchResult
     {
-        readonly Team winnerTeam;
-        readonly Team loserTeam;
-        readonly int winnerTeamScore;
-        readonly int loserTeamScore;
+        readonly Team team1;
+        readonly Team team2;
+        readonly int team1Score;
+        readonly int team2Score;
 
         public MatchResult(Team team1, Team team2, int team1Score, int team2Score)
         {
-            (winnerTeam, loserTeam, winnerTeamScore, loserTeamScore) = DetermineWinnerAndLoserTeam(team1, team2, team1Score, team2Score);
+            this.team1 = team1;
+            this.team2 = team2;
+            this.team1Score = team1Score;
+            this.team2Score = team2Score;
         }
 
         internal void UpdatePoints()
         {
-            int scoreDifference = winnerTeamScore - loserTeamScore;
-            if (scoreDifference == 0)
+            if (team1Score > team2Score)
             {
-                return;
+                team1.UpdateTeamPoints(3);
             }
-
-            winnerTeam.UpdateTeamPoints(scoreDifference);
-            loserTeam.UpdateTeamPoints(-scoreDifference);
-        }
-
-        private (Team, Team, int, int) DetermineWinnerAndLoserTeam(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
-        {
-            if (firstTeamScore > secondTeamScore)
+            else if (team1Score < team2Score)
             {
-                return (firstTeam, secondTeam, firstTeamScore, secondTeamScore);
+                team2.UpdateTeamPoints(3);
             }
-
-            return (secondTeam, firstTeam, secondTeamScore, firstTeamScore);
+            else
+            {
+                team1.UpdateTeamPoints(1);
+                team2.UpdateTeamPoints(1);
+            }
         }
     }
 }
