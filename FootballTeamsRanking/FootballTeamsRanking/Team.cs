@@ -13,24 +13,14 @@ namespace FootballTeamsRanking
             this.points = points;
         }
 
-        public sbyte ComparePoints(Team team)
+        public int ComparePoints(Team team)
         {
             if (team == null)
             {
                 throw new ArgumentNullException(nameof(team));
             }
 
-            if (this.points == team.points)
-            {
-                return 0;
-            }
-
-            if (this.points > team.points)
-            {
-                return 1;
-            }
-
-            return -1;
+            return this.points.CompareTo(team.points);
         }
 
         public int CompareNames(Team team)

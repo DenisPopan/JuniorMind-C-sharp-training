@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace FootballTeamsRanking
 {
@@ -34,25 +33,20 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
-            if (AreNamesDuplicated(teams, team))
+            if (AreNamesDuplicated(team))
             {
                 return;
             }
 
-            int teamPosition = teams.Length == 0 ? 0 : BinarySearchTeamPosition(teams, team);
+            int teamPosition = teams.Length == 0 ? 0 : BinarySearchTeamPosition(team);
             int newSize = teams.Length + 1;
             Array.Resize(ref teams, newSize);
-            RearrangeTeams(teams, teams.Length - 1, teamPosition);
+            ShiftTeamsToTheRight(teams.Length - 1, teamPosition);
             teams[teamPosition] = team;
         }
 
         public void UpdateRanking(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
         {
-            if (firstTeamScore == secondTeamScore)
-            {
-                return;
-            }
-
             if (firstTeam == null)
             {
                 throw new ArgumentNullException(nameof(firstTeam));
@@ -63,20 +57,38 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(secondTeam));
             }
 
-            int scoreDifference = Math.Abs(firstTeamScore - secondTeamScore);
-            Team winnerTeam;
-            Team loserTeam;
-            (winnerTeam, loserTeam) = DetermineWinnerAndLoserTeam(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
-            UpdatePoints(winnerTeam, loserTeam, scoreDifference);
-            int currentWinnerTeamPosition = TeamPosition(winnerTeam) - 1;
-            int currentLoserTeamPosition = TeamPosition(loserTeam) - 1;
-            DeleteTeam(ref teams, currentWinnerTeamPosition);
-            AddTeam(winnerTeam);
-            DeleteTeam(ref teams, currentLoserTeamPosition);
-            AddTeam(loserTeam);
+            MatchResult matchResult = new MatchResult(firstTeam, secondTeam, firstTeamScore, secondTeamScore);
+            matchResult.UpdatePoints();
+            SortTeams();
         }
 
-        private bool AreNamesDuplicated(Team[] teams, Team team)
+        private void SortTeams()
+        {
+            bool teamsAreSorted;
+            do
+            {
+                teamsAreSorted = true;
+                for (int i = 0; i < teams.Length - 1; i++)
+                {
+                    if (teams[i].ComparePoints(teams[i + 1]) == -1 ||
+                        (teams[i].ComparePoints(teams[i + 1]) == 0 && teams[i].CompareNames(teams[i + 1]) == 1))
+                    {
+                        Swap(ref teams[i], ref teams[i + 1]);
+                        teamsAreSorted = false;
+                    }
+                }
+            }
+            while (!teamsAreSorted);
+        }
+
+        private void Swap(ref Team team1, ref Team team2)
+        {
+            var temp = team1;
+            team1 = team2;
+            team2 = temp;
+        }
+
+        private bool AreNamesDuplicated(Team team)
         {
             for (int i = 0; i < teams.Length; i++)
             {
@@ -89,12 +101,7 @@ namespace FootballTeamsRanking
             return false;
         }
 
-        private void DeleteTeam(ref Team[] teams, int teamToDeletePosition)
-        {
-            teams = teams.Where((e, i) => i != teamToDeletePosition).ToArray();
-        }
-
-        private void RearrangeTeams(Team[] teams, int startPosition, int stopPosition)
+        private void ShiftTeamsToTheRight(int startPosition, int stopPosition)
         {
             for (int i = startPosition; i > stopPosition; i--)
             {
@@ -102,23 +109,7 @@ namespace FootballTeamsRanking
             }
         }
 
-        private (Team, Team) DetermineWinnerAndLoserTeam(Team firstTeam, Team secondTeam, int firstTeamScore, int secondTeamScore)
-        {
-            if (firstTeamScore > secondTeamScore)
-            {
-                return (firstTeam, secondTeam);
-            }
-
-            return (secondTeam, firstTeam);
-        }
-
-        private void UpdatePoints(Team winnerTeam, Team loserTeam, int points)
-        {
-            winnerTeam.UpdateTeamPoints(points);
-            loserTeam.UpdateTeamPoints(-points);
-        }
-
-        private int BinarySearchTeamPosition(Team[] teams, Team searchedTeam)
+        private int BinarySearchTeamPosition(Team searchedTeam)
         {
             if (searchedTeam.ComparePoints(teams[0]) == 1)
             {
