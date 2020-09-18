@@ -33,6 +33,11 @@ namespace FootballTeamsRanking
             return string.Compare(this.name, team.name);
         }
 
+        public bool PointsAreValid()
+        {
+            return this.points >= 0;
+        }
+
         public bool NameIsValid()
         {
             return !TeamNameIsEmpty() &&

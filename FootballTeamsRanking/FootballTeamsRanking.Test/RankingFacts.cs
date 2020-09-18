@@ -176,6 +176,21 @@ namespace FootballTeamsRanking.Test
         }
 
         [Fact]
+        public void TeamsWithNegativeScoreShouldNotBeAdded()
+        {
+            Team team1 = new Team("Barcelona", 12);
+            Team team2 = new Team("Real Madrid", 22);
+            Team team3 = new Team("Bayern Munchen", 16);
+            Team team4 = new Team("Argentina", 30);
+            Team team5 = new Team("Brazil", 28);
+            Team team6 = new Team("Brazil", -12);
+            Team[] teams = { team4, team5, team2, team3, team1 };
+            Ranking ranking = new Ranking(teams);
+            ranking.AddTeam(team6);
+            Assert.Equal(0, ranking.TeamPosition(team6));
+        }
+
+        [Fact]
         public void TeamsWithSamePointsAreRankedBasedOnTheirName()
         {
             Team team1 = new Team("Barcelona", 12);

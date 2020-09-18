@@ -34,6 +34,7 @@ namespace FootballTeamsRanking
             }
 
             if (!team.NameIsValid() ||
+                !team.PointsAreValid() ||
                 TeamNameAlreadyExists(team))
             {
                 return;
