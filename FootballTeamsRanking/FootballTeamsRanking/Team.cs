@@ -62,5 +62,10 @@ namespace FootballTeamsRanking
 
             return true;
         }
+
+        private bool TeamNameLengthIsAtLeastFour()
+        {
+            return this.name.Length >= 4;
+        }
     }
 }
