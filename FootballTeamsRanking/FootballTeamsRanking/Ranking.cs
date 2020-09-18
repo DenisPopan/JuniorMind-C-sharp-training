@@ -33,7 +33,8 @@ namespace FootballTeamsRanking
                 throw new ArgumentNullException(nameof(team));
             }
 
-            if (TeamNameAlreadyExists(team))
+            if (TeamNameAlreadyExists(team) ||
+                TeamNameIsEmpty(team))
             {
                 return;
             }
@@ -76,6 +77,12 @@ namespace FootballTeamsRanking
             var temp = team1;
             team1 = team2;
             team2 = temp;
+        }
+
+        private bool TeamNameIsEmpty(Team team)
+        {
+            Team emptyNameTeam = new Team("", 0);
+            return team.CompareNames(emptyNameTeam) == 0;
         }
 
         private bool TeamNameAlreadyExists(Team team)
