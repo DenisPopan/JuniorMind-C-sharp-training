@@ -15,6 +15,11 @@ namespace Json
 
         public bool Match(string text)
         {
+            if (string.IsNullOrEmpty(text))
+            {
+                return false;
+            }
+
             return text[0] >= start && text[0] <= end;
         }
     }

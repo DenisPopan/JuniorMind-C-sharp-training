@@ -17,5 +17,15 @@ namespace Json.Facts
             Assert.True(range.Match(text3));
             Assert.False(range.Match(text4));
         }
+
+        [Fact]
+        public void MatchMethodShouldReturnFalseIfAStringIsNullOrEmpty()
+        {
+            var range = new Range('a', 'f');
+            string text1 = null;
+            string text2 = "";
+            Assert.False(range.Match(text1));
+            Assert.False(range.Match(text2));
+        }
     }
 }
