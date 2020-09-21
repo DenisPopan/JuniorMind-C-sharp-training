@@ -11,16 +11,15 @@
 
         public bool Match(string text)
         {
-            int numberOfTrueCases = 0;
             foreach (var pattern in patterns)
             {
                 if (pattern.Match(text))
                 {
-                    numberOfTrueCases++;
+                    return true;
                 }
             }
 
-            return numberOfTrueCases > 0;
+            return false;
         }
     }
 }

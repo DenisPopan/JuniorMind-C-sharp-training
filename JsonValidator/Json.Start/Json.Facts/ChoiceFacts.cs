@@ -29,25 +29,25 @@ namespace Json.Facts
             new Range('1', '9')
             );
 
-        var hex = new Choice(
-        digit,
-        new Choice(
-            new Range('a', 'f'),
-            new Range('A', 'F')
-            )
-        );
+            var hex = new Choice(
+            digit,
+            new Choice(
+                new Range('a', 'f'),
+                new Range('A', 'F')
+                )
+            );
 
-        hex.Match("012"); // true
-            hex.Match("12"); // true
-            hex.Match("92"); // true
-            hex.Match("a9"); // true
-            hex.Match("f8"); // true
-            hex.Match("A9"); // true
-            hex.Match("F8"); // true
-            hex.Match("g8"); // false
-            hex.Match("G8"); // false
-            hex.Match(""); // false
-            hex.Match(null); // false
+            Assert.True(hex.Match("012")); // true
+            Assert.True(hex.Match("12")); // true
+            Assert.True(hex.Match("92")); // true
+            Assert.True(hex.Match("a9")); // true
+            Assert.True(hex.Match("f8")); // true
+            Assert.True(hex.Match("A9")); // true
+            Assert.True(hex.Match("F8")); // true
+            Assert.False(hex.Match("g8")); // false
+            Assert.False(hex.Match("G8")); // false
+            Assert.False(hex.Match("")); // false
+            Assert.False(hex.Match(null)); // false
         }
 
     }
