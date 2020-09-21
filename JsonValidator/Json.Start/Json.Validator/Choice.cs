@@ -9,7 +9,7 @@
             this.patterns = patterns;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
             foreach (var pattern in patterns)
             {
