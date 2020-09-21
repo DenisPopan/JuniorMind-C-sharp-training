@@ -1,6 +1,6 @@
 ﻿namespace Json
 {
-    public class Character
+    public class Character : IPattern
     {
         readonly char pattern;
 
