@@ -12,12 +12,12 @@ namespace Json.Facts
             new Range('1', '9')
             );
 
-            Assert.True(digit.Match("012")); // true
-            Assert.True(digit.Match("12")); // true
-            Assert.True(digit.Match("92")); // true
-            Assert.False(digit.Match("a9")); // false
-            Assert.False(digit.Match("")); // false
-            Assert.False(digit.Match(null)); // false
+            Assert.Equal(("12", true), (digit.Match("012").RemainingText(), digit.Match("012").Success()));
+            Assert.Equal(("2", true), (digit.Match("12").RemainingText(), digit.Match("12").Success())); 
+            Assert.Equal(("2", true), (digit.Match("92").RemainingText(), digit.Match("92").Success()));
+            Assert.Equal(("", false), (digit.Match("a9").RemainingText(), digit.Match("a9").Success()));
+            Assert.Equal(("", false), (digit.Match("").RemainingText(), digit.Match("").Success()));
+            Assert.Equal((null, false), (digit.Match(null).RemainingText(), digit.Match(null).Success())); 
 
         }
 
@@ -37,17 +37,17 @@ namespace Json.Facts
                 )
             );
 
-            Assert.True(hex.Match("012")); // true
-            Assert.True(hex.Match("12")); // true
-            Assert.True(hex.Match("92")); // true
-            Assert.True(hex.Match("a9")); // true
-            Assert.True(hex.Match("f8")); // true
-            Assert.True(hex.Match("A9")); // true
-            Assert.True(hex.Match("F8")); // true
-            Assert.False(hex.Match("g8")); // false
-            Assert.False(hex.Match("G8")); // false
-            Assert.False(hex.Match("")); // false
-            Assert.False(hex.Match(null)); // false
+            Assert.Equal(("12", true), (hex.Match("012").RemainingText(), hex.Match("012").Success()));
+            Assert.Equal(("2", true), (hex.Match("12").RemainingText(), hex.Match("12").Success()));
+            Assert.Equal(("2", true), (hex.Match("92").RemainingText(), hex.Match("92").Success()));
+            Assert.Equal(("9", true), (hex.Match("a9").RemainingText(), hex.Match("a9").Success()));
+            Assert.Equal(("8", true), (hex.Match("f8").RemainingText(), hex.Match("f8").Success()));
+            Assert.Equal(("9", true), (hex.Match("A9").RemainingText(), hex.Match("A9").Success()));
+            Assert.Equal(("8", true), (hex.Match("F8").RemainingText(), hex.Match("F8").Success()));
+            Assert.Equal(("", false), (hex.Match("g8").RemainingText(), hex.Match("g8").Success()));
+            Assert.Equal(("", false), (hex.Match("G8").RemainingText(), hex.Match("G8").Success()));
+            Assert.Equal(("", false), (hex.Match("").RemainingText(), hex.Match("").Success()));
+            Assert.Equal((null, false), (hex.Match(null).RemainingText(), hex.Match(null).Success()));
         }
 
     }

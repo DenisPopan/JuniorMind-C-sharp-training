@@ -1,4 +1,6 @@
-﻿namespace Json
+﻿using System;
+
+namespace Json
 {
     public class Character : IPattern
     {
@@ -13,10 +15,10 @@
         {
             if (string.IsNullOrEmpty(text))
             {
-                return false;
+                return new Match(text, false);
             }
 
-            return text[0] == pattern;
+            return new Match(text, text[0] == pattern);
         }
     }
 }

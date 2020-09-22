@@ -1,4 +1,6 @@
-﻿namespace Json
+﻿using System;
+
+namespace Json
 {
     public class Range : IPattern
     {
@@ -11,14 +13,14 @@
             this.end = end;
         }
 
-        public bool Match(string text)
+        public IMatch Match(string text)
         {
             if (string.IsNullOrEmpty(text))
             {
-                return false;
+                return new Match(text, false);
             }
 
-            return text[0] >= start && text[0] <= end;
+            return new Match(text, text[0] >= start && text[0] <= end);
         }
     }
 }
