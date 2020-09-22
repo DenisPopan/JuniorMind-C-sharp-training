@@ -7,7 +7,19 @@
 
         public Match(string text, bool condition)
         {
-            this.text = text;
+            if (text == null)
+            {
+                this.text = null;
+            }
+            else if (condition)
+            {
+                this.text = text.Length > 1 ? text.Substring(1) : "";
+            }
+            else
+            {
+                this.text = text;
+            }
+
             this.condition = condition;
         }
 
@@ -18,17 +30,7 @@
 
         public string RemainingText()
         {
-            if (text == null)
-            {
-                return null;
-            }
-
-            if (Success() && text.Length > 1)
-            {
-                return text.Substring(1);
-            }
-
-            return "";
+            return text;
         }
     }
 }

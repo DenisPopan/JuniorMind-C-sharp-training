@@ -8,24 +8,24 @@ namespace Json.Facts
         public void MatchMethodShouldReturnIfTheFirstCharacterFromAStringIsInRange()
         {
             var range = new Range('a', 'f');
-            string text1 = "abc";
-            string text2 = "fab";
-            string text3 = "bcd";
-            string text4 = "1ab";
-            Assert.Equal((true, "bc"), (range.Match(text1).Success(), range.Match(text1).RemainingText()));
-            Assert.Equal((true, "ab"), (range.Match(text2).Success(), range.Match(text2).RemainingText()));
-            Assert.Equal((true, "cd"), (range.Match(text3).Success(), range.Match(text3).RemainingText()));
-            Assert.Equal((false, ""), (range.Match(text4).Success(), range.Match(text4).RemainingText()));
+            IMatch match1 = range.Match("abc");
+            IMatch match2 = range.Match("fab");
+            IMatch match3 = range.Match("bcd");
+            IMatch match4 = range.Match("1ab");
+            Assert.Equal((true, "bc"), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((true, "ab"), (match2.Success(), match2.RemainingText()));
+            Assert.Equal((true, "cd"), (match3.Success(), match3.RemainingText()));
+            Assert.Equal((false, "1ab"), (match4.Success(), match4.RemainingText()));
         }
 
         [Fact]
         public void MatchMethodShouldReturnFalseIfAStringIsNullOrEmpty()
         {
             var range = new Range('a', 'f');
-            string text1 = null;
-            string text2 = "";
-            Assert.Equal((false, null), (range.Match(text1).Success(), range.Match(text1).RemainingText()));
-            Assert.Equal((false, ""), (range.Match(text2).Success(), range.Match(text2).RemainingText()));
+            IMatch match1 = range.Match(null);
+            IMatch match2 = range.Match("");
+            Assert.Equal((false, null), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, ""), (match2.Success(), match2.RemainingText()));
         }
     }
 }

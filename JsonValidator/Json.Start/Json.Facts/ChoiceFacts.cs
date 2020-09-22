@@ -11,13 +11,18 @@ namespace Json.Facts
             new Character('0'),
             new Range('1', '9')
             );
-
-            Assert.Equal(("12", true), (digit.Match("012").RemainingText(), digit.Match("012").Success()));
-            Assert.Equal(("2", true), (digit.Match("12").RemainingText(), digit.Match("12").Success())); 
-            Assert.Equal(("2", true), (digit.Match("92").RemainingText(), digit.Match("92").Success()));
-            Assert.Equal(("", false), (digit.Match("a9").RemainingText(), digit.Match("a9").Success()));
-            Assert.Equal(("", false), (digit.Match("").RemainingText(), digit.Match("").Success()));
-            Assert.Equal((null, false), (digit.Match(null).RemainingText(), digit.Match(null).Success())); 
+            IMatch match1 = digit.Match("012");
+            IMatch match2 = digit.Match("12");
+            IMatch match3 = digit.Match("92");
+            IMatch match4 = digit.Match("a9");
+            IMatch match5 = digit.Match("");
+            IMatch match6 = digit.Match(null);
+            Assert.Equal(("12", true), (match1.RemainingText(), match1.Success()));
+            Assert.Equal(("2", true), (match2.RemainingText(), match2.Success())); 
+            Assert.Equal(("2", true), (match3.RemainingText(), match3.Success()));
+            Assert.Equal(("a9", false), (match4.RemainingText(), match4.Success()));
+            Assert.Equal(("", false), (match5.RemainingText(), match5.Success()));
+            Assert.Equal((null, false), (match6.RemainingText(), match6.Success())); 
 
         }
 
@@ -37,17 +42,28 @@ namespace Json.Facts
                 )
             );
 
-            Assert.Equal(("12", true), (hex.Match("012").RemainingText(), hex.Match("012").Success()));
-            Assert.Equal(("2", true), (hex.Match("12").RemainingText(), hex.Match("12").Success()));
-            Assert.Equal(("2", true), (hex.Match("92").RemainingText(), hex.Match("92").Success()));
-            Assert.Equal(("9", true), (hex.Match("a9").RemainingText(), hex.Match("a9").Success()));
-            Assert.Equal(("8", true), (hex.Match("f8").RemainingText(), hex.Match("f8").Success()));
-            Assert.Equal(("9", true), (hex.Match("A9").RemainingText(), hex.Match("A9").Success()));
-            Assert.Equal(("8", true), (hex.Match("F8").RemainingText(), hex.Match("F8").Success()));
-            Assert.Equal(("", false), (hex.Match("g8").RemainingText(), hex.Match("g8").Success()));
-            Assert.Equal(("", false), (hex.Match("G8").RemainingText(), hex.Match("G8").Success()));
-            Assert.Equal(("", false), (hex.Match("").RemainingText(), hex.Match("").Success()));
-            Assert.Equal((null, false), (hex.Match(null).RemainingText(), hex.Match(null).Success()));
+            IMatch match1 = hex.Match("012");
+            IMatch match2 = hex.Match("12");
+            IMatch match3 = hex.Match("92");
+            IMatch match4 = hex.Match("a9");
+            IMatch match5 = hex.Match("f8");
+            IMatch match6 = hex.Match("A9");
+            IMatch match7 = hex.Match("F8");
+            IMatch match8 = hex.Match("g8");
+            IMatch match9 = hex.Match("G8");
+            IMatch match10 = hex.Match("");
+            IMatch match11 = hex.Match(null);
+            Assert.Equal(("12", true), (match1.RemainingText(), match1.Success()));
+            Assert.Equal(("2", true), (match2.RemainingText(), match2.Success()));
+            Assert.Equal(("2", true), (match3.RemainingText(), match3.Success()));
+            Assert.Equal(("9", true), (match4.RemainingText(), match4.Success()));
+            Assert.Equal(("8", true), (match5.RemainingText(), match5.Success()));
+            Assert.Equal(("9", true), (match6.RemainingText(), match6.Success()));
+            Assert.Equal(("8", true), (match7.RemainingText(), match7.Success()));
+            Assert.Equal(("g8", false), (match8.RemainingText(), match8.Success()));
+            Assert.Equal(("G8", false), (match9.RemainingText(), match9.Success()));
+            Assert.Equal(("", false), (match10.RemainingText(), match10.Success()));
+            Assert.Equal((null, false), (match11.RemainingText(), match11.Success()));
         }
 
     }

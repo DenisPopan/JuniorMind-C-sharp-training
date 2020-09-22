@@ -1,24 +1,27 @@
 ﻿namespace Json
 {
-    public class Choice : IPattern
+    public class Sequence : IPattern
     {
         readonly IPattern[] patterns;
 
-        public Choice(params IPattern[] patterns)
+        public Sequence(params IPattern[] patterns)
         {
             this.patterns = patterns;
         }
 
         public IMatch Match(string text)
         {
+            string textCopy = text;
             IMatch match = new Match("", false);
             foreach (var pattern in patterns)
             {
                 match = pattern.Match(text);
-                if (match.Success())
+                if (!match.Success())
                 {
-                    return match;
+                    return new Match(textCopy, false);
                 }
+
+                text = match.RemainingText();
             }
 
             return match;
