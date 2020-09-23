@@ -20,7 +20,13 @@ namespace Json
                 return new Match(text, false);
             }
 
-            return new Match(text, text[0] >= start && text[0] <= end);
+            if (text[0] >= start && text[0] <= end)
+            {
+                text = text.Remove(0, 1);
+                return new Match(text, true);
+            }
+
+            return new Match(text, false);
         }
     }
 }

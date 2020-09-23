@@ -71,11 +71,6 @@ namespace Json.Facts
             Assert.Equal((true, " ab"), (match3.Success(), match3.RemainingText()));
             Assert.Equal((false, "abc"), (match4.Success(), match4.RemainingText()));
             Assert.Equal((false, null), (match5.Success(), match5.RemainingText()));
-            // true / ""
-            // true / "ef"
-            // true / " ab"
-            // false / "abc"
-            // false / null
         }
     }
 }

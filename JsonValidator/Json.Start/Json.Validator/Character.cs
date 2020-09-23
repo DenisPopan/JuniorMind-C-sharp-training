@@ -16,7 +16,13 @@
                 return new Match(text, false);
             }
 
-            return new Match(text, text[0] == pattern);
+            if (text[0] == pattern)
+            {
+                text = text.Remove(0, 1);
+                return new Match(text, true);
+            }
+
+            return new Match(text, false);
         }
     }
 }

@@ -11,7 +11,7 @@
 
         public IMatch Match(string text)
         {
-            IMatch match = new Match("", false);
+            IMatch match = new Match("empty", false);
             foreach (var pattern in patterns)
             {
                 match = pattern.Match(text);
