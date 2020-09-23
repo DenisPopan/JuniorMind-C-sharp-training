@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Json
+﻿namespace Json
 {
     public class Range : IPattern
     {
