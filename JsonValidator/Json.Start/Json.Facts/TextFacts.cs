@@ -34,5 +34,16 @@ namespace Json.Facts
             Assert.Equal((false, ""), (match9.Success(), match9.RemainingText()));
             Assert.Equal((false, null), (match10.Success(), match10.RemainingText()));
         }
+
+        [Fact]
+        public void EmptyPrefixAndNonEmptyOrNullStringShouldReturnTrue()
+        {
+            var empty = new Text1("");
+            IMatch match1 = empty.Match("true");
+            IMatch match2 = empty.Match(null);
+
+            Assert.Equal((true, "true"), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, null), (match2.Success(), match2.RemainingText()));
+        }
     }
 }
