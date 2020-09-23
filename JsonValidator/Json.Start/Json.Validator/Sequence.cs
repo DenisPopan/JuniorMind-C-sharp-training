@@ -11,17 +11,14 @@
 
         public IMatch Match(string text)
         {
-            string textCopy = text;
             IMatch match = new Match(text, true);
             foreach (var pattern in patterns)
             {
-                match = pattern.Match(text);
+                match = pattern.Match(match.RemainingText());
                 if (!match.Success())
                 {
-                    return new Match(textCopy, false);
+                    return new Match(text, false);
                 }
-
-                text = match.RemainingText();
             }
 
             return match;
