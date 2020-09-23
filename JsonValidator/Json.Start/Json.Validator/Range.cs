@@ -22,7 +22,7 @@ namespace Json
 
             if (text[0] >= start && text[0] <= end)
             {
-                text = text.Remove(0, 1);
+                text = text.Substring(1);
                 return new Match(text, true);
             }
 

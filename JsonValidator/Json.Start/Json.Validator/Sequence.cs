@@ -12,12 +12,7 @@
         public IMatch Match(string text)
         {
             string textCopy = text;
-            if (patterns.Length == 0)
-            {
-                return new Match("empty", true);
-            }
-
-            IMatch match = new Match("empty", false);
+            IMatch match = new Match(text, true);
             foreach (var pattern in patterns)
             {
                 match = pattern.Match(text);
