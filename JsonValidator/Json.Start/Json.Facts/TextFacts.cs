@@ -7,8 +7,8 @@ namespace Json.Facts
         [Fact]
         public void TextClassShouldReturnIfAStringStartsWithAPrefix()
         {
-            var True = new Text1("true");
-            var False = new Text1("false");
+            var True = new Text("true");
+            var False = new Text("false");
 
             IMatch match1 = True.Match("true");
             IMatch match2 = True.Match("trueX");
@@ -38,7 +38,7 @@ namespace Json.Facts
         [Fact]
         public void EmptyPrefixAndNonEmptyOrNullStringShouldReturnTrue()
         {
-            var empty = new Text1("");
+            var empty = new Text("");
             IMatch match1 = empty.Match("true");
             IMatch match2 = empty.Match(null);
 
