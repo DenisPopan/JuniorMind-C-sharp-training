@@ -1,6 +1,6 @@
 ﻿namespace Json
 {
-    public class Optional
+    public class Optional : IPattern
     {
         readonly IPattern pattern;
 
