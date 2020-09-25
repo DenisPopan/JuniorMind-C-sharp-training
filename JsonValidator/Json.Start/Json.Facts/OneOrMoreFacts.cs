@@ -5,7 +5,7 @@ namespace Json.Facts
     public class OneOrMoreFacts
     {
         [Fact]
-        public void asfsaf()
+        public void OneOrMoreClassShouldReturnIfPatternIsAppliedAtLeastOnce()
         {
             var a = new OneOrMore(new Range('0', '9'));
             IMatch match1 = a.Match("123");
