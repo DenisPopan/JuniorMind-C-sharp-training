@@ -1,12 +1,12 @@
 ﻿namespace Json
 {
-    public class OneOrMore : IPattern
+    public class List
     {
         private readonly IPattern pattern;
 
-        public OneOrMore(IPattern pattern)
+        public List(IPattern element, IPattern separator)
         {
-            this.pattern = new Sequence(pattern, new Many(pattern));
+            this.pattern = new Many(new Choice(element, new Sequence(separator, element)));
         }
 
         public IMatch Match(string text)
