@@ -6,7 +6,7 @@
 
         public Number()
         {
-            var digit = new Choice(new Range('0', '9'));
+            var digit = new Range('0', '9');
             var onenine = new Range('1', '9');
             var digits = new OneOrMore(digit);
             var negative = new Optional(new Character('-'));
