@@ -8,135 +8,160 @@ namespace Json.Facts
         [Fact]
         public void IsWrappedInDoubleQuotes()
         {
-            Assert.True(IsJsonString(Quoted("abc")));
+            var string1 = new String().Match("abc");
+            Assert.Equal((false, "abc"), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void AlwaysStartsWithQuotes()
         {
-            Assert.False(IsJsonString("abc\""));
+            var string1 = new String().Match("abc\"");
+            Assert.Equal((false, "abc\""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void AlwaysEndsWithQuotes()
         {
-            Assert.False(IsJsonString("\"abc"));
+            var string1 = new String().Match("\"abc");
+            Assert.Equal((false, "\"abc"), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void IsNotNull()
         {
-            Assert.False(IsJsonString(null));
+            var string1 = new String().Match(null);
+            Assert.Equal((false, null), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void IsNotAnEmptyString()
         {
-            Assert.False(IsJsonString(string.Empty));
+            var string1 = new String().Match("");
+            Assert.Equal((false, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void IsAnEmptyDoubleQuotedString()
         {
-            Assert.True(IsJsonString(Quoted(string.Empty)));
+            var string1 = new String().Match(Quoted(""));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void HasStartAndEndQuotes()
         {
-            Assert.False(IsJsonString("\""));
+            var string1 = new String().Match("\"");
+            Assert.Equal((false, "\""), (string1.Success(), string1.RemainingText()));
         }
 
 
         [Fact]
         public void DoesNotContainControlCharacters()
         {
-            Assert.False(IsJsonString(Quoted("a\nb\rc")));
+            var string1 = new String().Match(Quoted("a\nb\rc"));
+            Assert.Equal((false, "\"a\nb\rc\""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainLargeUnicodeCharacters()
         {
-            Assert.True(IsJsonString(Quoted("⛅⚾")));
+            var string1 = new String().Match(Quoted("⛅⚾"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
+
         }
 
         [Fact]
         public void CanContainEscapedQuotationMark()
         {
-            Assert.True(IsJsonString(Quoted(@"\""a\"" b")));
+            var string1 = new String().Match(Quoted(@"\""a\"" b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedReverseSolidus()
         {
-            Assert.True(IsJsonString(Quoted(@"a \\ b")));
+            var string1 = new String().Match(Quoted(@"a \\ b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedSolidus()
         {
-            Assert.True(IsJsonString(Quoted(@"a \/ b")));
+            var string1 = new String().Match(Quoted(@"a \/ b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedBackspace()
         {
-            Assert.True(IsJsonString(Quoted(@"a \b b")));
+            var string1 = new String().Match(Quoted(@"a \b b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedFormFeed()
         {
-            Assert.True(IsJsonString(Quoted(@"a \f b")));
+            var string1 = new String().Match(Quoted(@"a \f b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedLineFeed()
         {
-            Assert.True(IsJsonString(Quoted(@"a \n b")));
+            var string1 = new String().Match(Quoted(@"a \n b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
+
         }
 
         [Fact]
         public void CanContainEscapedCarrigeReturn()
         {
-            Assert.True(IsJsonString(Quoted(@"a \r b")));
+            var string1 = new String().Match(Quoted(@"a \r b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedHorizontalTab()
         {
-            Assert.True(IsJsonString(Quoted(@"a \t b")));
+            var string1 = new String().Match(Quoted(@"a \t b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void CanContainEscapedUnicodeCharacters()
         {
-            Assert.True(IsJsonString(Quoted(@"a \u26Be b")));
+            var string1 = new String().Match(Quoted(@"a \u26Be b"));
+            Assert.Equal((true, ""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void DoesNotContainUnrecognizedExcapceCharacters()
         {
-            Assert.False(IsJsonString(Quoted(@"a\x")));
+            var string1 = new String().Match(Quoted(@"a\x"));
+            Assert.Equal((false, "\"a\\x\""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void DoesNotEndWithReverseSolidus()
         {
-            Assert.False(IsJsonString(Quoted(@"a\")));
+            var string1 = new String().Match(Quoted(@"a\"));
+            Assert.Equal((false, "\"a\\\""), (string1.Success(), string1.RemainingText()));
         }
 
         [Fact]
         public void DoesNotEndWithAnUnfinishedHexNumber()
         {
-            Assert.False(IsJsonString(Quoted(@"a\u")));
-            Assert.False(IsJsonString(Quoted(@"a\u123")));
+            var string1 = new String().Match(Quoted(@"a\u"));
+            Assert.Equal((false, "\"a\\u\""), (string1.Success(), string1.RemainingText()));
+            var string2 = new String().Match(Quoted(@"a\u123"));
+            Assert.Equal((false, "\"a\\u123\""), (string2.Success(), string2.RemainingText()));
         }
 
         [Fact]
         public void IncorrectHexNumberShouldReturnFalse()
         {
-            Assert.False(IsJsonString(Quoted(@"fos\uA46Q")));
+            var string1 = new String().Match(Quoted(@"fos\uA46Q"));
+            Assert.Equal((false, "\"fos\\uA46Q\""), (string1.Success(), string1.RemainingText()));
         }
         public static string Quoted(string text)
             => $"\"{text}\"";
