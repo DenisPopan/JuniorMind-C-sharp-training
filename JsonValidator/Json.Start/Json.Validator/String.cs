@@ -13,10 +13,10 @@
             var hex = new Choice(digit, new Range('a', 'f'), new Range('A', 'F'));
             var unicode = new Sequence(new Character('u'), hex, hex, hex, hex);
             var escapeKey = new Character('\\');
-            var escape = new Sequence(escapeKey, new Choice(new Any("\"\\/bfnrt"), unicode));
-
-            var character = new Choice(new Character(' '), new Range('a', 'z'), new Range('A', 'Z'), escape);
-            var characters = new Optional(new OneOrMore(character));
+            var escape = new Choice(new Any("\"\\/bfnrt"), unicode);
+            var unescapedChar = new Choice(new Range(' ', '!'), new Range('#', '['), new Range('^', (char)65535));
+            var character = new Choice(unescapedChar, new Sequence(escapeKey, escape));
+            var characters = new Many(character);
 
             pattern = new Sequence(startsWithDoubleQuotes, characters, endsWithDoubleQuotes);
         }
