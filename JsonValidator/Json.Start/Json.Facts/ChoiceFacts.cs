@@ -66,5 +66,69 @@ namespace Json.Facts
             Assert.Equal((null, false), (match11.RemainingText(), match11.Success()));
         }
 
+        [Fact]
+        public void ChoiceClassShouldBeAbleToAddNewPatternToItsPatterns()
+        {
+            var @string = new String();
+            var number = new Number();
+            var value = new Choice(
+                @string,
+                number,
+                new Text("true"),
+                new Text("false"),
+                new Text("null")
+            );
+
+            var leftSquareBracket = new Character('[');
+            var rightSquareBracket = new Character(']');
+
+            var horizontalTab = new Character((char)9);
+            var newLine = new Character((char)10);
+            var carriageReturn = new Character((char)13);
+            var space = new Character(' ');
+
+            var whiteSpace = new Optional(new Choice(horizontalTab, newLine, carriageReturn, space));
+            var element = new Sequence(whiteSpace, value, whiteSpace);
+            var elements = new List(element, new Character(','));
+
+            var array = new Choice(
+                new Sequence(leftSquareBracket, whiteSpace, rightSquareBracket),
+                new Sequence(leftSquareBracket, elements, rightSquareBracket));
+
+            var leftCurlyBracket = new Character('{');
+            var rightCurlyBracket = new Character('}');
+
+            var member = new Sequence(whiteSpace, @string, whiteSpace, new Character(':'), element);
+            var members = new List(member, new Character(','));
+
+            var @object = new Choice(
+                new Sequence(leftCurlyBracket, whiteSpace, rightCurlyBracket),
+                new Sequence(leftCurlyBracket, members, rightCurlyBracket));
+
+
+            value.Add(array);
+            value.Add(@object);
+
+            IMatch match1 = value.Match("\"hey\"");
+            IMatch match2 = value.Match("2891e25");
+            IMatch match3 = value.Match("true");
+            IMatch match4 = value.Match("false");
+            IMatch match5 = value.Match("null");
+            IMatch match6 = value.Match("[ ]");
+            IMatch match7 = value.Match("[ \"Ford\", \"BMW\", \"Fiat\" ]");
+            IMatch match8 = value.Match("{ }");
+            IMatch match9 = value.Match("{ \"name\":\"John\", \"age\":30 }");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((true, ""), (match2.Success(), match2.RemainingText()));
+            Assert.Equal((true, ""), (match3.Success(), match3.RemainingText()));
+            Assert.Equal((true, ""), (match4.Success(), match4.RemainingText()));
+            Assert.Equal((true, ""), (match5.Success(), match5.RemainingText()));
+            Assert.Equal((true, ""), (match6.Success(), match6.RemainingText()));
+            Assert.Equal((true, ""), (match7.Success(), match7.RemainingText()));
+            Assert.Equal((true, ""), (match8.Success(), match8.RemainingText()));
+            Assert.Equal((true, ""), (match9.Success(), match9.RemainingText()));
+        }
+
     }
 }
