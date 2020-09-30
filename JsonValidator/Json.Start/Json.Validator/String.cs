@@ -13,7 +13,7 @@
             var unicode = new Sequence(new Character('u'), hex, hex, hex, hex);
             var escapeKey = new Character('\\');
             var escape = new Choice(new Any("\"\\/bfnrt"), unicode);
-            var unescapedChar = new Range(' ', char.MaxValue);
+            var unescapedChar = new Range(' ', char.MaxValue, "\\\"");
             var character = new Choice(unescapedChar, new Sequence(escapeKey, escape));
             var characters = new Many(character);
 

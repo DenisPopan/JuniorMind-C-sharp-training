@@ -6,11 +6,11 @@
         readonly char end;
         readonly string excepted;
 
-        public Range(char start, char end)
+        public Range(char start, char end, string excepted = "")
         {
             this.start = start;
             this.end = end;
-            excepted = "\\\"";
+            this.excepted = excepted;
         }
 
         public IMatch Match(string text)
