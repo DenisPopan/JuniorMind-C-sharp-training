@@ -194,5 +194,14 @@ namespace Json.Facts
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void ObjectWithMultipleMembersShouldReturnTrue()
+        {
+            IMatch match1 = new Value().Match("{ \"name\":\"John\", \"age\":30, \"car\":null }");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
