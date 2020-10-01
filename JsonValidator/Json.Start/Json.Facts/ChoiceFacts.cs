@@ -89,7 +89,7 @@ namespace Json.Facts
 
             var whiteSpace = new Optional(new Choice(horizontalTab, newLine, carriageReturn, space));
             var element = new Sequence(whiteSpace, value, whiteSpace);
-            var elements = new List(element, new Character(','));
+            var elements = new Choice(new List(element, new Character(',')), element);
 
             var array = new Choice(
                 new Sequence(leftSquareBracket, whiteSpace, rightSquareBracket),
@@ -99,7 +99,7 @@ namespace Json.Facts
             var rightCurlyBracket = new Character('}');
 
             var member = new Sequence(whiteSpace, @string, whiteSpace, new Character(':'), element);
-            var members = new List(member, new Character(','));
+            var members = new Choice(new List(member, new Character(',')), member);
 
             var @object = new Choice(
                 new Sequence(leftCurlyBracket, whiteSpace, rightCurlyBracket),
@@ -115,9 +115,11 @@ namespace Json.Facts
             IMatch match4 = value.Match("false");
             IMatch match5 = value.Match("null");
             IMatch match6 = value.Match("[ ]");
-            IMatch match7 = value.Match("[ \"Ford\", \"BMW\", \"Fiat\" ]");
-            IMatch match8 = value.Match("{ }");
-            IMatch match9 = value.Match("{ \"name\":\"John\", \"age\":30 }");
+            IMatch match7 = value.Match("[ \"Ford\" ]");
+            IMatch match8 = value.Match("[ \"Ford\", \"BMW\", \"Fiat\" ]");
+            IMatch match9 = value.Match("{ }");
+            IMatch match10 = value.Match("{ \"name\":\"John\" }");
+            IMatch match11 = value.Match("{ \"name\":\"John\", \"age\":30 }");
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
             Assert.Equal((true, ""), (match2.Success(), match2.RemainingText()));
@@ -128,6 +130,9 @@ namespace Json.Facts
             Assert.Equal((true, ""), (match7.Success(), match7.RemainingText()));
             Assert.Equal((true, ""), (match8.Success(), match8.RemainingText()));
             Assert.Equal((true, ""), (match9.Success(), match9.RemainingText()));
+            Assert.Equal((true, ""), (match10.Success(), match8.RemainingText()));
+            Assert.Equal((true, ""), (match11.Success(), match9.RemainingText()));
+
         }
 
     }
