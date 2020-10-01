@@ -78,5 +78,16 @@ namespace Json.Facts
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void ArrayShouldHaveSquareBrackets()
+        {
+            IMatch match1 = new Value().Match("[ \"hey\" ");
+            IMatch match2 = new Value().Match(" \"hey\" ]");
+
+            Assert.Equal((false, "[ \"hey\" "), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, " \"hey\" ]"), (match2.Success(), match2.RemainingText()));
+        }
     }
 }
