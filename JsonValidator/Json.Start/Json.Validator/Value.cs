@@ -21,7 +21,17 @@
             var elements = new List(element, new Character(','));
 
             var array = new Sequence(leftSquareBracket, new Choice(elements, whiteSpace), rightSquareBracket);
+
+            var leftCurlyBracket = new Character('{');
+            var rightCurlyBracket = new Character('}');
+
+            var member = new Sequence(whiteSpace, new String(), whiteSpace, new Character(':'), element);
+            var members = new List(member, new Character(','));
+
+            var @object = new Sequence(leftCurlyBracket, new Choice(members, whiteSpace), rightCurlyBracket);
+
             value.Add(array);
+            value.Add(@object);
             pattern = value;
         }
 

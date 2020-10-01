@@ -165,5 +165,14 @@ namespace Json.Facts
                 " [ \"320\", \"X3\", \"X5\" , " +
                 "[ \"500\", \"Panda\" ] ]"), (match2.Success(), match2.RemainingText()));
         }
+
+        [Fact]
+
+        public void ValueCanBeAnEmptyObject()
+        {
+            IMatch match1 = new Value().Match("{ }");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
