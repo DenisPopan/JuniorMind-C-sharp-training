@@ -6,7 +6,7 @@
 
         public Value()
         {
-            pattern = new Choice();
+            pattern = new Choice(new Text("null"));
         }
 
         public IMatch Match(string text)
