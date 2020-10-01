@@ -61,5 +61,13 @@ namespace Json.Facts
             Assert.Equal((true, ""), (match3.Success(), match3.RemainingText()));
             Assert.Equal((true, ""), (match4.Success(), match4.RemainingText()));
         }
+
+        [Fact]
+
+        public void ValueCanNotBeAStringWithoutQuotes()
+        {
+            IMatch match1 = new Value().Match("@$%#");
+            Assert.Equal((false, "@$%#"), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
