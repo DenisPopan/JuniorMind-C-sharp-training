@@ -68,6 +68,17 @@ namespace Json.Facts
         {
             IMatch match1 = new Value().Match("@$%#");
             Assert.Equal((false, "@$%#"), (match1.Success(), match1.RemainingText()));
+        }        
+        
+        [Fact]
+
+        public void ArrayShouldHaveSquareBrackets()
+        {
+            IMatch match1 = new Value().Match("[ \"hey\" ");
+            IMatch match2 = new Value().Match(" \"hey\" ]");
+
+            Assert.Equal((false, "[ \"hey\" "), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, " \"hey\" ]"), (match2.Success(), match2.RemainingText()));
         }
 
         [Fact]
@@ -81,13 +92,11 @@ namespace Json.Facts
 
         [Fact]
 
-        public void ArrayShouldHaveSquareBrackets()
+        public void ArrayWithOneElementShouldReturnTrue()
         {
-            IMatch match1 = new Value().Match("[ \"hey\" ");
-            IMatch match2 = new Value().Match(" \"hey\" ]");
+            IMatch match1 = new Value().Match("[ \"Rainbow\" ]");
 
-            Assert.Equal((false, "[ \"hey\" "), (match1.Success(), match1.RemainingText()));
-            Assert.Equal((false, " \"hey\" ]"), (match2.Success(), match2.RemainingText()));
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
     }
 }
