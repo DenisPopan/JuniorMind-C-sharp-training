@@ -132,5 +132,15 @@ namespace Json.Facts
             Assert.Equal((false, "[ \"Ford\" \"BMW\", \"Fiat\" ]"), (match1.Success(), match1.RemainingText()));
             Assert.Equal((false, "[ \"Ford\", \"BMW\", \"Fiat\" \"Audi\" ]"), (match2.Success(), match2.RemainingText()));
         }
+
+        [Fact]
+
+        public void NestedArraysShouldReturnTrue()
+        {
+            IMatch match = new Value().Match("[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" ], " +
+                "[ \"500\", \"Panda\" ] ]");
+            Assert.Equal((true, ""), (match.Success(), match.RemainingText()));
+        }
     }
 }
