@@ -107,5 +107,20 @@ namespace Json.Facts
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void IncorrectArrayElementsShouldReturnFalse()
+        {
+            IMatch match1 = new Value().Match("[ \"Ford\", \"BM\"W\", \"Fiat\" ]");
+            IMatch match2 = new Value().Match("[ 203e, \"BMW\", \"Fiat\" ]");
+            IMatch match3 = new Value().Match("[ \"Rainb\\ow\" ]");
+            IMatch match4 = new Value().Match("[ * ]");
+
+            Assert.Equal((false, "[ \"Ford\", \"BM\"W\", \"Fiat\" ]"), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, "[ 203e, \"BMW\", \"Fiat\" ]"), (match2.Success(), match2.RemainingText()));
+            Assert.Equal((false, "[ \"Rainb\\ow\" ]"), (match3.Success(), match3.RemainingText()));
+            Assert.Equal((false, "[ * ]"), (match4.Success(), match4.RemainingText()));
+        }
     }
 }
