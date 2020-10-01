@@ -142,5 +142,28 @@ namespace Json.Facts
                 "[ \"500\", \"Panda\" ] ]");
             Assert.Equal((true, ""), (match.Success(), match.RemainingText()));
         }
+
+        [Fact]
+        public void NestedArraysWithErrorsShouldReturnTrue()
+        {
+            IMatch match = new Value().Match("[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" ], " +
+                "[ \"500\" \"Panda\" ] ]");
+            IMatch match1 = new Value().Match("[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" ], " +
+                "[ \"5\\00\", \"Panda\" ] ]");
+            IMatch match2 = new Value().Match("[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" , " +
+                "[ \"500\", \"Panda\" ] ]");
+            Assert.Equal((false, "[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" ], " +
+                "[ \"500\" \"Panda\" ] ]"), (match.Success(), match.RemainingText()));
+            Assert.Equal((false, "[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" ], " +
+                "[ \"5\\00\", \"Panda\" ] ]"), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, "[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
+                " [ \"320\", \"X3\", \"X5\" , " +
+                "[ \"500\", \"Panda\" ] ]"), (match2.Success(), match2.RemainingText()));
+        }
     }
 }
