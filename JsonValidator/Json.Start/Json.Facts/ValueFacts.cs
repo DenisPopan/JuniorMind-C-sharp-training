@@ -69,5 +69,14 @@ namespace Json.Facts
             IMatch match1 = new Value().Match("@$%#");
             Assert.Equal((false, "@$%#"), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void ValueCanBeAnEmptyArray()
+        {
+            IMatch match1 = new Value().Match("[ ]");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
