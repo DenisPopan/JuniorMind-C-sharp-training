@@ -144,7 +144,7 @@ namespace Json.Facts
         }
 
         [Fact]
-        public void NestedArraysWithErrorsShouldReturnTrue()
+        public void NestedArraysWithErrorsShouldReturnFalse()
         {
             IMatch match = new Value().Match("[ [ \"Fiesta\", \"Focus\", \"Mustang\" ]," +
                 " [ \"320\", \"X3\", \"X5\" ], " +
@@ -232,12 +232,58 @@ namespace Json.Facts
         public void NestedObjectsShouldReturnTrue()
         {
             IMatch match = new Value().Match("{\"name\":\"Jhon\"," +
-                "\"age\":30," +
-                "\"cars\": {" +
-                "\"car1\":\"Ford\"," +
-                "\"car2\":\"BMW\"," +
-                "\"car3\":\"Fiat\"}}");
+                                                "\"age\":30," +
+                                                "\"cars\": {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fiat\"}}");
             Assert.Equal((true, ""), (match.Success(), match.RemainingText()));
+        }
+
+        [Fact]
+        public void NestedObjectsWithErrorsShouldReturnFalse()
+        {
+            IMatch match = new Value().Match("{\"name\":\"Jhon\"" +
+                                                "\"age\":30," +
+                                                "\"cars\": {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fiat\"}}");
+
+            Assert.Equal((false, "{\"name\":\"Jhon\"" +
+                                                "\"age\":30," +
+                                                "\"cars\": {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fiat\"}}"), (match.Success(), match.RemainingText()));
+
+            IMatch match1 = new Value().Match("{\"name\":\"Jhon\"," +
+                                    "\"age\":30," +
+                                    "\"cars\" {" +
+                                    "\"car1\":\"Ford\"," +
+                                    "\"car2\":\"BMW\"," +
+                                    "\"car3\":\"Fiat\"}}");
+            
+            Assert.Equal((false, "{\"name\":\"Jhon\"," +
+                                                "\"age\":30," +
+                                                "\"cars\" {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fiat\"}}"), (match1.Success(), match1.RemainingText()));
+
+            IMatch match2 = new Value().Match("{\"name\":\"Jhon\"," +
+                                                "\"age\":30," +
+                                                "\"cars\": {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fi\\at\"}}");
+
+            Assert.Equal((false, "{\"name\":\"Jhon\"," +
+                                                "\"age\":30," +
+                                                "\"cars\": {" +
+                                                "\"car1\":\"Ford\"," +
+                                                "\"car2\":\"BMW\"," +
+                                                "\"car3\":\"Fi\\at\"}}"), (match2.Success(), match2.RemainingText()));
         }
     }
 }
