@@ -185,5 +185,14 @@ namespace Json.Facts
             Assert.Equal((false, "{ \"name\":\"John\" "), (match1.Success(), match1.RemainingText()));
             Assert.Equal((false, " \"name\":\"John\" }"), (match2.Success(), match2.RemainingText()));
         }
+
+        [Fact]
+
+        public void ObjectWithOneMmemberShouldReturnTrue()
+        {
+            IMatch match1 = new Value().Match("{ \"Weather\" : \"Rain\" }");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
