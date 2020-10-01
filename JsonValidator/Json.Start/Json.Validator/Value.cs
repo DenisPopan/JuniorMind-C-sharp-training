@@ -7,6 +7,7 @@
         public Value()
         {
             pattern = new Choice(
+                new String(),
                 new Number(),
                 new Text("true"),
                 new Text("false"),

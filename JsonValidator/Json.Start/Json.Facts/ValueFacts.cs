@@ -22,7 +22,7 @@ namespace Json.Facts
 
         [Fact]
 
-        public void ValueCanBeBoolean()
+        public void ValueCanBeABoolean()
         {
             IMatch match1 = new Value().Match("true");
             IMatch match2 = new Value().Match("false");
@@ -32,7 +32,7 @@ namespace Json.Facts
 
         [Fact]
 
-        public void ValueCanBeNumber()
+        public void ValueCanBeANumber()
         {
             IMatch match1 = new Value().Match("654");
             IMatch match2 = new Value().Match("235.2353");
@@ -46,6 +46,20 @@ namespace Json.Facts
             Assert.Equal((true, ""), (match4.Success(), match4.RemainingText()));
             Assert.Equal((true, "."), (match5.Success(), match5.RemainingText()));
             Assert.Equal((true, "ee"), (match6.Success(), match6.RemainingText()));
+        }
+
+        [Fact]
+
+        public void ValueCanBeAString()
+        {
+            IMatch match1 = new Value().Match("\"ajshf\"");
+            IMatch match2 = new Value().Match("\"}]@#$^%^*&$\"");
+            IMatch match3 = new Value().Match("\"!][]]';/.,><\"");
+            IMatch match4 = new Value().Match("\"⛅⚾\"");
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((true, ""), (match2.Success(), match2.RemainingText()));
+            Assert.Equal((true, ""), (match3.Success(), match3.RemainingText()));
+            Assert.Equal((true, ""), (match4.Success(), match4.RemainingText()));
         }
     }
 }
