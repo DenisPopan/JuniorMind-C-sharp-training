@@ -226,5 +226,18 @@ namespace Json.Facts
             Assert.Equal((false, "{ \"name\":\"John\" \"age\":30, \"car\":null }"), (match1.Success(), match1.RemainingText()));
             Assert.Equal((false, "{ \"name\":\"John\", \"age\":30, \"car\"null }"), (match2.Success(), match2.RemainingText()));
         }
+
+        [Fact]
+
+        public void NestedObjectsShouldReturnTrue()
+        {
+            IMatch match = new Value().Match("{\"name\":\"Jhon\"," +
+                "\"age\":30," +
+                "\"cars\": {" +
+                "\"car1\":\"Ford\"," +
+                "\"car2\":\"BMW\"," +
+                "\"car3\":\"Fiat\"}}");
+            Assert.Equal((true, ""), (match.Success(), match.RemainingText()));
+        }
     }
 }
