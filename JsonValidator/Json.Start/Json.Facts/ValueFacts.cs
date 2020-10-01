@@ -98,5 +98,14 @@ namespace Json.Facts
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void ArrayWithMultipleElementsShouldReturnTrue()
+        {
+            IMatch match1 = new Value().Match("[ \"Ford\", \"BMW\", \"Fiat\" ]");
+
+            Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
+        }
     }
 }
