@@ -18,10 +18,9 @@
 
             var whiteSpace = new Optional(new Any("\t\n\r "));
             var element = new Sequence(whiteSpace, value, whiteSpace);
-            var elements = new OneOrMore(new Sequence(element, new Many(new Sequence(new Character(','), element))));
+            var elements = new List(element, new Character(','));
 
             var array = new Sequence(leftSquareBracket, new Choice(elements, whiteSpace), rightSquareBracket);
-
             value.Add(array);
             pattern = value;
         }

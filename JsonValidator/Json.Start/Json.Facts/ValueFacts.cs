@@ -122,5 +122,15 @@ namespace Json.Facts
             Assert.Equal((false, "[ \"Rainb\\ow\" ]"), (match3.Success(), match3.RemainingText()));
             Assert.Equal((false, "[ * ]"), (match4.Success(), match4.RemainingText()));
         }
+
+        [Fact]
+        public void ArrayWithoutCommasBetweenElementsShouldReturnFalse()
+        {
+            IMatch match1 = new Value().Match("[ \"Ford\" \"BMW\", \"Fiat\" ]");
+            IMatch match2 = new Value().Match("[ \"Ford\", \"BMW\", \"Fiat\" \"Audi\" ]");
+
+            Assert.Equal((false, "[ \"Ford\" \"BMW\", \"Fiat\" ]"), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, "[ \"Ford\", \"BMW\", \"Fiat\" \"Audi\" ]"), (match2.Success(), match2.RemainingText()));
+        }
     }
 }
