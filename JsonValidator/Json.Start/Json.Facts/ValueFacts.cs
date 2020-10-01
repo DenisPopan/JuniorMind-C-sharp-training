@@ -174,5 +174,16 @@ namespace Json.Facts
 
             Assert.Equal((true, ""), (match1.Success(), match1.RemainingText()));
         }
+
+        [Fact]
+
+        public void ObjectShouldHaveCurlyBrackets()
+        {
+            IMatch match1 = new Value().Match("{ \"name\":\"John\" ");
+            IMatch match2 = new Value().Match(" \"name\":\"John\" }");
+
+            Assert.Equal((false, "{ \"name\":\"John\" "), (match1.Success(), match1.RemainingText()));
+            Assert.Equal((false, " \"name\":\"John\" }"), (match2.Success(), match2.RemainingText()));
+        }
     }
 }
