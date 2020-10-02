@@ -1,5 +1,5 @@
-{"menu" {
-  "id": "file",
+{"menu": {
+  "id": "file,
   "value": "File",
   "popup": {
     "menuitem": [
