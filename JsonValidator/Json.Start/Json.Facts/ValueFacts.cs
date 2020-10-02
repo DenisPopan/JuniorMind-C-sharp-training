@@ -251,25 +251,25 @@ namespace Json.Facts
                                                 "\"car3\":\"Fiat\"}}");
 
             Assert.Equal((false, "{\"name\":\"Jhon\"" +
-                                                "\"age\":30," +
-                                                "\"cars\": {" +
-                                                "\"car1\":\"Ford\"," +
-                                                "\"car2\":\"BMW\"," +
-                                                "\"car3\":\"Fiat\"}}"), (match.Success(), match.RemainingText()));
+                                   "\"age\":30," +
+                                   "\"cars\": {" +
+                                   "\"car1\":\"Ford\"," +
+                                   "\"car2\":\"BMW\"," +
+                                   "\"car3\":\"Fiat\"}}"), (match.Success(), match.RemainingText()));
 
             IMatch match1 = new Value().Match("{\"name\":\"Jhon\"," +
-                                    "\"age\":30," +
-                                    "\"cars\" {" +
-                                    "\"car1\":\"Ford\"," +
-                                    "\"car2\":\"BMW\"," +
-                                    "\"car3\":\"Fiat\"}}");
-            
-            Assert.Equal((false, "{\"name\":\"Jhon\"," +
                                                 "\"age\":30," +
                                                 "\"cars\" {" +
                                                 "\"car1\":\"Ford\"," +
                                                 "\"car2\":\"BMW\"," +
-                                                "\"car3\":\"Fiat\"}}"), (match1.Success(), match1.RemainingText()));
+                                                "\"car3\":\"Fiat\"}}");
+            
+            Assert.Equal((false, "{\"name\":\"Jhon\"," +
+                                    "\"age\":30," +
+                                    "\"cars\" {" +
+                                    "\"car1\":\"Ford\"," +
+                                    "\"car2\":\"BMW\"," +
+                                    "\"car3\":\"Fiat\"}}"), (match1.Success(), match1.RemainingText()));
 
             IMatch match2 = new Value().Match("{\"name\":\"Jhon\"," +
                                                 "\"age\":30," +
@@ -279,11 +279,23 @@ namespace Json.Facts
                                                 "\"car3\":\"Fi\\at\"}}");
 
             Assert.Equal((false, "{\"name\":\"Jhon\"," +
-                                                "\"age\":30," +
-                                                "\"cars\": {" +
-                                                "\"car1\":\"Ford\"," +
-                                                "\"car2\":\"BMW\"," +
-                                                "\"car3\":\"Fi\\at\"}}"), (match2.Success(), match2.RemainingText()));
+                                    "\"age\":30," +
+                                    "\"cars\": {" +
+                                    "\"car1\":\"Ford\"," +
+                                    "\"car2\":\"BMW\"," +
+                                    "\"car3\":\"Fi\\at\"}}"), (match2.Success(), match2.RemainingText()));
+        }
+
+        [Fact]
+
+        public void ObjectContainingAnArrayAndViceVersaShouldReturnTrue()
+        {
+            IMatch match = new Value().Match("{\"menu\": {" +
+                                                "\"header\": \"SVG Viewer\", " +
+                                                "\"items\": [" +
+                                                    "{ \"id\": \"Open\"}, " +
+                                                    "{ \"id\": \"OpenNew\", \"label\": \"Open New\"}]}}");
+            Assert.Equal((true, ""), (match.Success(), match.RemainingText()));
         }
     }
 }
