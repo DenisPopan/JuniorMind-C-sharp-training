@@ -16,7 +16,7 @@
             var leftSquareBracket = new Character('[');
             var rightSquareBracket = new Character(']');
 
-            var whiteSpace = new Optional(new Any("\t\n\r "));
+            var whiteSpace = new Many(new Any("\t\n\r "));
             var element = new Sequence(whiteSpace, value, whiteSpace);
             var elements = new List(element, new Character(','));
 
@@ -32,7 +32,7 @@
 
             value.Add(array);
             value.Add(@object);
-            pattern = value;
+            pattern = element;
         }
 
         public IMatch Match(string text)
