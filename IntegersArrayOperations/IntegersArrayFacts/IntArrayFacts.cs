@@ -37,5 +37,17 @@ namespace IntegersArrayFacts
             Assert.Equal(-1, array.Element(-1));
             Assert.Equal(-1, array.Element(4));
         }
+
+        [Fact]
+        public void SetElementMethodShouldSetElementAtGivenIndexWithGivenValue()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            Assert.Equal(3263, array.Element(2));
+            array.SetElement(2, 716);
+            Assert.Equal(716, array.Element(2));
+        }
     }
 }
