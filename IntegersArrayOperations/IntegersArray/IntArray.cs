@@ -20,5 +20,10 @@ namespace IntegersArray
         {
             return array.Length;
         }
+
+        public int Element(int index)
+        {
+            return array[index];
+        }
     }
 }
