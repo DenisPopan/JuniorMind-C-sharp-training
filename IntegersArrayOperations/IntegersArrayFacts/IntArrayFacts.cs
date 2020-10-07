@@ -63,5 +63,16 @@ namespace IntegersArrayFacts
             Assert.Equal(222, array.Element(1));
             Assert.Equal(3263, array.Element(2));
         }
+
+        [Fact]
+        public void ContainsMethodShouldReturnIfArrayContainsGivenElement()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            Assert.True(array.Contains(5));
+            Assert.False(array.Contains(223));
+        }
     }
 }

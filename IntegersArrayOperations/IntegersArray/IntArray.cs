@@ -39,5 +39,10 @@ namespace IntegersArray
 
             array[index] = element;
         }
+
+        public bool Contains(int element)
+        {
+            return Array.IndexOf(array, element) != -1;
+        }
     }
 }
