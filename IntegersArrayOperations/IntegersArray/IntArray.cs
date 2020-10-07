@@ -9,5 +9,16 @@ namespace IntegersArray
         {
             array = new int[0];
         }
+
+        public void Add(int element)
+        {
+            Array.Resize(ref array, array.Length + 1);
+            array[array.Length - 1] = element;
+        }
+
+        public int Count()
+        {
+            return array.Length;
+        }
     }
 }
