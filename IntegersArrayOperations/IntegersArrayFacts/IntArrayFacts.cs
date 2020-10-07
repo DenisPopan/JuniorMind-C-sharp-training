@@ -26,5 +26,16 @@ namespace IntegersArrayFacts
             Assert.Equal(222, array.Element(1));
             Assert.Equal(3263, array.Element(2));
         }
+
+        [Fact]
+        public void ElementMethodShouldReturnMinusOneWhenElementIsOutsideOfArray()
+        {  
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            Assert.Equal(-1, array.Element(-1));
+            Assert.Equal(-1, array.Element(4));
+        }
     }
 }

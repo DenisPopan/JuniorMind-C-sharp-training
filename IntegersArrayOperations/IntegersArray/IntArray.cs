@@ -23,6 +23,10 @@ namespace IntegersArray
 
         public int Element(int index)
         {
+            if (index < 0 || index > array.Length)
+            {
+                return -1;
+            }
             return array[index];
         }
     }
