@@ -7,8 +7,18 @@ namespace JsonValidatorConsoleApplication
     {
         static void Main(string[] args)
         {
+            if (string.IsNullOrEmpty(args[0]))
+            {
+                Console.WriteLine("Json type data input required.");
+                Console.Read();
+                return;
+            }
+
             string text = System.IO.File.ReadAllText(args[0]);
-            Console.WriteLine(new Value().Match(text).Success());
+            var checkedJson = new Value().Match(text);
+
+            Console.WriteLine("Input Json data is " + (string.IsNullOrEmpty(checkedJson.RemainingText()) && checkedJson.Success() ? "correct!" : "incorrect!"));
+            Console.Read();
         }
     }
 }
