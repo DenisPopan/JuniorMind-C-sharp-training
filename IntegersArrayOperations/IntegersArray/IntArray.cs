@@ -32,6 +32,11 @@ namespace IntegersArray
 
         public void SetElement(int index, int element)
         {
+            if (Element(index) == -1)
+            {
+                return;
+            }
+
             array[index] = element;
         }
     }

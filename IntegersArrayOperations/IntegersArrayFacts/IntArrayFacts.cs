@@ -49,5 +49,19 @@ namespace IntegersArrayFacts
             array.SetElement(2, 716);
             Assert.Equal(716, array.Element(2));
         }
+
+        [Fact]
+        public void SetElementMethodShouldLeaveElementUnchangedIfGivenIndexIsInvalid()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.SetElement(-1, 716);
+            array.SetElement(4, 716);
+            Assert.Equal(5, array.Element(0));
+            Assert.Equal(222, array.Element(1));
+            Assert.Equal(3263, array.Element(2));
+        }
     }
 }
