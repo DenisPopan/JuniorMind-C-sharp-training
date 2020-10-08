@@ -52,9 +52,8 @@ namespace IntegersArray
 
         public void Insert(int index, int element)
         {
-            if (index == array.Length)
+            if (Element(index) == -1)
             {
-                Add(element);
                 return;
             }
 
