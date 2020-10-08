@@ -23,7 +23,7 @@ namespace IntegersArray
 
         public int Element(int index)
         {
-            if (index < 0 || index > array.Length)
+            if (index < 0 || index >= array.Length)
             {
                 return -1;
             }
@@ -52,6 +52,12 @@ namespace IntegersArray
 
         public void Insert(int index, int element)
         {
+            if (index == array.Length)
+            {
+                Add(element);
+                return;
+            }
+
             Array.Resize(ref array, array.Length + 1);
             for (int i = array.Length - 1; i > index; i--)
             {

@@ -101,5 +101,24 @@ namespace IntegersArrayFacts
             Assert.Equal(222, array.Element(2));
             Assert.Equal(3263, array.Element(3));
         }
+
+        [Fact]
+        public void InsertMethodShouldInsertGivenElementOnFirstAndLastIndexAlso()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.Insert(0, 71);
+            array.Insert(3, 93471);
+            array.Insert(5, 811);
+            Assert.Equal(6, array.Count());
+            Assert.Equal(71, array.Element(0));
+            Assert.Equal(5, array.Element(1));
+            Assert.Equal(222, array.Element(2));
+            Assert.Equal(93471, array.Element(3));
+            Assert.Equal(3263, array.Element(4));
+            Assert.Equal(811, array.Element(5));
+        }
     }
 }
