@@ -76,6 +76,11 @@ namespace IntegersArray
         public void Remove(int element)
         {
             int elementPosition = IndexOf(element);
+            if (elementPosition == -1)
+            {
+                return;
+            }
+
             for (int i = elementPosition; i < array.Length - 1; i++)
             {
                 array[i] = array[i + 1];

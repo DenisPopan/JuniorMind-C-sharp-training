@@ -163,6 +163,23 @@ namespace IntegersArrayFacts
             Assert.Equal(3263, array.Element(1));
             Assert.Equal(2246, array.Element(2));
             Assert.Equal(-1, array.Element(3));
+            array.Remove(2246);
+            Assert.Equal(-1, array.Element(2));
+        }
+
+        [Fact]
+        public void RemoveMethodShouldMakeNoChangesIfElementDoesNotExist()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.Add(2246);
+            array.Remove(223);
+            Assert.Equal(5, array.Element(0));
+            Assert.Equal(222, array.Element(1));
+            Assert.Equal(3263, array.Element(2));
+            Assert.Equal(2246, array.Element(3));
         }
     }
 }
