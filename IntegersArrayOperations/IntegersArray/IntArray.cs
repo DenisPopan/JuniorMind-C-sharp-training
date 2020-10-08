@@ -5,6 +5,7 @@ namespace IntegersArray
     public class IntArray
     {
         int[] array;
+
         public IntArray()
         {
             array = new int[0];
@@ -27,6 +28,7 @@ namespace IntegersArray
             {
                 return -1;
             }
+
             return array[index];
         }
 
@@ -69,6 +71,17 @@ namespace IntegersArray
         public void Clear()
         {
             Array.Resize(ref array, 0);
+        }
+
+        public void Remove(int element)
+        {
+            int elementPosition = IndexOf(element);
+            for (int i = elementPosition; i < array.Length - 1; i++)
+            {
+                array[i] = array[i + 1];
+            }
+
+            Array.Resize(ref array, array.Length - 1);
         }
     }
 }
