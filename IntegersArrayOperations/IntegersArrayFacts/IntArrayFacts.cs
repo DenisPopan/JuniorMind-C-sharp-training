@@ -86,5 +86,20 @@ namespace IntegersArrayFacts
             Assert.Equal(2, array.IndexOf(3263));
             Assert.Equal(-1, array.IndexOf(223));
         }
+
+        [Fact]
+        public void InsertMethodShouldInsertGivenElementOnGivenRandomIndex()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.Insert(1, 71);
+            Assert.Equal(4, array.Count());
+            Assert.Equal(5, array.Element(0));
+            Assert.Equal(71, array.Element(1));
+            Assert.Equal(222, array.Element(2));
+            Assert.Equal(3263, array.Element(3));
+        }
     }
 }
