@@ -136,5 +136,18 @@ namespace IntegersArrayFacts
             Assert.Equal(-1, array.Element(4));
             Assert.Equal(-1, array.Element(5));
         }
+
+        [Fact]
+        public void ClearMethodShouldDeleteAllArrayElements()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.Clear();
+            Assert.Equal(-1, array.Element(0));
+            Assert.Equal(-1, array.Element(1));
+            Assert.Equal(-1, array.Element(2));
+        }
     }
 }

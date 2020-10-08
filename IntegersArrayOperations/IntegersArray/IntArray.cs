@@ -65,5 +65,10 @@ namespace IntegersArray
 
             array[index] = element;
         }
+
+        public void Clear()
+        {
+            Array.Resize(ref array, 0);
+        }
     }
 }
