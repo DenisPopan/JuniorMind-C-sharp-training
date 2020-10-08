@@ -91,6 +91,11 @@ namespace IntegersArray
 
         public void RemoveAt(int index)
         {
+            if (Element(index) == -1)
+            {
+                return;
+            }
+
             for (int i = index; i < array.Length - 1; i++)
             {
                 array[i] = array[i + 1];
