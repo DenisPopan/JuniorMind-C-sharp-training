@@ -74,5 +74,17 @@ namespace IntegersArrayFacts
             Assert.True(array.Contains(5));
             Assert.False(array.Contains(223));
         }
+
+        [Fact]
+        public void IndexOfMethodShouldReturnGivenElementIndex()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            Assert.Equal(0, array.IndexOf(5));
+            Assert.Equal(2, array.IndexOf(3263));
+            Assert.Equal(-1, array.IndexOf(223));
+        }
     }
 }

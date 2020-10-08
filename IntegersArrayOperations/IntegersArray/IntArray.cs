@@ -44,5 +44,10 @@ namespace IntegersArray
         {
             return Array.IndexOf(array, element) != -1;
         }
+
+        public int IndexOf(int element)
+        {
+            return Array.IndexOf(array, element);
+        }
     }
 }
