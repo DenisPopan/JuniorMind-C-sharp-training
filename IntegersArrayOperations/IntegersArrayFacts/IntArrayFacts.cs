@@ -6,6 +6,19 @@ namespace IntegersArrayFacts
     public class IntArrayFacts
     {
         [Fact]
+        public void RandomTest()
+        {
+            IntArray array = new IntArray();
+            array.Add(5);
+            array.Add(222);
+            array.Add(3263);
+            array.Add(357);
+            Assert.Equal(4, array.Count());
+            array.Add(0);
+            Assert.Equal(5, array.Count());
+        }
+
+        [Fact]
         public void AddMethodAddsNewElement()
         {
             IntArray array = new IntArray();
