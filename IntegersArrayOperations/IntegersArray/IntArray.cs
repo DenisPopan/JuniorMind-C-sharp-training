@@ -8,18 +8,24 @@ namespace IntegersArray
 
         public IntArray()
         {
-            array = new int[0];
+            array = new int[4];
         }
 
         public void Add(int element)
         {
-            Array.Resize(ref array, array.Length + 1);
-            array[array.Length - 1] = element;
+            ArrayResize();
+            array[Count()] = element;
         }
 
         public int Count()
         {
-            return array.Length;
+            int elementsNumber = array.Length;
+            while (elementsNumber > 0 && array[elementsNumber - 1] == 0)
+            {
+                elementsNumber--;
+            }
+
+            return elementsNumber;
         }
 
         public int Element(int index)
@@ -44,14 +50,17 @@ namespace IntegersArray
 
         public void Insert(int index, int element)
         {
-            Array.Resize(ref array, array.Length + 1);
+            ArrayResize();
             ShiftRight(index);
             array[index] = element;
         }
 
         public void Clear()
         {
-            Array.Resize(ref array, 0);
+            for (int i = 0; i < Count(); i++)
+            {
+                array[i] = 0;
+            }
         }
 
         public void Remove(int element)
@@ -68,12 +77,12 @@ namespace IntegersArray
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
-            Array.Resize(ref array, array.Length - 1);
+            array[Count() - 1] = 0;
         }
 
         void ShiftRight(int insertIndex)
         {
-            for (int i = array.Length - 1; i > insertIndex; i--)
+            for (int i = Count(); i > insertIndex; i--)
             {
                 array[i] = array[i - 1];
             }
@@ -81,10 +90,20 @@ namespace IntegersArray
 
         void ShiftLeft(int elementToDeletePosition)
         {
-            for (int i = elementToDeletePosition; i < array.Length - 1; i++)
+            for (int i = elementToDeletePosition; i < Count() - 1; i++)
             {
                 array[i] = array[i + 1];
             }
+        }
+
+        void ArrayResize()
+        {
+            if (Count() != array.Length)
+            {
+                return;
+            }
+
+            Array.Resize(ref array, array.Length * 2);
         }
     }
 }

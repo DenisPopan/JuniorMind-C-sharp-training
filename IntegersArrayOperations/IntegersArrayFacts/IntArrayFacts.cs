@@ -12,7 +12,11 @@ namespace IntegersArrayFacts
             array.Add(5);
             array.Add(222);
             array.Add(3263);
-            Assert.Equal(3, array.Count());
+            array.Add(357);
+            Assert.Equal(4, array.Count());
+            array.Add(783);
+            Assert.Equal(5, array.Count());
+            Assert.Equal(783, array.Element(4));
         }
 
         [Fact]
@@ -145,7 +149,9 @@ namespace IntegersArrayFacts
             array.Add(222);
             array.Add(3263);
             array.Clear();
-            Assert.Equal(0, array.Count());
+            Assert.Equal(0, array.Element(0));
+            Assert.Equal(0, array.Element(1));
+            Assert.Equal(0, array.Element(2));
         }
 
         [Fact]
@@ -160,9 +166,9 @@ namespace IntegersArrayFacts
             Assert.Equal(5, array.Element(0));
             Assert.Equal(3263, array.Element(1));
             Assert.Equal(2246, array.Element(2));
-            Assert.Equal(-1, array.Element(3));
+            Assert.Equal(0, array.Element(3));
             array.Remove(2246);
-            Assert.Equal(-1, array.Element(2));
+            Assert.Equal(0, array.Element(2));
         }
 
         [Fact]
@@ -192,9 +198,9 @@ namespace IntegersArrayFacts
             Assert.Equal(5, array.Element(0));
             Assert.Equal(3263, array.Element(1));
             Assert.Equal(2246, array.Element(2));
-            Assert.Equal(3, array.Count());
+            Assert.Equal(0, array.Element(3));
             array.RemoveAt(2);
-            Assert.Equal(2, array.Count());
+            Assert.Equal(0, array.Element(2));
         }
 
         [Fact]
@@ -214,3 +220,7 @@ namespace IntegersArrayFacts
         }
     }
 }
+
+
+
+
