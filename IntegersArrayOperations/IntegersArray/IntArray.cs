@@ -62,8 +62,7 @@ namespace IntegersArray
                 return;
             }
 
-            ShiftLeft(elementPosition);
-            Array.Resize(ref array, array.Length - 1);
+            RemoveAt(elementPosition);
         }
 
         public void RemoveAt(int index)
