@@ -24,21 +24,11 @@ namespace IntegersArray
 
         public int Element(int index)
         {
-            if (index < 0 || index >= array.Length)
-            {
-                return -1;
-            }
-
             return array[index];
         }
 
         public void SetElement(int index, int element)
         {
-            if (Element(index) == -1)
-            {
-                return;
-            }
-
             array[index] = element;
         }
 
@@ -54,17 +44,8 @@ namespace IntegersArray
 
         public void Insert(int index, int element)
         {
-            if (Element(index) == -1)
-            {
-                return;
-            }
-
             Array.Resize(ref array, array.Length + 1);
-            for (int i = array.Length - 1; i > index; i--)
-            {
-                array[i] = array[i - 1];
-            }
-
+            ShiftRight(index);
             array[index] = element;
         }
 
@@ -81,27 +62,30 @@ namespace IntegersArray
                 return;
             }
 
-            for (int i = elementPosition; i < array.Length - 1; i++)
-            {
-                array[i] = array[i + 1];
-            }
-
+            ShiftLeft(elementPosition);
             Array.Resize(ref array, array.Length - 1);
         }
 
         public void RemoveAt(int index)
         {
-            if (Element(index) == -1)
-            {
-                return;
-            }
+            ShiftLeft(index);
+            Array.Resize(ref array, array.Length - 1);
+        }
 
-            for (int i = index; i < array.Length - 1; i++)
+        void ShiftRight(int insertIndex)
+        {
+            for (int i = array.Length - 1; i > insertIndex; i--)
+            {
+                array[i] = array[i - 1];
+            }
+        }
+
+        void ShiftLeft(int elementToDeletePosition)
+        {
+            for (int i = elementToDeletePosition; i < array.Length - 1; i++)
             {
                 array[i] = array[i + 1];
             }
-
-            Array.Resize(ref array, array.Length - 1);
         }
     }
 }
