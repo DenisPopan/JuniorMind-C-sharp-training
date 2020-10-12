@@ -37,12 +37,28 @@ namespace IntegersArray
 
         public bool Contains(int element)
         {
-            return Array.IndexOf(array, element) != -1;
+            for (int i = 0; i < Count(); i++)
+            {
+                if (array[i] == element)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public int IndexOf(int element)
         {
-            return Array.IndexOf(array, element);
+            for (int i = 0; i < Count(); i++)
+            {
+                if (array[i] == element)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         public void Insert(int index, int element)
@@ -56,11 +72,6 @@ namespace IntegersArray
         public void Clear()
         {
             Array.Resize(ref array, 4);
-            for (int i = 0; i < 4; i++)
-            {
-                array[i] = 0;
-            }
-
             elementsNumber = 0;
         }
 
@@ -78,7 +89,6 @@ namespace IntegersArray
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
-            array[elementsNumber - 1] = 0;
             elementsNumber--;
         }
 

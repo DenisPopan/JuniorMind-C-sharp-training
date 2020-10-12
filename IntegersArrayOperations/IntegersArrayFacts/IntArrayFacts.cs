@@ -162,9 +162,7 @@ namespace IntegersArrayFacts
             array.Add(222);
             array.Add(3263);
             array.Clear();
-            Assert.Equal(0, array.Element(0));
-            Assert.Equal(0, array.Element(1));
-            Assert.Equal(0, array.Element(2));
+            Assert.Equal(0, array.Count());
         }
 
         [Fact]
@@ -179,9 +177,9 @@ namespace IntegersArrayFacts
             Assert.Equal(5, array.Element(0));
             Assert.Equal(3263, array.Element(1));
             Assert.Equal(2246, array.Element(2));
-            Assert.Equal(0, array.Element(3));
+            Assert.Equal(3, array.Count());
             array.Remove(2246);
-            Assert.Equal(0, array.Element(2));
+            Assert.Equal(2, array.Count());
         }
 
         [Fact]
@@ -211,9 +209,9 @@ namespace IntegersArrayFacts
             Assert.Equal(5, array.Element(0));
             Assert.Equal(3263, array.Element(1));
             Assert.Equal(2246, array.Element(2));
-            Assert.Equal(0, array.Element(3));
+            Assert.Equal(3, array.Count());
             array.RemoveAt(2);
-            Assert.Equal(0, array.Element(2));
+            Assert.Equal(2, array.Count());
         }
 
         [Fact]
