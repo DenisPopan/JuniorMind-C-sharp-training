@@ -5,52 +5,36 @@ namespace IntegersArray
     public class IntArray
     {
         int[] array;
-        int elementsNumber;
 
         public IntArray()
         {
             array = new int[4];
-            elementsNumber = 0;
+            Count = 0;
+        }
+
+        public int Count { get; private set; }
+
+        public int this[int index]
+        {
+            get => array[index];
+            set => array[index] = value;
         }
 
         public void Add(int element)
         {
             ArrayResize();
-            array[elementsNumber] = element;
-            elementsNumber++;
-        }
-
-        public int Count()
-        {
-            return elementsNumber;
-        }
-
-        public int Element(int index)
-        {
-            return array[index];
-        }
-
-        public void SetElement(int index, int element)
-        {
-            array[index] = element;
+            array[Count] = element;
+            Count++;
         }
 
         public bool Contains(int element)
         {
-            for (int i = 0; i < Count(); i++)
-            {
-                if (array[i] == element)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return IndexOf(element) != -1;
         }
 
         public int IndexOf(int element)
         {
-            for (int i = 0; i < Count(); i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (array[i] == element)
                 {
@@ -66,13 +50,13 @@ namespace IntegersArray
             ArrayResize();
             ShiftRight(index);
             array[index] = element;
-            elementsNumber++;
+            Count++;
         }
 
         public void Clear()
         {
             Array.Resize(ref array, 4);
-            elementsNumber = 0;
+            Count = 0;
         }
 
         public void Remove(int element)
@@ -89,12 +73,12 @@ namespace IntegersArray
         public void RemoveAt(int index)
         {
             ShiftLeft(index);
-            elementsNumber--;
+            Count--;
         }
 
         void ShiftRight(int insertIndex)
         {
-            for (int i = Count(); i > insertIndex; i--)
+            for (int i = Count; i > insertIndex; i--)
             {
                 array[i] = array[i - 1];
             }
@@ -102,7 +86,7 @@ namespace IntegersArray
 
         void ShiftLeft(int elementToDeletePosition)
         {
-            for (int i = elementToDeletePosition; i < Count() - 1; i++)
+            for (int i = elementToDeletePosition; i < Count - 1; i++)
             {
                 array[i] = array[i + 1];
             }
@@ -110,7 +94,7 @@ namespace IntegersArray
 
         void ArrayResize()
         {
-            if (elementsNumber != array.Length)
+            if (Count != array.Length)
             {
                 return;
             }
