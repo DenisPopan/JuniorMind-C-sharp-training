@@ -4,7 +4,7 @@ namespace IntegersArray
 {
     public class IntArray
     {
-        int[] array;
+        protected int[] array;
 
         public IntArray()
         {
@@ -12,15 +12,15 @@ namespace IntegersArray
             Count = 0;
         }
 
-        public int Count { get; private set; }
+        public int Count { get; protected set; }
 
-        public int this[int index]
+        public virtual int this[int index]
         {
             get => array[index];
             set => array[index] = value;
         }
 
-        public void Add(int element)
+        public virtual void Add(int element)
         {
             ArrayResize();
             array[Count] = element;
@@ -45,7 +45,7 @@ namespace IntegersArray
             return -1;
         }
 
-        public void Insert(int index, int element)
+        public virtual void Insert(int index, int element)
         {
             ArrayResize();
             ShiftRight(index);
@@ -76,7 +76,7 @@ namespace IntegersArray
             Count--;
         }
 
-        void ShiftRight(int insertIndex)
+        protected void ShiftRight(int insertIndex)
         {
             for (int i = Count; i > insertIndex; i--)
             {
@@ -84,7 +84,7 @@ namespace IntegersArray
             }
         }
 
-        void ShiftLeft(int elementToDeletePosition)
+        protected void ShiftLeft(int elementToDeletePosition)
         {
             for (int i = elementToDeletePosition; i < Count - 1; i++)
             {
@@ -92,7 +92,7 @@ namespace IntegersArray
             }
         }
 
-        void ArrayResize()
+        protected void ArrayResize()
         {
             if (Count != array.Length)
             {
