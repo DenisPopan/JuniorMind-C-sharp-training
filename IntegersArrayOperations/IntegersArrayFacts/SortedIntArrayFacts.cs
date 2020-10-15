@@ -24,6 +24,9 @@ namespace IntegersArrayFacts
         {
             SortedIntArray sortedArray = new SortedIntArray();
             sortedArray.Add(5);
+            sortedArray[0] = 6;
+            Assert.Equal(6, sortedArray[0]);
+            sortedArray[0] = 5;
             sortedArray.Add(7);
             sortedArray.Add(9);
             sortedArray[0] = 10;

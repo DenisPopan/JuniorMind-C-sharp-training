@@ -55,37 +55,22 @@
 
         bool ElementCanBeSet(int index, int value)
         {
-            if (Count == 1)
-            {
-                return true;
-            }
-
-            if (index == 0)
-            {
-                return value <= array[index + 1];
-            }
-
-            if (index == Count - 1)
-            {
-                return value >= array[index - 1];
-            }
-
-            return value <= array[index + 1] && value >= array[index - 1];
+            return value <= ElementAt(index + 1, int.MaxValue) && value >= ElementAt(index - 1, int.MinValue);
         }
 
         bool ElementCanBeInserted(int index, int element)
         {
-            if (array[index] < element)
+            return element <= ElementAt(index, int.MaxValue) && element >= ElementAt(index - 1, int.MinValue);
+        }
+
+        int ElementAt(int position, int defaultValue)
+        {
+            if (position >= 0 && position < Count)
             {
-                return false;
+                return array[position];
             }
 
-            if (index != 0 && array[index - 1] > element)
-            {
-                return false;
-            }
-
-            return true;
+            return defaultValue;
         }
     }
 }
