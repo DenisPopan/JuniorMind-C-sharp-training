@@ -20,7 +20,7 @@ namespace IntegersArray
             set => array[index] = value;
         }
 
-        public virtual void Add(int element)
+        public void Add(int element)
         {
             ArrayResize();
             array[Count] = element;
@@ -45,7 +45,7 @@ namespace IntegersArray
             return -1;
         }
 
-        public virtual void Insert(int index, int element)
+        public void Insert(int index, int element)
         {
             ArrayResize();
             ShiftRight(index);

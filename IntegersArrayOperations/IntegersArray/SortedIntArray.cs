@@ -2,37 +2,34 @@
 {
     public class SortedIntArray : IntArray
     {
-        public SortedIntArray()
-        {
-            array = new int[4];
-            Count = 0;
-        }
-
         public override int this[int index]
         {
             get => array[index];
             set
             {
+                if (!ElementCanBeSet(index, value))
+                {
+                    return;
+                }
+
                 array[index] = value;
-                SortArray();
             }
         }
 
-        public override void Add(int element)
+        public void Add(int element)
         {
-            ArrayResize();
-            array[Count] = element;
-            Count++;
+            base.Add(element);
             SortArray();
         }
 
-        public override void Insert(int index, int element)
+        public void Insert(int index, int element)
         {
-            ArrayResize();
-            ShiftRight(index);
-            array[index] = element;
-            Count++;
-            SortArray();
+            if (!ElementCanBeInserted(index, element))
+            {
+                return;
+            }
+
+            base.Insert(index, element);
         }
 
         void SortArray()
@@ -54,6 +51,41 @@
                 }
             }
             while (!isSorted);
+        }
+
+        bool ElementCanBeSet(int index, int value)
+        {
+            if (Count == 1)
+            {
+                return true;
+            }
+
+            if (index == 0)
+            {
+                return value <= array[index + 1];
+            }
+
+            if (index == Count - 1)
+            {
+                return value >= array[index - 1];
+            }
+
+            return value <= array[index + 1] && value >= array[index - 1];
+        }
+
+        bool ElementCanBeInserted(int index, int element)
+        {
+            if (array[index] < element)
+            {
+                return false;
+            }
+
+            if (index != 0 && array[index - 1] > element)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
