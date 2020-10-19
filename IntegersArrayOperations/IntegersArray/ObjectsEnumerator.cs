@@ -4,27 +4,19 @@ namespace IntegersArray
 {
     public class ObjectsEnumerator : IEnumerator
     {
-        readonly object[] objectsArray;
-        readonly int numberOfElements;
+        readonly ObjectArray objectsArray;
         int currentPosition = -1;
 
-        public ObjectsEnumerator(object[] givenArray, int count)
+        public ObjectsEnumerator(ObjectArray givenArray)
         {
             objectsArray = givenArray;
-            numberOfElements = count;
         }
 
-        public object Current
-        {
-            get
-            {
-                return objectsArray[currentPosition];
-            }
-        }
+        public object Current => objectsArray[currentPosition];
 
         public bool MoveNext()
         {
-            if (currentPosition == numberOfElements - 1)
+            if (currentPosition == objectsArray.Count - 1)
             {
                 return false;
             }

@@ -23,7 +23,7 @@ namespace IntegersArray
 
         public IEnumerator GetEnumerator()
         {
-            return new ObjectsEnumerator(array, Count);
+            return new ObjectsEnumerator(this);
         }
 
         public void Add(object element)
