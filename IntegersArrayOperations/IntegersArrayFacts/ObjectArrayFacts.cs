@@ -137,6 +137,7 @@ namespace IntegersArrayFacts
             object1.RemoveAt(4);
             object1.RemoveAt(1);
 
+
             Assert.Equal(15, object1[0]);
             Assert.Equal("hey", object1[1]);
             Assert.Equal(false, object1[2]);

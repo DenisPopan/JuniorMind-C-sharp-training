@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections;
 
 namespace IntegersArray
 {
-    public class ObjectArray
+    public class ObjectArray : IEnumerable
     {
         object[] array;
 
@@ -18,6 +19,11 @@ namespace IntegersArray
         {
             get => array[index];
             set => array[index] = value;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return new ObjectsEnumerator(array);
         }
 
         public void Add(object element)
