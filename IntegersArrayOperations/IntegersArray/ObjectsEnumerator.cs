@@ -5,11 +5,13 @@ namespace IntegersArray
     public class ObjectsEnumerator : IEnumerator
     {
         readonly object[] objectsArray;
+        readonly int numberOfElements;
         int currentPosition = -1;
 
-        public ObjectsEnumerator(object[] givenArray)
+        public ObjectsEnumerator(object[] givenArray, int count)
         {
             objectsArray = givenArray;
+            numberOfElements = count;
         }
 
         public object Current
@@ -22,8 +24,13 @@ namespace IntegersArray
 
         public bool MoveNext()
         {
+            if (currentPosition == numberOfElements - 1)
+            {
+                return false;
+            }
+
             currentPosition++;
-            return currentPosition < objectsArray.Length;
+            return true;
         }
 
         public void Reset()

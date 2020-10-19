@@ -7,7 +7,7 @@ namespace ForeachTester
     {
         static void Main(string[] args)
         {
-            var objectArray = new ObjectArray { 1, 6, 12, "hey" };
+            var objectArray = new ObjectArray { 1, 2, 3 };
             foreach (var element in objectArray)
             {
                 Console.Write("it works! ");
