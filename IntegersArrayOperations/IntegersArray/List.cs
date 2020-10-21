@@ -3,19 +3,19 @@ using System.Collections;
 
 namespace IntegersArray
 {
-    public class ObjectArray : IEnumerable
+    public class List<T> : IEnumerable
     {
-        object[] array;
+        T[] array;
 
-        public ObjectArray()
+        public List()
         {
-            array = new object[4];
+            array = new T[4];
             Count = 0;
         }
 
         public int Count { get; private set; }
 
-        public object this[int index]
+        public T this[int index]
         {
             get => array[index];
             set => array[index] = value;
@@ -29,19 +29,19 @@ namespace IntegersArray
             }
         }
 
-        public void Add(object element)
+        public void Add(T element)
         {
             ArrayResize();
             array[Count] = element;
             Count++;
         }
 
-        public bool Contains(object element)
+        public bool Contains(T element)
         {
             return IndexOf(element) != -1;
         }
 
-        public int IndexOf(object element)
+        public int IndexOf(T element)
         {
             for (int i = 0; i < Count; i++)
             {
@@ -54,7 +54,7 @@ namespace IntegersArray
             return -1;
         }
 
-        public void Insert(int index, object element)
+        public void Insert(int index, T element)
         {
             ArrayResize();
             ShiftRight(index);
@@ -68,7 +68,7 @@ namespace IntegersArray
             Count = 0;
         }
 
-        public void Remove(object element)
+        public void Remove(T element)
         {
             int elementPosition = IndexOf(element);
             if (elementPosition == -1)
