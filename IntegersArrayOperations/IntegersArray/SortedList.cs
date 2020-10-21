@@ -58,36 +58,22 @@ namespace IntegersArray
 
         bool ElementCanBeSet(int index, T value)
         {
-            bool elementIsGreaterOrEqualThanPreviousOne = true;
-            bool elementIsSmallerOrEqualThanNextOne = true;
-            if (ElementExists(index - 1))
-            {
-                elementIsGreaterOrEqualThanPreviousOne = value.CompareTo(array[index - 1]) == 1 || value.CompareTo(array[index - 1]) == 0;
-            }
-
-            if (ElementExists(index + 1))
-            {
-                elementIsSmallerOrEqualThanNextOne = value.CompareTo(array[index + 1]) == -1 || value.CompareTo(array[index + 1]) == 0;
-            }
-
-            return elementIsGreaterOrEqualThanPreviousOne && elementIsSmallerOrEqualThanNextOne;
+            return CompareElements(value, index - 1) > -1 && CompareElements(value, index + 1) < 1;
         }
 
         bool ElementCanBeInserted(int index, T element)
         {
-            bool elementIsGreaterOrEqualThanPreviousOne = true;
-            bool elementIsSmallerOrEqualThanCurrentOne = true;
-            if (ElementExists(index - 1))
+            return CompareElements(element, index - 1) > -1 && CompareElements(element, index) < 1;
+        }
+
+        int CompareElements(T firstElement, int secondElementPosition)
+        {
+            if (!ElementExists(secondElementPosition))
             {
-                elementIsGreaterOrEqualThanPreviousOne = element.CompareTo(array[index - 1]) == 1 || element.CompareTo(array[index - 1]) == 0;
+                return 0;
             }
 
-            if (ElementExists(index))
-            {
-                elementIsSmallerOrEqualThanCurrentOne = element.CompareTo(array[index]) == -1 || element.CompareTo(array[index]) == 0;
-            }
-
-            return elementIsGreaterOrEqualThanPreviousOne && elementIsSmallerOrEqualThanCurrentOne;
+            return firstElement.CompareTo(array[secondElementPosition]);
         }
 
         bool ElementExists(int position)
