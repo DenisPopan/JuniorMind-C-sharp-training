@@ -5,7 +5,7 @@ namespace IntegersArray
 {
     public class List<T> : IEnumerable
     {
-        T[] array;
+        protected T[] array;
 
         public List()
         {
@@ -15,7 +15,7 @@ namespace IntegersArray
 
         public int Count { get; private set; }
 
-        public T this[int index]
+        public virtual T this[int index]
         {
             get => array[index];
             set => array[index] = value;
