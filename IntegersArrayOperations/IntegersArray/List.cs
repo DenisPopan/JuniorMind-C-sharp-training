@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace IntegersArray
 {
-    public class List<T> : IEnumerable
+    public class List<T> : IList<T>
     {
         protected T[] array;
 
@@ -15,13 +16,18 @@ namespace IntegersArray
 
         public int Count { get; private set; }
 
+        public bool IsReadOnly
+        {
+            get { return false; }
+        }
+
         public virtual T this[int index]
         {
             get => array[index];
             set => array[index] = value;
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             for (int i = 0; i < Count; i++)
             {
@@ -29,23 +35,28 @@ namespace IntegersArray
             }
         }
 
-        public void Add(T element)
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        public void Add(T item)
         {
             ArrayResize();
-            array[Count] = element;
+            array[Count] = item;
             Count++;
         }
 
-        public bool Contains(T element)
+        public bool Contains(T item)
         {
-            return IndexOf(element) != -1;
+            return IndexOf(item) != -1;
         }
 
-        public int IndexOf(T element)
+        public int IndexOf(T item)
         {
             for (int i = 0; i < Count; i++)
             {
-                if (array[i].Equals(element))
+                if (array[i].Equals(item))
                 {
                     return i;
                 }
@@ -54,11 +65,32 @@ namespace IntegersArray
             return -1;
         }
 
-        public void Insert(int index, T element)
+        public void CopyTo(T[] array, int arrayIndex)
+        {
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (array.Length - arrayIndex < Count)
+            {
+                return;
+            }
+
+            int currentArrayIndex = 0;
+
+            for (int i = arrayIndex; i < array.Length; i++)
+            {
+                array[i] = this.array[currentArrayIndex];
+                currentArrayIndex++;
+            }
+        }
+
+        public void Insert(int index, T item)
         {
             ArrayResize();
             ShiftRight(index);
-            array[index] = element;
+            array[index] = item;
             Count++;
         }
 
@@ -68,15 +100,16 @@ namespace IntegersArray
             Count = 0;
         }
 
-        public void Remove(T element)
+        public bool Remove(T item)
         {
-            int elementPosition = IndexOf(element);
+            int elementPosition = IndexOf(item);
             if (elementPosition == -1)
             {
-                return;
+                return false;
             }
 
             RemoveAt(elementPosition);
+            return true;
         }
 
         public void RemoveAt(int index)

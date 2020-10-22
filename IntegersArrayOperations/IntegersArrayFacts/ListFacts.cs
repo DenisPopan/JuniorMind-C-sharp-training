@@ -62,32 +62,57 @@ namespace IntegersArrayFacts
             var object1 = new List<int>();
             Assert.Equal(0, object1.Count);
             object1.Add(15);
-            object1.Add(22);
-            object1.Add(16);
-            object1.Add(101);
-            object1.Add(667);
             Assert.True(object1.Contains(15));
-            Assert.True(object1.Contains(22));
-            Assert.True(object1.Contains(16));
-            Assert.True(object1.Contains(101));
-            Assert.True(object1.Contains(667));
+
+            var object2 = new List<string>();
+            Assert.Equal(0, object2.Count);
+            object2.Add("hey");
+            Assert.True(object2.Contains("hey"));
+
+            var object3 = new List<bool>();
+            Assert.Equal(0, object3.Count);
+            object3.Add(true);
+            Assert.True(object3.Contains(true));
+
+            var object4 = new List<char>();
+            Assert.Equal(0, object4.Count);
+            object4.Add('e');
+            Assert.True(object4.Contains('e'));
+
+            var object5 = new List<double>();
+            Assert.Equal(0, object5.Count);
+            object5.Add(15.3e4);
+            Assert.True(object5.Contains(15.3e4));
+
         }
 
         [Fact]
         public void IndexOfMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<char>();
+            var object1 = new List<int>();
             Assert.Equal(0, object1.Count);
-            object1.Add('a');
-            object1.Add('b');
-            object1.Add('c');
-            object1.Add('d');
-            object1.Add('e');
-            Assert.Equal(0, object1.IndexOf('a'));
-            Assert.Equal(1, object1.IndexOf('b'));
-            Assert.Equal(2, object1.IndexOf('c'));
-            Assert.Equal(3, object1.IndexOf('d'));
-            Assert.Equal(4, object1.IndexOf('e'));
+            object1.Add(15);
+            Assert.Equal(0, object1.IndexOf(15));
+
+            var object2 = new List<string>();
+            Assert.Equal(0, object2.Count);
+            object2.Add("hey");
+            Assert.Equal(0, object2.IndexOf("hey"));
+
+            var object3 = new List<bool>();
+            Assert.Equal(0, object3.Count);
+            object3.Add(true);
+            Assert.Equal(0, object3.IndexOf(true));
+
+            var object4 = new List<char>();
+            Assert.Equal(0, object4.Count);
+            object4.Add('e');
+            Assert.Equal(0, object4.IndexOf('e'));
+
+            var object5 = new List<double>();
+            Assert.Equal(0, object5.Count);
+            object5.Add(15.3e4);
+            Assert.Equal(0, object5.IndexOf(15.3e4));
         }
 
         [Fact]
@@ -96,21 +121,42 @@ namespace IntegersArrayFacts
             var object1 = new List<int>();
             Assert.Equal(0, object1.Count);
             object1.Add(15);
-            object1.Add(22);
-            object1.Add(64);
-            object1.Add(16);
-            object1.Add(2);
-            object1.Insert(2, 79);
-            object1.Insert(4, 28);
-            object1.Insert(1, 19);
-            Assert.Equal(15, object1[0]);
-            Assert.Equal(19, object1[1]);
-            Assert.Equal(22, object1[2]);
-            Assert.Equal(79, object1[3]);
-            Assert.Equal(64, object1[4]);
-            Assert.Equal(28, object1[5]);
-            Assert.Equal(16, object1[6]);
-            Assert.Equal(2, object1[7]);
+            object1.Insert(0, 12);
+            object1.Insert(0, 16);
+            Assert.Equal(16, object1[0]);
+            Assert.Equal(12, object1[1]);
+
+            var object2 = new List<string>();
+            Assert.Equal(0, object2.Count);
+            object2.Add("hey");
+            object2.Insert(0, "after");
+            object2.Insert(0, "cyborg");
+            Assert.Equal("cyborg", object2[0]);
+            Assert.Equal("after", object2[1]);
+
+            var object3 = new List<bool>();
+            Assert.Equal(0, object3.Count);
+            object3.Add(true);
+            object3.Insert(0, false);
+            object3.Insert(0, true);
+            Assert.Equal(true, object3[0]);
+            Assert.Equal(false, object3[1]);
+
+            var object4 = new List<char>();
+            Assert.Equal(0, object4.Count);
+            object4.Add('e');
+            object4.Insert(0, 'a');
+            object4.Insert(0, 'c');
+            Assert.Equal('c', object4[0]);
+            Assert.Equal('a', object4[1]);
+
+            var object5 = new List<double>();
+            Assert.Equal(0, object5.Count);
+            object5.Add(15.3e4);
+            object5.Insert(0, 11.2);
+            object5.Insert(0, 124.21);
+            Assert.Equal(124.21, object5[0]);
+            Assert.Equal(11.2, object5[1]);
         }
 
         [Fact]
@@ -128,6 +174,32 @@ namespace IntegersArrayFacts
             object1.Insert(1, 61);
             object1.Clear();
             Assert.Equal(0, object1.Count);
+        }
+
+        [Fact]
+        public void IsReadOnlyMethodReturnsFalse()
+        {
+            var object1 = new List<int>();
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(10);
+            Assert.False(object1.IsReadOnly);
+        }
+
+        [Fact]
+        public void CopyToMethodWorksAccordingly()
+        {
+            int[] array = new int[4];
+            var object1 = new List<int>();
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(10);
+            object1.Add(235);
+            object1.CopyTo(array, 0);
+            Assert.Equal(15, array[0]);
+            Assert.Equal(22, array[1]);
+            Assert.Equal(10, array[2]);
+            Assert.Equal(235, array[3]);
         }
 
         [Fact]
