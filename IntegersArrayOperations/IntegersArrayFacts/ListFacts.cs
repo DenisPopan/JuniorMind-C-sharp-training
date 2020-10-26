@@ -1,15 +1,118 @@
 ﻿using Xunit;
 using IntegersArray;
+using System;
 
 namespace IntegersArrayFacts
 {
     public class ListFacts
     {
         [Fact]
+
+        public void IndexerThrowsExceptionWhenIndexIsInvalid()
+        {
+            var object1 = new List<int>();
+            Assert.Empty(object1);
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(10);
+            object1.Add(16);
+            object1.Add(28);
+            Assert.Throws<ArgumentOutOfRangeException>(() => object1[16]);
+        }
+
+        [Fact]
+
+        public void IndexerThrowsNotSupportedExceptionWhenIListIsReadOnly()
+        {
+            var object1 = new List<int>();
+            Assert.Empty(object1);
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(10);
+            object1.Add(16);
+            object1.Add(28);
+            Assert.Throws<NotSupportedException>(() => object1[3]);
+        }
+
+        [Fact]
+
+        public void CopyToMethodShouldThrowArgumentNullExceptionWhenArrayIsNull()
+        {
+            var object1 = new List<int>();
+            int[] array = null;
+            object1.Add(15);
+            object1.Add(22);
+
+            Assert.Throws<ArgumentNullException>(() => object1.CopyTo(array, 0));
+        }
+
+        [Fact]
+
+        public void CopyToMethodShouldThrowIndexOutOfRangeExceptionWhenArrayIndexIsBelowZero()
+        {
+            var object1 = new List<int>();
+            int[] array = new int[2];
+            object1.Add(15);
+            object1.Add(22);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => object1.CopyTo(array, -1));
+        }
+
+        [Fact]
+
+        public void CopyToMethodShouldThrowArgumentExceptionWhenElementsCanNotBeCopied()
+        {
+            var object1 = new List<int>();
+            int[] array = new int[2];
+            object1.Add(15);
+            object1.Add(22);
+
+            Exception ex = Assert.Throws<ArgumentException>(() => object1.CopyTo(array, 1));
+            Assert.Equal("number of elements in the instance is greater than the available space from arrayIndex to the end of the destination array", ex.Message);
+        }
+
+        [Fact]
+
+        public void CopyToMethodShouldThrowArgumentOutOfRangeExceptionWhenArrayIndexIsBelowZero()
+        {
+            var object1 = new List<int>();
+            int[] array = new int[2];
+            object1.Add(15);
+            object1.Add(22);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => object1.CopyTo(array, -1));
+        }
+
+        [Fact]
+
+        public void InsertMethodShouldThrowArgumentOutOfRangeExceptionWhenGivenInsertionIndexIsInvalid()
+        {
+            var object1 = new List<int>();
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(346);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => object1.Insert(3, 2350));
+        }
+
+        [Fact]
+
+        public void RemoveAtMethodShouldThrowArgumentOutOfRangeExceptionWhenGivenElementIndexIsInvalid()
+        {
+            var object1 = new List<int>();
+            object1.Add(15);
+            object1.Add(22);
+            object1.Add(346);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => object1.RemoveAt(3));
+        }
+
+
+        [Fact]
         public void AddMethodWorksForAllBaseTypes()
         {
             var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
+            Assert.Empty(object1);
             object1.Add(15);
             object1.Add(22);
             object1.Add(10);
