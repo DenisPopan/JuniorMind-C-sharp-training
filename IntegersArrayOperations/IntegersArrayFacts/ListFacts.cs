@@ -10,64 +10,50 @@ namespace IntegersArrayFacts
 
         public void IndexerThrowsExceptionWhenIndexIsInvalid()
         {
-            var object1 = new List<int>();
-            Assert.Empty(object1);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            object1.Add(16);
-            object1.Add(28);
-            Assert.Throws<ArgumentOutOfRangeException>(() => object1[16]);
-        }
-
-        [Fact]
-
-        public void IndexerThrowsNotSupportedExceptionWhenIListIsReadOnly()
-        {
-            var object1 = new List<int>();
-            Assert.Empty(object1);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            object1.Add(16);
-            object1.Add(28);
-            Assert.Throws<NotSupportedException>(() => object1[3]);
+            var list1 = new List<int>();
+            Assert.Empty(list1);
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(10);
+            list1.Add(16);
+            list1.Add(28);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1[16]);
         }
 
         [Fact]
 
         public void CopyToMethodShouldThrowArgumentNullExceptionWhenArrayIsNull()
         {
-            var object1 = new List<int>();
+            var list1 = new List<int>();
             int[] array = null;
-            object1.Add(15);
-            object1.Add(22);
+            list1.Add(15);
+            list1.Add(22);
 
-            Assert.Throws<ArgumentNullException>(() => object1.CopyTo(array, 0));
+            Assert.Throws<ArgumentNullException>(() => list1.CopyTo(array, 0));
         }
 
         [Fact]
 
         public void CopyToMethodShouldThrowIndexOutOfRangeExceptionWhenArrayIndexIsBelowZero()
         {
-            var object1 = new List<int>();
+            var list1 = new List<int>();
             int[] array = new int[2];
-            object1.Add(15);
-            object1.Add(22);
+            list1.Add(15);
+            list1.Add(22);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => object1.CopyTo(array, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1.CopyTo(array, -1));
         }
 
         [Fact]
 
         public void CopyToMethodShouldThrowArgumentExceptionWhenElementsCanNotBeCopied()
         {
-            var object1 = new List<int>();
+            var list1 = new List<int>();
             int[] array = new int[2];
-            object1.Add(15);
-            object1.Add(22);
+            list1.Add(15);
+            list1.Add(22);
 
-            Exception ex = Assert.Throws<ArgumentException>(() => object1.CopyTo(array, 1));
+            Exception ex = Assert.Throws<ArgumentException>(() => list1.CopyTo(array, 1));
             Assert.Equal("number of elements in the instance is greater than the available space from arrayIndex to the end of the destination array", ex.Message);
         }
 
@@ -75,230 +61,230 @@ namespace IntegersArrayFacts
 
         public void CopyToMethodShouldThrowArgumentOutOfRangeExceptionWhenArrayIndexIsBelowZero()
         {
-            var object1 = new List<int>();
+            var list1 = new List<int>();
             int[] array = new int[2];
-            object1.Add(15);
-            object1.Add(22);
+            list1.Add(15);
+            list1.Add(22);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => object1.CopyTo(array, -1));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1.CopyTo(array, -1));
         }
 
         [Fact]
 
         public void InsertMethodShouldThrowArgumentOutOfRangeExceptionWhenGivenInsertionIndexIsInvalid()
         {
-            var object1 = new List<int>();
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(346);
+            var list1 = new List<int>();
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(346);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => object1.Insert(3, 2350));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1.Insert(3, 2350));
         }
 
         [Fact]
 
         public void RemoveAtMethodShouldThrowArgumentOutOfRangeExceptionWhenGivenElementIndexIsInvalid()
         {
-            var object1 = new List<int>();
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(346);
+            var list1 = new List<int>();
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(346);
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => object1.RemoveAt(3));
+            Assert.Throws<ArgumentOutOfRangeException>(() => list1.RemoveAt(3));
         }
 
 
         [Fact]
         public void AddMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Empty(object1);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            object1.Add(16);
-            object1.Add(28);
-            Assert.Equal(5, object1.Count);
-            Assert.Equal(15, object1[0]);
-            Assert.Equal(22, object1[1]);
-            Assert.Equal(10, object1[2]);
-            Assert.Equal(16, object1[3]);
-            Assert.Equal(28, object1[4]);
+            var list1 = new List<int>();
+            Assert.Empty(list1);
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(10);
+            list1.Add(16);
+            list1.Add(28);
+            Assert.Equal(5, list1.Count);
+            Assert.Equal(15, list1[0]);
+            Assert.Equal(22, list1[1]);
+            Assert.Equal(10, list1[2]);
+            Assert.Equal(16, list1[3]);
+            Assert.Equal(28, list1[4]);
 
-            var object2 = new List<string>();
-            object2.Add("hey");
-            object2.Add("house");
-            object2.Add("party");
-            object2.Add("sounds");
-            object2.Add("great");
-            Assert.Equal(5, object2.Count);
-            Assert.Equal("hey", object2[0]);
-            Assert.Equal("house", object2[1]);
-            Assert.Equal("party", object2[2]);
-            Assert.Equal("sounds", object2[3]);
-            Assert.Equal("great", object2[4]);
+            var list2 = new List<string>();
+            list2.Add("hey");
+            list2.Add("house");
+            list2.Add("party");
+            list2.Add("sounds");
+            list2.Add("great");
+            Assert.Equal(5, list2.Count);
+            Assert.Equal("hey", list2[0]);
+            Assert.Equal("house", list2[1]);
+            Assert.Equal("party", list2[2]);
+            Assert.Equal("sounds", list2[3]);
+            Assert.Equal("great", list2[4]);
 
-            var object3 = new List<bool>();
-            object3.Add(true);
-            object3.Add(false);
-            Assert.True(object3[0]);
-            Assert.False(object3[1]);
+            var list3 = new List<bool>();
+            list3.Add(true);
+            list3.Add(false);
+            Assert.True(list3[0]);
+            Assert.False(list3[1]);
 
-            var object4 = new List<double>();
-            object4.Add(16.2);
-            object4.Add(36e16);
-            Assert.Equal(16.2, object4[0]);
-            Assert.Equal(36e16, object4[1]);
+            var list4 = new List<double>();
+            list4.Add(16.2);
+            list4.Add(36e16);
+            Assert.Equal(16.2, list4[0]);
+            Assert.Equal(36e16, list4[1]);
 
-            var object5 = new List<char>
+            var list5 = new List<char>
             {
                 'e',
                 'g'
             };
-            Assert.Equal('e', object5[0]);
-            Assert.Equal('g', object5[1]);
+            Assert.Equal('e', list5[0]);
+            Assert.Equal('g', list5[1]);
         }
 
         [Fact]
         public void ContainsMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            Assert.True(object1.Contains(15));
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            Assert.True(list1.Contains(15));
 
-            var object2 = new List<string>();
-            Assert.Equal(0, object2.Count);
-            object2.Add("hey");
-            Assert.True(object2.Contains("hey"));
+            var list2 = new List<string>();
+            Assert.Equal(0, list2.Count);
+            list2.Add("hey");
+            Assert.True(list2.Contains("hey"));
 
-            var object3 = new List<bool>();
-            Assert.Equal(0, object3.Count);
-            object3.Add(true);
-            Assert.True(object3.Contains(true));
+            var list3 = new List<bool>();
+            Assert.Equal(0, list3.Count);
+            list3.Add(true);
+            Assert.True(list3.Contains(true));
 
-            var object4 = new List<char>();
-            Assert.Equal(0, object4.Count);
-            object4.Add('e');
-            Assert.True(object4.Contains('e'));
+            var list4 = new List<char>();
+            Assert.Equal(0, list4.Count);
+            list4.Add('e');
+            Assert.True(list4.Contains('e'));
 
-            var object5 = new List<double>();
-            Assert.Equal(0, object5.Count);
-            object5.Add(15.3e4);
-            Assert.True(object5.Contains(15.3e4));
+            var list5 = new List<double>();
+            Assert.Equal(0, list5.Count);
+            list5.Add(15.3e4);
+            Assert.True(list5.Contains(15.3e4));
 
         }
 
         [Fact]
         public void IndexOfMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            Assert.Equal(0, object1.IndexOf(15));
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            Assert.Equal(0, list1.IndexOf(15));
 
-            var object2 = new List<string>();
-            Assert.Equal(0, object2.Count);
-            object2.Add("hey");
-            Assert.Equal(0, object2.IndexOf("hey"));
+            var list2 = new List<string>();
+            Assert.Equal(0, list2.Count);
+            list2.Add("hey");
+            Assert.Equal(0, list2.IndexOf("hey"));
 
-            var object3 = new List<bool>();
-            Assert.Equal(0, object3.Count);
-            object3.Add(true);
-            Assert.Equal(0, object3.IndexOf(true));
+            var list3 = new List<bool>();
+            Assert.Equal(0, list3.Count);
+            list3.Add(true);
+            Assert.Equal(0, list3.IndexOf(true));
 
-            var object4 = new List<char>();
-            Assert.Equal(0, object4.Count);
-            object4.Add('e');
-            Assert.Equal(0, object4.IndexOf('e'));
+            var list4 = new List<char>();
+            Assert.Equal(0, list4.Count);
+            list4.Add('e');
+            Assert.Equal(0, list4.IndexOf('e'));
 
-            var object5 = new List<double>();
-            Assert.Equal(0, object5.Count);
-            object5.Add(15.3e4);
-            Assert.Equal(0, object5.IndexOf(15.3e4));
+            var list5 = new List<double>();
+            Assert.Equal(0, list5.Count);
+            list5.Add(15.3e4);
+            Assert.Equal(0, list5.IndexOf(15.3e4));
         }
 
         [Fact]
         public void InsertMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            object1.Insert(0, 12);
-            object1.Insert(0, 16);
-            Assert.Equal(16, object1[0]);
-            Assert.Equal(12, object1[1]);
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            list1.Insert(0, 12);
+            list1.Insert(0, 16);
+            Assert.Equal(16, list1[0]);
+            Assert.Equal(12, list1[1]);
 
-            var object2 = new List<string>();
-            Assert.Equal(0, object2.Count);
-            object2.Add("hey");
-            object2.Insert(0, "after");
-            object2.Insert(0, "cyborg");
-            Assert.Equal("cyborg", object2[0]);
-            Assert.Equal("after", object2[1]);
+            var list2 = new List<string>();
+            Assert.Equal(0, list2.Count);
+            list2.Add("hey");
+            list2.Insert(0, "after");
+            list2.Insert(0, "cyborg");
+            Assert.Equal("cyborg", list2[0]);
+            Assert.Equal("after", list2[1]);
 
-            var object3 = new List<bool>();
-            Assert.Equal(0, object3.Count);
-            object3.Add(true);
-            object3.Insert(0, false);
-            object3.Insert(0, true);
-            Assert.Equal(true, object3[0]);
-            Assert.Equal(false, object3[1]);
+            var list3 = new List<bool>();
+            Assert.Equal(0, list3.Count);
+            list3.Add(true);
+            list3.Insert(0, false);
+            list3.Insert(0, true);
+            Assert.Equal(true, list3[0]);
+            Assert.Equal(false, list3[1]);
 
-            var object4 = new List<char>();
-            Assert.Equal(0, object4.Count);
-            object4.Add('e');
-            object4.Insert(0, 'a');
-            object4.Insert(0, 'c');
-            Assert.Equal('c', object4[0]);
-            Assert.Equal('a', object4[1]);
+            var list4 = new List<char>();
+            Assert.Equal(0, list4.Count);
+            list4.Add('e');
+            list4.Insert(0, 'a');
+            list4.Insert(0, 'c');
+            Assert.Equal('c', list4[0]);
+            Assert.Equal('a', list4[1]);
 
-            var object5 = new List<double>();
-            Assert.Equal(0, object5.Count);
-            object5.Add(15.3e4);
-            object5.Insert(0, 11.2);
-            object5.Insert(0, 124.21);
-            Assert.Equal(124.21, object5[0]);
-            Assert.Equal(11.2, object5[1]);
+            var list5 = new List<double>();
+            Assert.Equal(0, list5.Count);
+            list5.Add(15.3e4);
+            list5.Insert(0, 11.2);
+            list5.Insert(0, 124.21);
+            Assert.Equal(124.21, list5[0]);
+            Assert.Equal(11.2, list5[1]);
         }
 
         [Fact]
         public void ClearMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            object1.Add(346);
-            object1.Add(734);
-            object1.Insert(2, 745);
-            object1.Insert(4, 234);
-            object1.Insert(1, 61);
-            object1.Clear();
-            Assert.Equal(0, object1.Count);
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(10);
+            list1.Add(346);
+            list1.Add(734);
+            list1.Insert(2, 745);
+            list1.Insert(4, 234);
+            list1.Insert(1, 61);
+            list1.Clear();
+            Assert.Equal(0, list1.Count);
         }
 
         [Fact]
         public void IsReadOnlyMethodReturnsFalse()
         {
-            var object1 = new List<int>();
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            Assert.False(object1.IsReadOnly);
+            var list1 = new List<int>();
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(10);
+            Assert.False(list1.IsReadOnly);
         }
 
         [Fact]
         public void CopyToMethodWorksAccordingly()
         {
             int[] array = new int[4];
-            var object1 = new List<int>();
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(10);
-            object1.Add(235);
-            object1.CopyTo(array, 0);
+            var list1 = new List<int>();
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(10);
+            list1.Add(235);
+            list1.CopyTo(array, 0);
             Assert.Equal(15, array[0]);
             Assert.Equal(22, array[1]);
             Assert.Equal(10, array[2]);
@@ -308,51 +294,51 @@ namespace IntegersArrayFacts
         [Fact]
         public void RemoveMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(16);
-            object1.Add(69);
-            object1.Add(47);
-            object1.Insert(2, 37);
-            object1.Insert(4, 7457);
-            object1.Insert(1, 66);
-            object1.Remove(69);
-            object1.Remove(7457);
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(16);
+            list1.Add(69);
+            list1.Add(47);
+            list1.Insert(2, 37);
+            list1.Insert(4, 7457);
+            list1.Insert(1, 66);
+            list1.Remove(69);
+            list1.Remove(7457);
 
-            Assert.Equal(15, object1[0]);
-            Assert.Equal(66, object1[1]);
-            Assert.Equal(22, object1[2]);
-            Assert.Equal(37, object1[3]);
-            Assert.Equal(16, object1[4]);
-            Assert.Equal(47, object1[5]);
+            Assert.Equal(15, list1[0]);
+            Assert.Equal(66, list1[1]);
+            Assert.Equal(22, list1[2]);
+            Assert.Equal(37, list1[3]);
+            Assert.Equal(16, list1[4]);
+            Assert.Equal(47, list1[5]);
 
         }
 
         [Fact]
         public void RemoveAtMethodWorksForAllBaseTypes()
         {
-            var object1 = new List<int>();
-            Assert.Equal(0, object1.Count);
-            object1.Add(15);
-            object1.Add(22);
-            object1.Add(16);
-            object1.Add(69);
-            object1.Add(47);
-            object1.Insert(2, 37);
-            object1.Insert(4, 7457);
-            object1.Insert(1, 66);
-            object1.RemoveAt(4);
-            object1.RemoveAt(1);
+            var list1 = new List<int>();
+            Assert.Equal(0, list1.Count);
+            list1.Add(15);
+            list1.Add(22);
+            list1.Add(16);
+            list1.Add(69);
+            list1.Add(47);
+            list1.Insert(2, 37);
+            list1.Insert(4, 7457);
+            list1.Insert(1, 66);
+            list1.RemoveAt(4);
+            list1.RemoveAt(1);
 
 
-            Assert.Equal(15, object1[0]);
-            Assert.Equal(22, object1[1]);
-            Assert.Equal(37, object1[2]);
-            Assert.Equal(7457, object1[3]);
-            Assert.Equal(69, object1[4]);
-            Assert.Equal(47, object1[5]);
+            Assert.Equal(15, list1[0]);
+            Assert.Equal(22, list1[1]);
+            Assert.Equal(37, list1[2]);
+            Assert.Equal(7457, list1[3]);
+            Assert.Equal(69, list1[4]);
+            Assert.Equal(47, list1[5]);
         }
     }
 }

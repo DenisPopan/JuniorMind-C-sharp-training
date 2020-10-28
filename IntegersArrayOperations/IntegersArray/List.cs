@@ -16,20 +16,15 @@ namespace IntegersArray
 
         public int Count { get; private set; }
 
-        public bool IsReadOnly
+        public virtual bool IsReadOnly
         {
-            get { return false; }
+            get;
         }
 
         public virtual T this[int index]
         {
             get
             {
-                if (IsReadOnly)
-                {
-                    throw new NotSupportedException();
-                }
-
                 if (index < 0 || index >= Count)
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
@@ -40,11 +35,6 @@ namespace IntegersArray
 
             set
             {
-                if (IsReadOnly)
-                {
-                    throw new NotSupportedException();
-                }
-
                 if (index < 0 || index >= Count)
                 {
                     throw new ArgumentOutOfRangeException(nameof(index));
@@ -69,11 +59,6 @@ namespace IntegersArray
 
         public void Add(T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
             ArrayResize();
             array[Count] = item;
             Count++;
@@ -125,11 +110,6 @@ namespace IntegersArray
 
         public void Insert(int index, T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
             if (index < 0 || index >= Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -143,22 +123,12 @@ namespace IntegersArray
 
         public void Clear()
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
             Array.Resize(ref array, 4);
             Count = 0;
         }
 
         public bool Remove(T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
             int elementPosition = IndexOf(item);
             if (elementPosition == -1)
             {
@@ -171,11 +141,6 @@ namespace IntegersArray
 
         public void RemoveAt(int index)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
             if (index < 0 || index >= Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(index));
@@ -185,7 +150,7 @@ namespace IntegersArray
             Count--;
         }
 
-        void ShiftRight(int insertIndex)
+        protected virtual void ShiftRight(int insertIndex)
         {
             for (int i = Count; i > insertIndex; i--)
             {
@@ -193,7 +158,7 @@ namespace IntegersArray
             }
         }
 
-        void ShiftLeft(int elementToDeletePosition)
+        protected virtual void ShiftLeft(int elementToDeletePosition)
         {
             for (int i = elementToDeletePosition; i < Count - 1; i++)
             {
@@ -201,7 +166,7 @@ namespace IntegersArray
             }
         }
 
-        void ArrayResize()
+        protected virtual void ArrayResize()
         {
             if (Count != array.Length)
             {
