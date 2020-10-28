@@ -4,18 +4,30 @@ using System.Collections.Generic;
 
 namespace IntegersArray
 {
-    public abstract class ListDecorator<T> : IList<T>
+    public class ReadOnlyList<T> : IList<T>
     {
         protected IList<T> list;
 
-        protected ListDecorator(IList<T> list)
+        public ReadOnlyList(IList<T> list)
         {
             this.list = list;
         }
 
-        public int Count { get; protected set; }
+        public int Count
+        {
+            get
+            {
+                return list.Count;
+            }
+        }
 
-        public virtual bool IsReadOnly { get; }
+        public bool IsReadOnly
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         public T this[int index]
         {
@@ -31,17 +43,7 @@ namespace IntegersArray
 
             set
             {
-                if (IsReadOnly)
-                {
-                    throw new NotSupportedException();
-                }
-
-                if (index < 0 || index >= Count)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
-
-                list[index] = value;
+                throw new NotSupportedException();
             }
         }
 
@@ -60,12 +62,7 @@ namespace IntegersArray
 
         public void Add(T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
-            list.Add(item);
+            throw new NotSupportedException();
         }
 
         public bool Contains(T item)
@@ -85,42 +82,22 @@ namespace IntegersArray
 
         public void Insert(int index, T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
-            list.Insert(index, item);
+            throw new NotSupportedException();
         }
 
         public virtual void Clear()
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
-            list.Clear();
+            throw new NotSupportedException();
         }
 
         public bool Remove(T item)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
-            return list.Remove(item);
+            throw new NotSupportedException();
         }
 
         public void RemoveAt(int index)
         {
-            if (IsReadOnly)
-            {
-                throw new NotSupportedException();
-            }
-
-            list.RemoveAt(index);
+            throw new NotSupportedException();
         }
     }
 }
