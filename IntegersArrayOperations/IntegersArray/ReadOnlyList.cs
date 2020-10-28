@@ -31,15 +31,7 @@ namespace IntegersArray
 
         public T this[int index]
         {
-            get
-            {
-                if (index < 0 || index >= Count)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(index));
-                }
-
-                return list[index];
-            }
+            get => list[index];
 
             set
             {
@@ -47,13 +39,7 @@ namespace IntegersArray
             }
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                yield return list[i];
-            }
-        }
+        public IEnumerator<T> GetEnumerator() => list.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {
