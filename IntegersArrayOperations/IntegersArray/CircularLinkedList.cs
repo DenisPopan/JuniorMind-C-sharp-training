@@ -62,7 +62,9 @@ namespace IntegersArray
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            sentinelNode.Next = sentinelNode;
+            sentinelNode.Previous = sentinelNode;
+            Count = 0;
         }
 
         public bool Contains(CircularLinkedListNode<T> item)

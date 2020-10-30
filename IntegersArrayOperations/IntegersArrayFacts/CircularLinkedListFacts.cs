@@ -75,5 +75,31 @@ namespace IntegersArrayFacts
 
             Assert.Throws<ArgumentException>(() => circularLinkedList.Last);
         }
+
+        [Fact]
+
+        public void ClearMethodShouldDeleteAllNodesFromTheList()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+
+            circularLinkedList.Add(circularLinkedListNode1);
+            circularLinkedList.Add(circularLinkedListNode2);
+            circularLinkedList.Add(circularLinkedListNode3);
+            circularLinkedList.Add(circularLinkedListNode4);
+
+            Assert.Equal(4, circularLinkedList.Count);
+            Assert.Equal(235356, circularLinkedList.Last.Value);
+
+            circularLinkedList.Clear();
+
+            Assert.Equal(0, circularLinkedList.Count);
+            Assert.Throws<ArgumentException>(() => circularLinkedList.First);
+            Assert.Throws<ArgumentException>(() => circularLinkedList.Last);
+        }
     }
 }
