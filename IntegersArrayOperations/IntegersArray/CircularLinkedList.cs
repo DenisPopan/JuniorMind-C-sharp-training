@@ -106,7 +106,21 @@ namespace IntegersArray
 
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            var auxNode = sentinelNode.Next;
+            while (auxNode != sentinelNode)
+            {
+                if (auxNode.Value.Equals(item))
+                {
+                    auxNode.Previous.Next = auxNode.Next;
+                    auxNode.Next.Previous = auxNode.Previous;
+                    Count--;
+                    return true;
+                }
+
+                auxNode = auxNode.Next;
+            }
+
+            return false;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
