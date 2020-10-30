@@ -42,5 +42,14 @@ namespace IntegersArrayFacts
 
             Assert.Equal(16, circularLinkedList.First.Value);
         }
+
+        [Fact]
+
+        public void FirstPropertyShouldThrowAnExceptionWhenListIsEmpty()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            Assert.Throws<ArgumentException>(() => circularLinkedList.First);
+        }
     }
 }

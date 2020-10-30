@@ -24,6 +24,11 @@ namespace IntegersArray
         {
             get
             {
+                if (sentinelNode.Next == sentinelNode)
+                {
+                    throw new ArgumentException("The linked list is empty");
+                }
+
                 return sentinelNode.Next;
             }
         }
