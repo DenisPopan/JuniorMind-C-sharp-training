@@ -21,6 +21,15 @@ namespace IntegersArrayFacts
 
         [Fact]
 
+        public void AddMethodShouldThrowAnExceptionWhenAdeedItemIsNull()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            CircularLinkedListNode<int> circularLinkedListNode1 = null;
+            Assert.Throws<ArgumentNullException>(() => circularLinkedList.Add(circularLinkedListNode1));
+        }
+
+        [Fact]
+
         public void FirstPropertyShouldReturnFirstNodeInTheList()
         {
             var circularLinkedList = new CircularLinkedList<int>();
