@@ -95,6 +95,16 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(array));
             }
 
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
+
+            if (array.Length - arrayIndex < Count)
+            {
+                throw new ArgumentException("number of elements in the instance is greater than the available space from arrayIndex to the end of the destination array");
+            }
+
             int index = 0;
             foreach (var nodeValue in this)
             {

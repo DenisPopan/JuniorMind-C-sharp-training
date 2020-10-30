@@ -160,5 +160,24 @@ namespace IntegersArrayFacts
             Assert.Equal(235356, array[3]);
             Assert.Equal(4, array.Length);
         }
+
+        [Fact]
+
+        public void CopyToMethodShouldThrowAppropriateExceptions()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            int[] array1 = null;
+            int[] array2 = new int[4];
+
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
+            circularLinkedList.Add(474);
+            circularLinkedList.Add(235356);
+
+            Assert.Throws<ArgumentNullException>(() => circularLinkedList.CopyTo(array1, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => circularLinkedList.CopyTo(array2, -1));
+            Assert.Throws<ArgumentException>(() => circularLinkedList.CopyTo(array2, 2));
+        }
     }
 }
