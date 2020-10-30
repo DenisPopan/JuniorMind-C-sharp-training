@@ -20,6 +20,14 @@ namespace IntegersArray
 
         public bool IsReadOnly { get; }
 
+        public CircularLinkedListNode<T> First
+        {
+            get
+            {
+                return sentinelNode.Next;
+            }
+        }
+
         public void Add(CircularLinkedListNode<T> item)
         {
             if (item == null)
