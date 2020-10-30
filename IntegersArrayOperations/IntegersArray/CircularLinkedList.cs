@@ -33,6 +33,14 @@ namespace IntegersArray
             }
         }
 
+        public CircularLinkedListNode<T> Last
+        {
+            get
+            {
+                return sentinelNode.Previous;
+            }
+        }
+
         public void Add(CircularLinkedListNode<T> item)
         {
             if (item == null)

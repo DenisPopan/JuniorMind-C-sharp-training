@@ -51,5 +51,20 @@ namespace IntegersArrayFacts
 
             Assert.Throws<ArgumentException>(() => circularLinkedList.First);
         }
+
+        [Fact]
+
+        public void LastPropertyShouldReturnLastNodeInTheList()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+
+            circularLinkedList.Add(circularLinkedListNode1);
+            circularLinkedList.Add(circularLinkedListNode2);
+
+            Assert.Equal(22, circularLinkedList.Last.Value);
+        }
     }
 }
