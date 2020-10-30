@@ -179,5 +179,22 @@ namespace IntegersArrayFacts
             Assert.Throws<ArgumentOutOfRangeException>(() => circularLinkedList.CopyTo(array2, -1));
             Assert.Throws<ArgumentException>(() => circularLinkedList.CopyTo(array2, 2));
         }
+
+        [Fact]
+
+        public void AddLastMethodShouldAddNodeAtTheEndOfThelist()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>();
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>();
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            Assert.Equal(1, circularLinkedList.Count);
+            Assert.Equal(circularLinkedList.First, circularLinkedListNode1);
+
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            Assert.Equal(2, circularLinkedList.Count);
+            Assert.Equal(circularLinkedList.Last, circularLinkedListNode2);
+        }
     }
 }

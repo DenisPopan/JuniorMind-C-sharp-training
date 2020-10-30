@@ -63,6 +63,20 @@ namespace IntegersArray
             Count++;
         }
 
+        public void AddLast(CircularLinkedListNode<T> newNode)
+        {
+            if (newNode == null)
+            {
+                throw new ArgumentNullException(nameof(newNode));
+            }
+
+            newNode.Next = sentinelNode;
+            newNode.Previous = sentinelNode.Previous;
+            sentinelNode.Previous.Next = newNode;
+            sentinelNode.Previous = newNode;
+            Count++;
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;
