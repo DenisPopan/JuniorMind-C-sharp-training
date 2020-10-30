@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace IntegersArray
 {
-    public class CircularLinkedList<T> : ICollection<CircularLinkedListNode<T>>
+    public class CircularLinkedList<T> : ICollection<T>
     {
         readonly CircularLinkedListNode<T> sentinelNode;
 
         public CircularLinkedList()
         {
-            sentinelNode = new CircularLinkedListNode<T>(default(T));
+            sentinelNode = new CircularLinkedListNode<T>();
             sentinelNode.Next = sentinelNode;
             sentinelNode.Previous = sentinelNode;
             Count = 0;
@@ -46,17 +46,20 @@ namespace IntegersArray
             }
         }
 
-        public void Add(CircularLinkedListNode<T> item)
+        public void Add(T item)
         {
             if (item == null)
             {
                 throw new ArgumentNullException(nameof(item));
             }
 
-            item.Next = sentinelNode;
-            item.Previous = sentinelNode.Previous;
-            sentinelNode.Previous.Next = item;
-            sentinelNode.Previous = item;
+            var nodeToBeAdded = new CircularLinkedListNode<T>();
+
+            nodeToBeAdded.Value = item;
+            nodeToBeAdded.Next = sentinelNode;
+            nodeToBeAdded.Previous = sentinelNode.Previous;
+            sentinelNode.Previous.Next = nodeToBeAdded;
+            sentinelNode.Previous = nodeToBeAdded;
             Count++;
         }
 
@@ -67,29 +70,48 @@ namespace IntegersArray
             Count = 0;
         }
 
-        public bool Contains(CircularLinkedListNode<T> item)
+        public bool Contains(T item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            foreach (var nodeValue in this)
+            {
+                if (nodeValue.Equals(item))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void CopyTo(T[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(CircularLinkedListNode<T>[] array, int arrayIndex)
+        public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var auxNode = sentinelNode.Next;
+
+            for (int i = 0; i < Count; i++)
+            {
+                yield return auxNode.Value;
+                auxNode = auxNode.Next;
+            }
         }
 
-        public IEnumerator<CircularLinkedListNode<T>> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Remove(CircularLinkedListNode<T> item)
+        public bool Remove(T item)
         {
             throw new NotImplementedException();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
     }
 }

@@ -11,21 +11,10 @@ namespace IntegersArrayFacts
         public void AddMethodShouldAddElementAtTheEndOfThelist()
         {
             var circularLinkedList = new CircularLinkedList<int>();
-            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
-            circularLinkedList.Add(circularLinkedListNode1);
+            circularLinkedList.Add(16);
             Assert.Equal(1, circularLinkedList.Count);
-            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
-            circularLinkedList.Add(circularLinkedListNode2);
+            circularLinkedList.Add(22);
             Assert.Equal(2, circularLinkedList.Count);
-        }
-
-        [Fact]
-
-        public void AddMethodShouldThrowAnExceptionWhenAdeedItemIsNull()
-        {
-            var circularLinkedList = new CircularLinkedList<int>();
-            CircularLinkedListNode<int> circularLinkedListNode1 = null;
-            Assert.Throws<ArgumentNullException>(() => circularLinkedList.Add(circularLinkedListNode1));
         }
 
         [Fact]
@@ -34,11 +23,8 @@ namespace IntegersArrayFacts
         {
             var circularLinkedList = new CircularLinkedList<int>();
 
-            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
-            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
-
-            circularLinkedList.Add(circularLinkedListNode1);
-            circularLinkedList.Add(circularLinkedListNode2);
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
 
             Assert.Equal(16, circularLinkedList.First.Value);
         }
@@ -58,11 +44,8 @@ namespace IntegersArrayFacts
         {
             var circularLinkedList = new CircularLinkedList<int>();
 
-            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
-            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
-
-            circularLinkedList.Add(circularLinkedListNode1);
-            circularLinkedList.Add(circularLinkedListNode2);
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
 
             Assert.Equal(22, circularLinkedList.Last.Value);
         }
@@ -82,15 +65,10 @@ namespace IntegersArrayFacts
         {
             var circularLinkedList = new CircularLinkedList<int>();
 
-            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
-            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
-            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
-            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
-
-            circularLinkedList.Add(circularLinkedListNode1);
-            circularLinkedList.Add(circularLinkedListNode2);
-            circularLinkedList.Add(circularLinkedListNode3);
-            circularLinkedList.Add(circularLinkedListNode4);
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
+            circularLinkedList.Add(474);
+            circularLinkedList.Add(235356);
 
             Assert.Equal(4, circularLinkedList.Count);
             Assert.Equal(235356, circularLinkedList.Last.Value);

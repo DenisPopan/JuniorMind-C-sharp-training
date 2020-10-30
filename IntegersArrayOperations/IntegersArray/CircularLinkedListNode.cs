@@ -2,11 +2,6 @@
 {
     public class CircularLinkedListNode<T>
     {
-        public CircularLinkedListNode(T value)
-        {
-            Value = value;
-        }
-
         public T Value
         {
             get; set;
