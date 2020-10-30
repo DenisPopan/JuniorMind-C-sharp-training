@@ -141,5 +141,24 @@ namespace IntegersArrayFacts
             Assert.Equal(22, circularLinkedList2.Last.Value);
             Assert.Equal(2, circularLinkedList2.Count);
         }
+
+        [Fact]
+
+        public void CopyToMethodShouldCopyNodesValuesToAGivenArray()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            int[] array = new int[4];
+
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
+            circularLinkedList.Add(474);
+            circularLinkedList.Add(235356);
+
+            circularLinkedList.CopyTo(array, 0);
+            Assert.Equal(16, array[0]);
+            Assert.Equal(235356, array[3]);
+            Assert.Equal(4, array.Length);
+        }
     }
 }

@@ -90,7 +90,17 @@ namespace IntegersArray
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            int index = 0;
+            foreach (var nodeValue in this)
+            {
+                array[index] = nodeValue;
+                index++;
+            }
         }
 
         public IEnumerator<T> GetEnumerator()
