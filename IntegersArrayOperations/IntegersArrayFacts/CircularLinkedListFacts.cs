@@ -66,5 +66,14 @@ namespace IntegersArrayFacts
 
             Assert.Equal(22, circularLinkedList.Last.Value);
         }
+
+        [Fact]
+
+        public void LastPropertyShouldThrowAnExceptionWhenListIsEmpty()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            Assert.Throws<ArgumentException>(() => circularLinkedList.Last);
+        }
     }
 }
