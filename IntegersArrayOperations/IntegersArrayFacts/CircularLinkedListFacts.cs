@@ -79,5 +79,24 @@ namespace IntegersArrayFacts
             Assert.Throws<ArgumentException>(() => circularLinkedList.First);
             Assert.Throws<ArgumentException>(() => circularLinkedList.Last);
         }
+
+        [Fact]
+
+        public void ContainsMethodShouldReturnIfTheListContainsANodeWithTheSpecifiedValue()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+
+            circularLinkedList.Add(16);
+            circularLinkedList.Add(22);
+            circularLinkedList.Add(474);
+            circularLinkedList.Add(235356);
+
+            Assert.Equal(4, circularLinkedList.Count);
+            Assert.Equal(235356, circularLinkedList.Last.Value);
+
+            Assert.True(circularLinkedList.Contains(474));
+            Assert.True(circularLinkedList.Contains(235356));
+            Assert.False(circularLinkedList.Contains(12));
+        }
     }
 }
