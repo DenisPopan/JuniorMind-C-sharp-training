@@ -66,11 +66,7 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(newNode));
             }
 
-            newNode.Next = sentinelNode;
-            newNode.Previous = sentinelNode.Previous;
-            sentinelNode.Previous.Next = newNode;
-            sentinelNode.Previous = newNode;
-            Count++;
+            AddAfter(sentinelNode.Previous, newNode);
         }
 
         public void AddAfter(CircularLinkedListNode<T> existingNode, CircularLinkedListNode<T> newNode)
@@ -89,6 +85,7 @@ namespace IntegersArray
             newNode.Next = existingNode.Next;
             existingNode.Next.Previous = newNode;
             existingNode.Next = newNode;
+            Count++;
         }
 
         public void Clear()
