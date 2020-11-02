@@ -167,7 +167,7 @@ namespace IntegersArray
 
         public CircularLinkedListNode<T> Find(T value)
         {
-            var auxNode = sentinelNode.Next;
+            var auxNode = First;
 
             while (!auxNode.Value.Equals(0))
             {
@@ -184,7 +184,7 @@ namespace IntegersArray
 
         public CircularLinkedListNode<T> FindLast(T value)
         {
-            var auxNode = sentinelNode.Previous;
+            var auxNode = Last;
 
             while (!auxNode.Value.Equals(0))
             {
@@ -261,22 +261,17 @@ namespace IntegersArray
         }
 
         public bool Remove(T item)
-        {
-            var auxNode = sentinelNode.Next;
-            while (auxNode != sentinelNode)
             {
-                if (auxNode.Value.Equals(item))
-                {
-                    auxNode.Previous.Next = auxNode.Next;
-                    auxNode.Next.Previous = auxNode.Previous;
-                    Count--;
-                    return true;
-                }
-
-                auxNode = auxNode.Next;
+            var nodeToDelete = Find(item);
+            if (nodeToDelete == null)
+            {
+                return false;
             }
 
-            return false;
+            nodeToDelete.Previous.Next = nodeToDelete.Next;
+            nodeToDelete.Next.Previous = nodeToDelete.Previous;
+            Count--;
+            return true;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
