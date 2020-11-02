@@ -268,10 +268,7 @@ namespace IntegersArray
                 return false;
             }
 
-            nodeToDelete.Previous.Next = nodeToDelete.Next;
-            nodeToDelete.Next.Previous = nodeToDelete.Previous;
-            Count--;
-            return true;
+            return Remove(nodeToDelete);
         }
 
         public bool Remove(CircularLinkedListNode<T> nodeToDelete)
