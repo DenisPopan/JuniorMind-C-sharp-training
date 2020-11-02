@@ -121,6 +121,7 @@ namespace IntegersArray
             newNode.Previous = existingNode.Previous;
             existingNode.Previous.Next = newNode;
             existingNode.Previous = newNode;
+            Count++;
         }
 
         public void AddBefore(CircularLinkedListNode<T> existingNode, T value)
@@ -137,6 +138,20 @@ namespace IntegersArray
 
             var newNode = new CircularLinkedListNode<T>(value);
             AddBefore(existingNode, newNode);
+        }
+
+        public void AddFirst(CircularLinkedListNode<T> newNode)
+        {
+            if (newNode == null)
+            {
+                throw new ArgumentNullException(nameof(newNode));
+            }
+
+            newNode.Next = sentinelNode.Next;
+            newNode.Previous = sentinelNode;
+            sentinelNode.Next.Previous = newNode;
+            sentinelNode.Next = newNode;
+            Count++;
         }
 
         public void Clear()
