@@ -413,5 +413,49 @@ namespace IntegersArrayFacts
             Assert.Throws<InvalidOperationException>(() => circularLinkedList.Remove(circularLinkedListNode6));
         }
 
+        [Fact]
+
+        public void RemoveFirstMethodShouldRemoveFirstNode()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            Assert.Equal(circularLinkedList.First, circularLinkedListNode1);
+            circularLinkedList.RemoveFirst();
+            Assert.Equal(circularLinkedList.First, circularLinkedListNode2);
+        }
+
+        [Fact]
+
+        public void RemoveLastMethodShouldRemoveLastNode()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            Assert.Equal(circularLinkedList.Last, circularLinkedListNode5);
+            circularLinkedList.RemoveLast();
+            Assert.Equal(circularLinkedList.Last, circularLinkedListNode4);
+        }
+
     }
 }

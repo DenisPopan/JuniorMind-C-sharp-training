@@ -289,6 +289,16 @@ namespace IntegersArray
             return true;
         }
 
+        public void RemoveFirst()
+        {
+            Remove(First);
+        }
+
+        public void RemoveLast()
+        {
+            Remove(Last);
+        }
+
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
