@@ -399,6 +399,7 @@ namespace IntegersArrayFacts
             var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
             var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
             var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode6 = new CircularLinkedListNode<int>(88);
 
             circularLinkedList.AddLast(circularLinkedListNode1);
             circularLinkedList.AddLast(circularLinkedListNode2);
@@ -409,7 +410,7 @@ namespace IntegersArrayFacts
             Assert.True(circularLinkedList.Remove(circularLinkedListNode3));
             Assert.Equal(circularLinkedListNode4, circularLinkedListNode2.Next);
             Assert.Equal(circularLinkedListNode2, circularLinkedListNode4.Previous);
-            circularLinkedList.Remove(circularLinkedListNode5);
+            Assert.Throws<InvalidOperationException>(() => circularLinkedList.Remove(circularLinkedListNode6));
         }
 
     }

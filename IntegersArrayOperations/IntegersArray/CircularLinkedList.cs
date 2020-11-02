@@ -281,6 +281,11 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(nodeToDelete));
             }
 
+            if (Find(nodeToDelete.Value) == null)
+            {
+                throw new InvalidOperationException(nameof(nodeToDelete));
+            }
+
             nodeToDelete.Previous.Next = nodeToDelete.Next;
             nodeToDelete.Next.Previous = nodeToDelete.Previous;
             Count--;
