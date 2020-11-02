@@ -389,5 +389,28 @@ namespace IntegersArrayFacts
             Assert.Null(circularLinkedList.FindLast(4));
         }
 
+        [Fact]
+
+        public void RemoveMethodShouldRemoveGivenNode()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            Assert.True(circularLinkedList.Remove(circularLinkedListNode3));
+            Assert.Equal(circularLinkedListNode4, circularLinkedListNode2.Next);
+            Assert.Equal(circularLinkedListNode2, circularLinkedListNode4.Previous);
+            circularLinkedList.Remove(circularLinkedListNode5);
+        }
+
     }
 }

@@ -261,11 +261,24 @@ namespace IntegersArray
         }
 
         public bool Remove(T item)
-            {
+        {
             var nodeToDelete = Find(item);
             if (nodeToDelete == null)
             {
                 return false;
+            }
+
+            nodeToDelete.Previous.Next = nodeToDelete.Next;
+            nodeToDelete.Next.Previous = nodeToDelete.Previous;
+            Count--;
+            return true;
+        }
+
+        public bool Remove(CircularLinkedListNode<T> nodeToDelete)
+        {
+            if (nodeToDelete == null)
+            {
+                throw new ArgumentNullException(nameof(nodeToDelete));
             }
 
             nodeToDelete.Previous.Next = nodeToDelete.Next;
