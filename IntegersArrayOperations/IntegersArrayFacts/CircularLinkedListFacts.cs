@@ -345,5 +345,27 @@ namespace IntegersArrayFacts
             Assert.Equal(22, circularLinkedListNode1.Previous.Value);
         }
 
+        [Fact]
+
+        public void FindMethodShouldReturnFirstNodeWithGivenValue()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            Assert.Equal(circularLinkedListNode2, circularLinkedList.Find(474).Previous);
+            Assert.Equal(circularLinkedListNode4, circularLinkedList.Find(474).Next);
+            Assert.Null(circularLinkedList.Find(4));
+        }
+
     }
 }

@@ -165,6 +165,23 @@ namespace IntegersArray
             AddFirst(newNode);
         }
 
+        public CircularLinkedListNode<T> Find(T value)
+        {
+            var auxNode = sentinelNode.Next;
+
+            while (!auxNode.Value.Equals(0))
+            {
+                if (auxNode.Value.Equals(value))
+                {
+                    return auxNode;
+                }
+
+                auxNode = auxNode.Next;
+            }
+
+            return null;
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;
