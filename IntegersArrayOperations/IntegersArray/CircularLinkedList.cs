@@ -56,11 +56,7 @@ namespace IntegersArray
             var nodeToBeAdded = new CircularLinkedListNode<T>();
 
             nodeToBeAdded.Value = item;
-            nodeToBeAdded.Next = sentinelNode;
-            nodeToBeAdded.Previous = sentinelNode.Previous;
-            sentinelNode.Previous.Next = nodeToBeAdded;
-            sentinelNode.Previous = nodeToBeAdded;
-            Count++;
+            AddLast(nodeToBeAdded);
         }
 
         public void AddLast(CircularLinkedListNode<T> newNode)
