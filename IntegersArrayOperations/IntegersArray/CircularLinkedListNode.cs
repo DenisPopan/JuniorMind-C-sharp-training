@@ -2,9 +2,14 @@
 {
     public class CircularLinkedListNode<T>
     {
+        public CircularLinkedListNode(T value = default)
+        {
+            Value = value;
+        }
+
         public T Value
         {
-            get; set;
+            get; internal set;
         }
 
         public CircularLinkedListNode<T> Previous

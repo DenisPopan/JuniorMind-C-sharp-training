@@ -77,6 +77,24 @@ namespace IntegersArray
             Count++;
         }
 
+        public void AddAfter(CircularLinkedListNode<T> existingNode, CircularLinkedListNode<T> newNode)
+        {
+            if (existingNode == null)
+            {
+                throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            if (newNode == null)
+            {
+                throw new ArgumentNullException(nameof(newNode));
+            }
+
+            newNode.Previous = existingNode;
+            newNode.Next = existingNode.Next;
+            existingNode.Next.Previous = newNode;
+            existingNode.Next = newNode;
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;
