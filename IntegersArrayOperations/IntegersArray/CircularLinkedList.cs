@@ -182,6 +182,23 @@ namespace IntegersArray
             return null;
         }
 
+        public CircularLinkedListNode<T> FindLast(T value)
+        {
+            var auxNode = sentinelNode.Previous;
+
+            while (!auxNode.Value.Equals(0))
+            {
+                if (auxNode.Value.Equals(value))
+                {
+                    return auxNode;
+                }
+
+                auxNode = auxNode.Previous;
+            }
+
+            return null;
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;

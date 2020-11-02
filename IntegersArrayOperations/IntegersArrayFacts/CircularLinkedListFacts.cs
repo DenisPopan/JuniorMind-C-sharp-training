@@ -367,5 +367,27 @@ namespace IntegersArrayFacts
             Assert.Null(circularLinkedList.Find(4));
         }
 
+        [Fact]
+
+        public void FindLastMethodShouldReturnLastNodeWithGivenValue()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            Assert.Equal(circularLinkedListNode4, circularLinkedList.FindLast(474).Previous);
+            Assert.Equal(0, circularLinkedList.FindLast(474).Next.Value);
+            Assert.Null(circularLinkedList.FindLast(4));
+        }
+
     }
 }
