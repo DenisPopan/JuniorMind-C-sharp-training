@@ -281,5 +281,29 @@ namespace IntegersArrayFacts
             Assert.Equal(circularLinkedListNode1, circularLinkedListNode6.Next);
         }
 
+        [Fact]
+
+        public void AddBeforeMethodShouldAddNewNodeWithGivenValueBeforeExistingOne()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+
+            circularLinkedList.AddBefore(circularLinkedListNode2, 82);
+            Assert.Equal(82, circularLinkedListNode2.Previous.Value);
+            Assert.Equal(82, circularLinkedListNode1.Next.Value);
+
+            circularLinkedList.AddBefore(circularLinkedListNode1, 33);
+            Assert.Equal(33, circularLinkedListNode1.Previous.Value);
+            Assert.Equal(0, circularLinkedListNode1.Previous.Previous.Value);
+        }
+
     }
 }

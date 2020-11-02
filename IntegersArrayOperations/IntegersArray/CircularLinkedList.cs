@@ -95,6 +95,11 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(existingNode));
             }
 
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             var newNode = new CircularLinkedListNode<T>(value);
 
             AddAfter(existingNode, newNode);
@@ -116,6 +121,22 @@ namespace IntegersArray
             newNode.Previous = existingNode.Previous;
             existingNode.Previous.Next = newNode;
             existingNode.Previous = newNode;
+        }
+
+        public void AddBefore(CircularLinkedListNode<T> existingNode, T value)
+        {
+            if (existingNode == null)
+            {
+                throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var newNode = new CircularLinkedListNode<T>(value);
+            AddBefore(existingNode, newNode);
         }
 
         public void Clear()
