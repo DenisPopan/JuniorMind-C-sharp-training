@@ -154,6 +154,17 @@ namespace IntegersArray
             Count++;
         }
 
+        public void AddFirst(T value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var newNode = new CircularLinkedListNode<T>(value);
+            AddFirst(newNode);
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;
