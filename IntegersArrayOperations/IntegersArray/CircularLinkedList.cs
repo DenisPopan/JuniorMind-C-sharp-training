@@ -88,6 +88,18 @@ namespace IntegersArray
             Count++;
         }
 
+        public void AddAfter(CircularLinkedListNode<T> existingNode, T value)
+        {
+            if (existingNode == null)
+            {
+                throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            var newNode = new CircularLinkedListNode<T>(value);
+
+            AddAfter(existingNode, newNode);
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;
