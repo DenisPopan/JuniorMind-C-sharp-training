@@ -100,6 +100,24 @@ namespace IntegersArray
             AddAfter(existingNode, newNode);
         }
 
+        public void AddBefore(CircularLinkedListNode<T> existingNode, CircularLinkedListNode<T> newNode)
+        {
+            if (existingNode == null)
+            {
+                throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            if (newNode == null)
+            {
+                throw new ArgumentNullException(nameof(newNode));
+            }
+
+            newNode.Next = existingNode;
+            newNode.Previous = existingNode.Previous;
+            existingNode.Previous.Next = newNode;
+            existingNode.Previous = newNode;
+        }
+
         public void Clear()
         {
             sentinelNode.Next = sentinelNode;

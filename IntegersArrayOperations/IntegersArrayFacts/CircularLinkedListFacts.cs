@@ -251,5 +251,35 @@ namespace IntegersArrayFacts
             Assert.Equal(33, circularLinkedListNode4.Next.Value);
         }
 
+        [Fact]
+
+        public void AddBeforeMethodShouldAddNewNodeBeforeExistingOne()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(82);
+            var circularLinkedListNode6 = new CircularLinkedListNode<int>(33);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+
+            circularLinkedList.AddBefore(circularLinkedListNode2, circularLinkedListNode5);
+            Assert.Equal(circularLinkedListNode5, circularLinkedListNode2.Previous);
+            Assert.Equal(circularLinkedListNode5, circularLinkedListNode1.Next);
+            Assert.Equal(circularLinkedListNode1, circularLinkedListNode5.Previous);
+            Assert.Equal(circularLinkedListNode2, circularLinkedListNode5.Next);
+            Assert.Equal(circularLinkedListNode2, circularLinkedListNode3.Previous);
+
+            circularLinkedList.AddBefore(circularLinkedListNode1, circularLinkedListNode6);
+            Assert.Equal(circularLinkedListNode6, circularLinkedListNode1.Previous);
+            Assert.Equal(0, circularLinkedListNode6.Previous.Value);
+            Assert.Equal(circularLinkedListNode1, circularLinkedListNode6.Next);
+        }
+
     }
 }
