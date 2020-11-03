@@ -53,9 +53,8 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var nodeToBeAdded = new CircularLinkedListNode<T>();
+            var nodeToBeAdded = new CircularLinkedListNode<T>(item);
 
-            nodeToBeAdded.Value = item;
             AddLast(nodeToBeAdded);
         }
 
@@ -74,6 +73,11 @@ namespace IntegersArray
             if (existingNode == null)
             {
                 throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            if (Find(existingNode.Value) == null)
+            {
+                throw new InvalidOperationException(nameof(existingNode));
             }
 
             if (newNode == null)
@@ -110,6 +114,11 @@ namespace IntegersArray
             if (existingNode == null)
             {
                 throw new ArgumentNullException(nameof(existingNode));
+            }
+
+            if (Find(existingNode.Value) == null)
+            {
+                throw new InvalidOperationException(nameof(existingNode));
             }
 
             if (newNode == null)
@@ -169,7 +178,7 @@ namespace IntegersArray
         {
             var auxNode = First;
 
-            while (!auxNode.Value.Equals(0))
+            while (!auxNode.Value.Equals(default(T)))
             {
                 if (auxNode.Value.Equals(value))
                 {
@@ -186,7 +195,7 @@ namespace IntegersArray
         {
             var auxNode = Last;
 
-            while (!auxNode.Value.Equals(0))
+            while (!auxNode.Value.Equals(default(T)))
             {
                 if (auxNode.Value.Equals(value))
                 {
