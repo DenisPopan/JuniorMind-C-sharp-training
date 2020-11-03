@@ -2,7 +2,7 @@
 {
     public class CircularLinkedListNode<T>
     {
-        public CircularLinkedListNode(T value = default)
+        public CircularLinkedListNode(T value = default(T))
         {
             Value = value;
         }

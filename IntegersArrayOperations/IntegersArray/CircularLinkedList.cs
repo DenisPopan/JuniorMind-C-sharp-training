@@ -24,7 +24,7 @@ namespace IntegersArray
         {
             get
             {
-                if (sentinelNode.Next == sentinelNode)
+                if (IsListEmpty())
                 {
                     throw new ArgumentException("The linked list is empty");
                 }
@@ -37,7 +37,7 @@ namespace IntegersArray
         {
             get
             {
-                if (sentinelNode.Next == sentinelNode)
+                if (IsListEmpty())
                 {
                     throw new ArgumentException("The linked list is empty");
                 }
@@ -48,23 +48,11 @@ namespace IntegersArray
 
         public void Add(T item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            var nodeToBeAdded = new CircularLinkedListNode<T>(item);
-
-            AddLast(nodeToBeAdded);
+            AddLast(new CircularLinkedListNode<T>(item));
         }
 
         public void AddLast(CircularLinkedListNode<T> newNode)
         {
-            if (newNode == null)
-            {
-                throw new ArgumentNullException(nameof(newNode));
-            }
-
             AddAfter(sentinelNode.Previous, newNode);
         }
 
@@ -75,7 +63,7 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(existingNode));
             }
 
-            if (Find(existingNode.Value) == null)
+            if (!IsAListMember(existingNode))
             {
                 throw new InvalidOperationException(nameof(existingNode));
             }
@@ -94,19 +82,7 @@ namespace IntegersArray
 
         public void AddAfter(CircularLinkedListNode<T> existingNode, T value)
         {
-            if (existingNode == null)
-            {
-                throw new ArgumentNullException(nameof(existingNode));
-            }
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            var newNode = new CircularLinkedListNode<T>(value);
-
-            AddAfter(existingNode, newNode);
+            AddAfter(existingNode, new CircularLinkedListNode<T>(value));
         }
 
         public void AddBefore(CircularLinkedListNode<T> existingNode, CircularLinkedListNode<T> newNode)
@@ -116,21 +92,7 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(existingNode));
             }
 
-            if (Find(existingNode.Value) == null)
-            {
-                throw new InvalidOperationException(nameof(existingNode));
-            }
-
-            if (newNode == null)
-            {
-                throw new ArgumentNullException(nameof(newNode));
-            }
-
-            newNode.Next = existingNode;
-            newNode.Previous = existingNode.Previous;
-            existingNode.Previous.Next = newNode;
-            existingNode.Previous = newNode;
-            Count++;
+            AddAfter(existingNode.Previous, newNode);
         }
 
         public void AddBefore(CircularLinkedListNode<T> existingNode, T value)
@@ -140,52 +102,27 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(existingNode));
             }
 
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            var newNode = new CircularLinkedListNode<T>(value);
-            AddBefore(existingNode, newNode);
+            AddBefore(existingNode, new CircularLinkedListNode<T>(value));
         }
 
         public void AddFirst(CircularLinkedListNode<T> newNode)
         {
-            if (newNode == null)
-            {
-                throw new ArgumentNullException(nameof(newNode));
-            }
-
-            newNode.Next = sentinelNode.Next;
-            newNode.Previous = sentinelNode;
-            sentinelNode.Next.Previous = newNode;
-            sentinelNode.Next = newNode;
-            Count++;
+            AddAfter(sentinelNode, newNode);
         }
 
         public void AddFirst(T value)
         {
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            var newNode = new CircularLinkedListNode<T>(value);
-            AddFirst(newNode);
+            AddFirst(new CircularLinkedListNode<T>(value));
         }
 
         public CircularLinkedListNode<T> Find(T value)
         {
-            var auxNode = First;
-
-            while (!auxNode.Value.Equals(default(T)))
+            for (var node = sentinelNode.Next; node != sentinelNode; node = node.Next)
             {
-                if (auxNode.Value.Equals(value))
+                if (node.Value.Equals(value))
                 {
-                    return auxNode;
+                    return node;
                 }
-
-                auxNode = auxNode.Next;
             }
 
             return null;
@@ -193,16 +130,12 @@ namespace IntegersArray
 
         public CircularLinkedListNode<T> FindLast(T value)
         {
-            var auxNode = Last;
-
-            while (!auxNode.Value.Equals(default(T)))
+            for (var node = sentinelNode.Previous; node != sentinelNode; node = node.Previous)
             {
-                if (auxNode.Value.Equals(value))
+                if (node.Value.Equals(value))
                 {
-                    return auxNode;
+                    return node;
                 }
-
-                auxNode = auxNode.Previous;
             }
 
             return null;
@@ -217,20 +150,7 @@ namespace IntegersArray
 
         public bool Contains(T item)
         {
-            if (item == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            foreach (var nodeValue in this)
-            {
-                if (nodeValue.Equals(item))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return Find(item) != null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)
@@ -260,12 +180,9 @@ namespace IntegersArray
 
         public IEnumerator<T> GetEnumerator()
         {
-            var auxNode = sentinelNode.Next;
-
-            for (int i = 0; i < Count; i++)
+            for (var node = sentinelNode.Next; node != sentinelNode; node = node.Next)
             {
-                yield return auxNode.Value;
-                auxNode = auxNode.Next;
+                yield return node.Value;
             }
         }
 
@@ -287,7 +204,12 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(nodeToDelete));
             }
 
-            if (Find(nodeToDelete.Value) == null)
+            if (IsListEmpty())
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (!IsAListMember(nodeToDelete))
             {
                 throw new InvalidOperationException(nameof(nodeToDelete));
             }
@@ -311,6 +233,16 @@ namespace IntegersArray
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
+        }
+
+        bool IsListEmpty()
+        {
+            return sentinelNode.Next == sentinelNode || sentinelNode.Previous == sentinelNode;
+        }
+
+        bool IsAListMember(CircularLinkedListNode<T> node)
+        {
+            return node.Previous != null && node.Next != null;
         }
     }
 }
