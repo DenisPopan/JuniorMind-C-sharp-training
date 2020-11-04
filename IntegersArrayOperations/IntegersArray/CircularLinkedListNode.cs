@@ -21,5 +21,10 @@
         {
             get; internal set;
         }
+
+        public CircularLinkedList<T> List
+        {
+            get; internal set;
+        }
     }
 }

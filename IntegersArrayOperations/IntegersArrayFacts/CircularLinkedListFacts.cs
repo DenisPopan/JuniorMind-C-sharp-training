@@ -229,6 +229,33 @@ namespace IntegersArrayFacts
 
         [Fact]
 
+        public void AddAfterMethodShouldNotAddNewNodeIfExistingOneIsNotPartOfTheList()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(82);
+            var circularLinkedListNode6 = new CircularLinkedListNode<int>(33);
+            var circularLinkedListNode7 = new CircularLinkedListNode<int>(33);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+
+            Assert.Throws<InvalidOperationException>(() => circularLinkedList.AddAfter(circularLinkedListNode7, circularLinkedListNode5));
+
+            var circularLinkedList2 = new CircularLinkedList<int>();
+            circularLinkedList2.AddLast(circularLinkedListNode7);
+            Assert.Throws<InvalidOperationException>(() => circularLinkedList.AddAfter(circularLinkedListNode7, circularLinkedListNode5));
+            Assert.Equal(circularLinkedList, circularLinkedListNode1.List);
+            Assert.Equal(circularLinkedList2, circularLinkedListNode7.List);
+        }
+
+        [Fact]
+
         public void AddAfterMethodShouldAddNewNodeWithGivenValueAfterExistingOne()
         {
             var circularLinkedList = new CircularLinkedList<int>();
@@ -410,6 +437,31 @@ namespace IntegersArrayFacts
             Assert.True(circularLinkedList.Remove(circularLinkedListNode3));
             Assert.Equal(circularLinkedListNode4, circularLinkedListNode2.Next);
             Assert.Equal(circularLinkedListNode2, circularLinkedListNode4.Previous);
+            Assert.Throws<InvalidOperationException>(() => circularLinkedList.Remove(circularLinkedListNode6));
+        }
+
+        [Fact]
+
+        public void RemoveMethodShouldNotRemoveNodeThatIsNotPartOfTheList()
+        {
+            var circularLinkedList = new CircularLinkedList<int>();
+            var circularLinkedListNode1 = new CircularLinkedListNode<int>(16);
+            var circularLinkedListNode2 = new CircularLinkedListNode<int>(22);
+            var circularLinkedListNode3 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode4 = new CircularLinkedListNode<int>(235356);
+            var circularLinkedListNode5 = new CircularLinkedListNode<int>(474);
+            var circularLinkedListNode6 = new CircularLinkedListNode<int>(88);
+
+            circularLinkedList.AddLast(circularLinkedListNode1);
+            circularLinkedList.AddLast(circularLinkedListNode2);
+            circularLinkedList.AddLast(circularLinkedListNode3);
+            circularLinkedList.AddLast(circularLinkedListNode4);
+            circularLinkedList.AddLast(circularLinkedListNode5);
+
+            var circularLinkedList2 = new CircularLinkedList<int>();
+
+            Assert.Throws<InvalidOperationException>(() => circularLinkedList.Remove(circularLinkedListNode6));
+            circularLinkedList2.AddLast(circularLinkedListNode6);
             Assert.Throws<InvalidOperationException>(() => circularLinkedList.Remove(circularLinkedListNode6));
         }
 

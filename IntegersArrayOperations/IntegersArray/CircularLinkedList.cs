@@ -13,6 +13,7 @@ namespace IntegersArray
             sentinelNode = new CircularLinkedListNode<T>();
             sentinelNode.Next = sentinelNode;
             sentinelNode.Previous = sentinelNode;
+            sentinelNode.List = this;
             Count = 0;
         }
 
@@ -75,6 +76,7 @@ namespace IntegersArray
 
             newNode.Previous = existingNode;
             newNode.Next = existingNode.Next;
+            newNode.List = this;
             existingNode.Next.Previous = newNode;
             existingNode.Next = newNode;
             Count++;
@@ -216,6 +218,7 @@ namespace IntegersArray
 
             nodeToDelete.Previous.Next = nodeToDelete.Next;
             nodeToDelete.Next.Previous = nodeToDelete.Previous;
+            nodeToDelete.List = null;
             Count--;
             return true;
         }
@@ -242,7 +245,7 @@ namespace IntegersArray
 
         bool IsAListMember(CircularLinkedListNode<T> node)
         {
-            return node.Previous != null && node.Next != null;
+            return node.List == this;
         }
     }
 }
