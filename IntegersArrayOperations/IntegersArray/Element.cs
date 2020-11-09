@@ -1,26 +1,27 @@
 ﻿namespace IntegersArray
 {
-    class Element<T>
+    internal class Element<TKey, TValue>
     {
-        public Element(T key, T value)
+        internal Element()
         {
-            Key = key;
-            Value = value;
+            Key = default;
+            Value = default;
+            Next = -1;
         }
 
-        public T Key
+        internal TKey Key
         {
-            get; internal set;
+            get; set;
         }
 
-        public T Value
+        internal TValue Value
         {
-            get; internal set;
+            get; set;
         }
 
-        public int Next
+        internal int Next
         {
-            get; internal set;
+            get; set;
         }
     }
 }
