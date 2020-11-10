@@ -13,7 +13,7 @@ namespace IntegersArrayFacts
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(6, "hey");
             Assert.Equal(1, dictionary.Count);
-            dictionary.Add(6, "oi!");
+            dictionary.Add(16, "oi!");
             Assert.Equal(2, dictionary.Count);
         }
 
@@ -24,8 +24,20 @@ namespace IntegersArrayFacts
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
             Assert.Equal(1, dictionary.Count);
-            dictionary.Add((new KeyValuePair<int, string>(6, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
             Assert.Equal(2, dictionary.Count);
+        }
+
+        [Fact]
+
+        public void IndexerShouldGetTheElementValueWithGivenKey()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            Assert.Equal(dictionary[6], "hey");
+            Assert.Equal(dictionary[8], "aii");
         }
     }
 }

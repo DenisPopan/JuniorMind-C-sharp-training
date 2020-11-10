@@ -33,11 +33,34 @@ namespace IntegersArray
 
         public System.Collections.Generic.ICollection<TValue> Values => throw new NotImplementedException();
 
-        public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TValue this[TKey key]
+        {
+            get
+            {
+                if (key == null)
+                {
+                    throw new ArgumentNullException(nameof(key));
+                }
+
+                var element = FindElement(key);
+
+                if (element != null)
+                {
+                    return element.Value;
+                }
+
+                throw new KeyNotFoundException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
         public void Add(TKey key, TValue value)
         {
-            int bucketIndex = GetPosition(key);
+            int bucketIndex = GetBucketIndex(key);
             elements[Count] = new Element<TKey, TValue>();
             elements[Count].Key = key;
             elements[Count].Value = value;
@@ -96,7 +119,7 @@ namespace IntegersArray
             throw new NotImplementedException();
         }
 
-        int GetPosition(TKey key)
+        int GetBucketIndex(TKey key)
         {
             return Math.Abs(key.GetHashCode() % elements.Length);
         }
@@ -107,6 +130,24 @@ namespace IntegersArray
             {
                 buckets[i] = -1;
             }
+        }
+
+        Element<TKey, TValue> FindElement(TKey key)
+        {
+            int bucketIndex = GetBucketIndex(key);
+            var currentElement = elements[buckets[bucketIndex]];
+            do
+            {
+                if (currentElement.Key.Equals(key))
+                {
+                    return currentElement;
+                }
+
+                currentElement = elements[currentElement.Next];
+            }
+            while (currentElement.Next != -1);
+
+            return currentElement.Key.Equals(key) ? currentElement : null;
         }
     }
 }
