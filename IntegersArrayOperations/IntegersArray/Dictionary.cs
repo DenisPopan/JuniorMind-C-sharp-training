@@ -135,6 +135,12 @@ namespace IntegersArray
         Element<TKey, TValue> FindElement(TKey key)
         {
             int bucketIndex = GetBucketIndex(key);
+
+            if (bucketIndex < 0 || bucketIndex >= elements.Length || buckets[bucketIndex] == -1)
+            {
+                return null;
+            }
+
             var currentElement = elements[buckets[bucketIndex]];
             do
             {
