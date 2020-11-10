@@ -92,5 +92,19 @@ namespace IntegersArrayFacts
             dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
             Assert.Throws<KeyNotFoundException>(() => dictionary[9] = "lala");
         }
+
+        [Fact]
+
+        public void ClearMethodShouldDeleteAllElements()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(6, "hey");
+            dictionary.Add(16, "oi!");
+            Assert.Equal(2, dictionary.Count);
+            dictionary.Clear();
+            Assert.Equal(0, dictionary.Count);
+            Assert.Throws<KeyNotFoundException>(() => dictionary[6]);
+            Assert.Throws<KeyNotFoundException>(() => dictionary[16]);
+        }
     }
 }

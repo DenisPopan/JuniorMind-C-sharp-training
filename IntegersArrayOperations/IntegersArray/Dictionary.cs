@@ -98,7 +98,13 @@ namespace IntegersArray
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Count; i++)
+            {
+                elements[i] = new Element<TKey, TValue>();
+            }
+
+            Count = 0;
+            PopulateBuckets();
         }
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
