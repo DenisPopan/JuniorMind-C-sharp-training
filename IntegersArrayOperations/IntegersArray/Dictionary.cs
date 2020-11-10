@@ -42,11 +42,11 @@ namespace IntegersArray
                     throw new ArgumentNullException(nameof(key));
                 }
 
-                var element = FindElement(key);
+                var elementPosition = FindElementPosition(key);
 
-                if (element != null)
+                if (elementPosition != -1)
                 {
-                    return element.Value;
+                    return elements[elementPosition].Value;
                 }
 
                 throw new KeyNotFoundException();
@@ -59,14 +59,14 @@ namespace IntegersArray
                     throw new ArgumentNullException(nameof(key));
                 }
 
-                var element = FindElement(key);
+                var elementPosition = FindElementPosition(key);
 
-                if (element == null)
+                if (elementPosition == -1)
                 {
                     throw new KeyNotFoundException();
                 }
 
-                element.Value = value;
+                elements[elementPosition].Value = value;
             }
         }
 
@@ -77,7 +77,7 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(key));
             }
 
-            if (FindElement(key) != null)
+            if (ContainsKey(key))
             {
                 throw new ArgumentException("An element with the same key already exists!");
             }
@@ -114,14 +114,14 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var element = FindElement(item.Key);
+            var elementPosition = FindElementPosition(item.Key);
 
-            if (element == null)
+            if (elementPosition == -1)
             {
                 throw new KeyNotFoundException();
             }
 
-            return element.Value.Equals(item.Value);
+            return elements[elementPosition].Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
@@ -131,7 +131,7 @@ namespace IntegersArray
                 throw new ArgumentNullException(nameof(key));
             }
 
-            return FindElement(key) != null;
+            return FindElementPosition(key) != -1;
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -210,27 +210,33 @@ namespace IntegersArray
             }
         }
 
-        Element<TKey, TValue> FindElement(TKey key)
+        int FindElementPosition(TKey key)
         {
             int bucketIndex = GetBucketIndex(key);
 
             if (bucketIndex < 0 || bucketIndex >= elements.Length || buckets[bucketIndex] == -1)
             {
-                return null;
+                return -1;
             }
 
             var currentElement = elements[buckets[bucketIndex]];
+
+            if (currentElement.Key.Equals(key))
+            {
+                return buckets[bucketIndex];
+            }
+
             while (currentElement.Next != -1)
             {
-                if (currentElement.Key.Equals(key))
+                if (elements[currentElement.Next].Key.Equals(key))
                 {
-                    return currentElement;
+                    return currentElement.Next;
                 }
 
                 currentElement = elements[currentElement.Next];
             }
 
-            return currentElement.Key.Equals(key) ? currentElement : null;
+            return -1;
         }
     }
 }
