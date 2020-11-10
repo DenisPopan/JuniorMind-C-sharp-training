@@ -54,7 +54,19 @@ namespace IntegersArray
 
             set
             {
-                throw new NotImplementedException();
+                if (key == null)
+                {
+                    throw new ArgumentNullException(nameof(key));
+                }
+
+                var element = FindElement(key);
+
+                if (element == null)
+                {
+                    throw new KeyNotFoundException();
+                }
+
+                element.Value = value;
             }
         }
 
