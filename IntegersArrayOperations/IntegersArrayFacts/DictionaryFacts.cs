@@ -1,6 +1,7 @@
 ﻿using Xunit;
 using IntegersArray;
 using System.Collections.Generic;
+using System;
 
 namespace IntegersArrayFacts
 {
@@ -17,6 +18,15 @@ namespace IntegersArrayFacts
             dictionary.Add(16, "oi!");
             Assert.Equal(2, dictionary.Count);
             Assert.Equal(dictionary[16], "oi!");
+        }
+
+        [Fact]
+
+        public void AddMethodShouldThrowArgumentExceptionWhenElementWithGivenKeyAlreadyExists()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(6, "hey");
+            Assert.Throws<ArgumentException>(() => dictionary.Add(6, "oi!"));
         }
 
         [Fact]

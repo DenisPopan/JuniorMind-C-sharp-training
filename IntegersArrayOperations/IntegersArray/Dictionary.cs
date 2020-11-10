@@ -72,6 +72,16 @@ namespace IntegersArray
 
         public void Add(TKey key, TValue value)
         {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (FindElement(key) != null)
+            {
+                throw new ArgumentException("An element with the same key already exists!");
+            }
+
             int bucketIndex = GetBucketIndex(key);
             elements[Count] = new Element<TKey, TValue>();
             elements[Count].Key = key;
@@ -154,7 +164,7 @@ namespace IntegersArray
             }
 
             var currentElement = elements[buckets[bucketIndex]];
-            do
+            while (currentElement.Next != -1)
             {
                 if (currentElement.Key.Equals(key))
                 {
@@ -163,7 +173,6 @@ namespace IntegersArray
 
                 currentElement = elements[currentElement.Next];
             }
-            while (currentElement.Next != -1);
 
             return currentElement.Key.Equals(key) ? currentElement : null;
         }
