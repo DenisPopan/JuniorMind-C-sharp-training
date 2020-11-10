@@ -109,7 +109,19 @@ namespace IntegersArray
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            if (item.Key == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var element = FindElement(item.Key);
+
+            if (element == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return element.Value.Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)

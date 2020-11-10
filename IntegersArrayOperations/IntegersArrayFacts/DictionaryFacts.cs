@@ -106,5 +106,18 @@ namespace IntegersArrayFacts
             Assert.Throws<KeyNotFoundException>(() => dictionary[6]);
             Assert.Throws<KeyNotFoundException>(() => dictionary[16]);
         }
+
+        [Fact]
+
+        public void ContainsMethodShouldReturnIfDictionaryContainsASpecificItem()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            Assert.True(dictionary.Contains(new KeyValuePair<int, string>(6, "hey")));
+            Assert.False(dictionary.Contains(new KeyValuePair<int, string>(6, "oi!")));
+            Assert.Throws<KeyNotFoundException>(() => dictionary.Contains(new KeyValuePair<int, string>(7, "oi!")));
+        }
     }
 }
