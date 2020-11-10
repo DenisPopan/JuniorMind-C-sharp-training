@@ -67,6 +67,20 @@ namespace IntegersArrayFacts
             Assert.Equal("aii", dictionary[8]);
             dictionary[8] = "haha";
             Assert.Equal("haha", dictionary[8]);
+
+            dictionary[6] = "haha";
+            Assert.Equal("haha", dictionary[6]);
+        }
+
+        [Fact]
+
+        public void SetIndexerShouldThrowKeyNotFoundExceptionWhenKeyIsNotFound()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            Assert.Throws<KeyNotFoundException>(() => dictionary[9] = "lala");
         }
     }
 }
