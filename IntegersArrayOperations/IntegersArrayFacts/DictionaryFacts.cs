@@ -131,5 +131,25 @@ namespace IntegersArrayFacts
             Assert.True(dictionary.ContainsKey(8));
             Assert.False(dictionary.ContainsKey(7));
         }
+
+        [Fact]
+
+        public void CopyToMethodShouldCopyAllDictionaryElementsInAGivenArray()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+            KeyValuePair<int, string>[] array = new KeyValuePair<int, string>[10];
+            dictionary.CopyTo(array, 0);
+            Assert.Equal(6, array[0].Key);
+            Assert.Equal(16, array[1].Key);
+            Assert.Equal(8, array[2].Key);
+            Assert.Equal(2, array[3].Key);
+            Assert.Throws<ArgumentNullException>(() => dictionary.CopyTo(null, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => dictionary.CopyTo(array, -1));
+            Assert.Throws<ArgumentException>(() => dictionary.CopyTo(array, 9));
+        }
     }
 }

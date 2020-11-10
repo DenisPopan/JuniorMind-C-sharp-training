@@ -136,17 +136,50 @@ namespace IntegersArray
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+            {
+                throw new ArgumentNullException(nameof(array));
+            }
+
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(arrayIndex));
+            }
+
+            if (array.Length - arrayIndex < Count)
+            {
+                throw new ArgumentException("Number of elements in the instance is greater than the available space from arrayIndex to the end of the destination array");
+            }
+
+            int index = 0;
+            foreach (var element in this)
+            {
+                array[index] = element;
+                index++;
+            }
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < elements.Length; i++)
+            {
+                if (elements[i] == null)
+                {
+                    break;
+                }
+
+                if (elements[i].Key.Equals(default) && elements[i].Value.Equals(default))
+                {
+                    continue;
+                }
+
+                yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return this.GetEnumerator();
         }
 
         public bool Remove(TKey key)
