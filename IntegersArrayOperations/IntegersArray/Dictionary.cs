@@ -126,7 +126,12 @@ namespace IntegersArray
 
         public bool ContainsKey(TKey key)
         {
-            throw new NotImplementedException();
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            return FindElement(key) != null;
         }
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)

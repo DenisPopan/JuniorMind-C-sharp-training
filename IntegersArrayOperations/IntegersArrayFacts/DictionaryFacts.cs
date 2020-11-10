@@ -109,7 +109,7 @@ namespace IntegersArrayFacts
 
         [Fact]
 
-        public void ContainsMethodShouldReturnIfDictionaryContainsASpecificItem()
+        public void ContainsMethodShouldReturnIfDictionaryContainsAnElementWithGivenValue()
         {
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
@@ -118,6 +118,18 @@ namespace IntegersArrayFacts
             Assert.True(dictionary.Contains(new KeyValuePair<int, string>(6, "hey")));
             Assert.False(dictionary.Contains(new KeyValuePair<int, string>(6, "oi!")));
             Assert.Throws<KeyNotFoundException>(() => dictionary.Contains(new KeyValuePair<int, string>(7, "oi!")));
+        }
+
+        [Fact]
+
+        public void ContainsKeyMethodShouldReturnIfDictionaryContainsAnElementWithGivenKey()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            Assert.True(dictionary.ContainsKey(8));
+            Assert.False(dictionary.ContainsKey(7));
         }
     }
 }
