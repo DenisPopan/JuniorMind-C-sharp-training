@@ -204,6 +204,16 @@ namespace IntegersArray
                 elements[elementToRemovePosition] = new Element<TKey, TValue>();
                 freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
             }
+            else
+            {
+                var currentElementPosition = buckets[bucketIndex];
+                if (elements[currentElementPosition].Next == elementToRemovePosition)
+                {
+                    elements[currentElementPosition].Next = elements[elementToRemovePosition].Next;
+                    elements[elementToRemovePosition] = new Element<TKey, TValue>();
+                    freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
+                }
+            }
 
             Count--;
             return true;
