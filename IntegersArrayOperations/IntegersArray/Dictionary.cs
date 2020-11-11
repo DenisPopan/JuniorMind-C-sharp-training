@@ -201,17 +201,21 @@ namespace IntegersArray
             if (buckets[bucketIndex] == elementToRemovePosition)
             {
                 buckets[bucketIndex] = elements[elementToRemovePosition].Next;
-                elements[elementToRemovePosition] = new Element<TKey, TValue>();
-                freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
+                RemoveElement(elementToRemovePosition);
             }
             else
             {
                 var currentElementPosition = buckets[bucketIndex];
-                if (elements[currentElementPosition].Next == elementToRemovePosition)
+                while (elements[currentElementPosition].Next != -1)
                 {
-                    elements[currentElementPosition].Next = elements[elementToRemovePosition].Next;
-                    elements[elementToRemovePosition] = new Element<TKey, TValue>();
-                    freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
+                    if (elements[currentElementPosition].Next == elementToRemovePosition)
+                    {
+                        elements[currentElementPosition].Next = elements[elementToRemovePosition].Next;
+                        RemoveElement(elementToRemovePosition);
+                        break;
+                    }
+
+                    currentElementPosition = elements[currentElementPosition].Next;
                 }
             }
 
@@ -269,6 +273,12 @@ namespace IntegersArray
             }
 
             return -1;
+        }
+
+        void RemoveElement(int elementPosition)
+        {
+            elements[elementPosition] = new Element<TKey, TValue>();
+            freeIndex.AddFirst(new LinkedListNode<int>(elementPosition));
         }
     }
 }

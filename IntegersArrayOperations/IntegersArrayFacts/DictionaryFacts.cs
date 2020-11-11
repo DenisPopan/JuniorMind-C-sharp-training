@@ -190,13 +190,18 @@ namespace IntegersArrayFacts
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
             dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
             dictionary.Add((new KeyValuePair<int, string>(26, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(36, "heyy")));
             dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
 
-            Assert.Equal(4, dictionary.Count);
+            Assert.Equal(5, dictionary.Count);
 
             Assert.True(dictionary.Remove(16));
-            Assert.Equal(3, dictionary.Count);
+            Assert.Equal(4, dictionary.Count);
             Assert.Throws<KeyNotFoundException>(() => dictionary[16]);
+
+            Assert.True(dictionary.Remove(26));
+            Assert.Equal(3, dictionary.Count);
+            Assert.Throws<KeyNotFoundException>(() => dictionary[26]);
         }
     }
 }
