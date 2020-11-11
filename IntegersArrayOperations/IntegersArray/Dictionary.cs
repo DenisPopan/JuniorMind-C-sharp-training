@@ -225,7 +225,24 @@ namespace IntegersArray
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+            if (item.Key == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var elementPosition = FindElementPosition(item.Key);
+            if (elementPosition == -1)
+            {
+                return false;
+            }
+
+            if (!elements[elementPosition].Value.Equals(item.Value))
+            {
+                return false;
+            }
+
+            elements[elementPosition].Value = default;
+            return true;
         }
 
         public bool TryGetValue(TKey key, out TValue value)

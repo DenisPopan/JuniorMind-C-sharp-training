@@ -203,5 +203,21 @@ namespace IntegersArrayFacts
             Assert.Equal(3, dictionary.Count);
             Assert.Throws<KeyNotFoundException>(() => dictionary[26]);
         }
+
+        [Fact]
+
+        public void RemoveMethodWithGivenKeyValuePairShouldRemoveValueOfElementWithGivenKey()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(26, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(36, "heyy")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+
+            Assert.True(dictionary.Remove(new KeyValuePair<int, string>(16, "oi")));
+            Assert.Null(dictionary[16]);
+            Assert.False(dictionary.Remove(new KeyValuePair<int, string>(26, "o")));
+        }
     }
 }
