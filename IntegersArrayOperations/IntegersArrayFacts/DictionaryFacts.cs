@@ -206,7 +206,7 @@ namespace IntegersArrayFacts
 
         [Fact]
 
-        public void RemoveMethodWithGivenKeyValuePairShouldRemoveValueOfElementWithGivenKey()
+        public void RemoveMethodWithGivenKeyValuePairShouldRemoveItemWithGivenKey()
         {
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
@@ -216,8 +216,8 @@ namespace IntegersArrayFacts
             dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
 
             Assert.True(dictionary.Remove(new KeyValuePair<int, string>(16, "oi")));
-            Assert.Null(dictionary[16]);
-            Assert.False(dictionary.Remove(new KeyValuePair<int, string>(26, "o")));
+            Assert.Throws<KeyNotFoundException>(() => dictionary[16]);
+            Assert.True(dictionary.Remove(new KeyValuePair<int, string>(26, "o")));
         }
     }
 }
