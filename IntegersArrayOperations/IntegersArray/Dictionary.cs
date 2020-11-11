@@ -193,7 +193,20 @@ namespace IntegersArray
 
             var elementToRemovePosition = FindElementPosition(key);
 
-            return elementToRemovePosition != -1;
+            if (elementToRemovePosition == -1)
+            {
+                return false;
+            }
+
+            if (buckets[bucketIndex] == elementToRemovePosition)
+            {
+                buckets[bucketIndex] = elements[elementToRemovePosition].Next;
+                elements[elementToRemovePosition] = new Element<TKey, TValue>();
+                freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
+            }
+
+            Count--;
+            return true;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
