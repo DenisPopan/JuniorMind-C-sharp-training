@@ -8,14 +8,14 @@ namespace IntegersArray
     {
         readonly int[] buckets;
         readonly Element<TKey, TValue>[] elements;
-        readonly LinkedList<Element<TKey, TValue>> freeIndex;
+        readonly LinkedList<int> freeIndex;
 
         public Dictionary(int size)
         {
             buckets = new int[size];
             PopulateBuckets();
             elements = new Element<TKey, TValue>[size];
-            freeIndex = new LinkedList<Element<TKey, TValue>>();
+            freeIndex = new LinkedList<int>();
             Count = 0;
         }
 
@@ -184,7 +184,16 @@ namespace IntegersArray
 
         public bool Remove(TKey key)
         {
-            throw new NotImplementedException();
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            var bucketIndex = GetBucketIndex(key);
+
+            var elementToRemovePosition = FindElementPosition(key);
+
+            return elementToRemovePosition != -1;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)

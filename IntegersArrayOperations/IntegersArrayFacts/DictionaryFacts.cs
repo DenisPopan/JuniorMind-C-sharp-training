@@ -151,5 +151,18 @@ namespace IntegersArrayFacts
             Assert.Throws<ArgumentOutOfRangeException>(() => dictionary.CopyTo(array, -1));
             Assert.Throws<ArgumentException>(() => dictionary.CopyTo(array, 9));
         }
+
+        [Fact]
+
+        public void RemoveMethodShouldReturnFalseWhenKeyIsNotFound()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(8, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+
+            Assert.False(dictionary.Remove(3));
+        }
     }
 }
