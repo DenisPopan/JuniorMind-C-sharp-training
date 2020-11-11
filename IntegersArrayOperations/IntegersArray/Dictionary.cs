@@ -230,7 +230,19 @@ namespace IntegersArray
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            throw new NotImplementedException();
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            if (!ContainsKey(key))
+            {
+                value = default;
+                return false;
+            }
+
+            value = this[key];
+            return true;
         }
 
         int GetBucketIndex(TKey key)

@@ -219,5 +219,23 @@ namespace IntegersArrayFacts
             Assert.Throws<KeyNotFoundException>(() => dictionary[16]);
             Assert.True(dictionary.Remove(new KeyValuePair<int, string>(26, "o")));
         }
+
+        [Fact]
+
+        public void TryGetValueMethodShouldReturnItemValueWithGivenKey()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(26, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(36, "heyy")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+
+            string value = "";
+            Assert.True(dictionary.TryGetValue(6, out value));
+            Assert.Equal("hey", value);
+            Assert.False(dictionary.TryGetValue(7, out value));
+            Assert.Null(value);
+        }
     }
 }
