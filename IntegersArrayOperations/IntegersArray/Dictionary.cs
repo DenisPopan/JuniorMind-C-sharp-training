@@ -188,6 +188,11 @@ namespace IntegersArray
             {
                 if (elements[i] == null)
                 {
+                    break;
+                }
+
+                if (freeIndex.Contains(i))
+                {
                     continue;
                 }
 
@@ -219,7 +224,7 @@ namespace IntegersArray
             if (buckets[bucketIndex] == elementToRemovePosition)
             {
                 buckets[bucketIndex] = elements[elementToRemovePosition].Next;
-                RemoveElement(elementToRemovePosition);
+                freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
             }
             else
             {
@@ -229,7 +234,7 @@ namespace IntegersArray
                     if (elements[currentElementPosition].Next == elementToRemovePosition)
                     {
                         elements[currentElementPosition].Next = elements[elementToRemovePosition].Next;
-                        RemoveElement(elementToRemovePosition);
+                        freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
                         break;
                     }
 
@@ -298,12 +303,6 @@ namespace IntegersArray
             }
 
             return -1;
-        }
-
-        void RemoveElement(int elementPosition)
-        {
-            elements[elementPosition] = null;
-            freeIndex.AddFirst(new LinkedListNode<int>(elementPosition));
         }
 
         void AddElement(int position, TKey key, TValue value)
