@@ -45,7 +45,21 @@ namespace IntegersArray
             }
         }
 
-        public System.Collections.Generic.ICollection<TValue> Values => throw new NotImplementedException();
+        public System.Collections.Generic.ICollection<TValue> Values
+        {
+            get
+            {
+                TValue[] values = new TValue[Count];
+                int index = 0;
+                foreach (var element in this)
+                {
+                    values[index] = element.Value;
+                    index++;
+                }
+
+                return values;
+            }
+        }
 
         public TValue this[TKey key]
         {

@@ -258,5 +258,26 @@ namespace IntegersArrayFacts
             Assert.Equal(36, keys[2]);
             Assert.Equal(2, keys[3]);
         }
+
+        [Fact]
+
+        public void ValuesPropertyShouldReturnAnArrayWithAllTheDictionaryValues()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(26, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(36, "heyy")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+
+            dictionary.Remove(6);
+            dictionary.Remove(36);
+
+            string[] values = new string[3];
+            values = (string[])dictionary.Values;
+            Assert.Equal("oi", values[0]);
+            Assert.Equal("aii", values[1]);
+            Assert.Equal("hehe", values[2]);
+        }
     }
 }
