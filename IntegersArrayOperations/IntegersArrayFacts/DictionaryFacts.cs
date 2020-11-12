@@ -279,5 +279,25 @@ namespace IntegersArrayFacts
             Assert.Equal("aii", values[1]);
             Assert.Equal("hehe", values[2]);
         }
+
+        [Fact]
+
+        public void AddMethodShouldAddElementsOnFreePositions()
+        {
+            var dictionary = new IntegersArray.Dictionary<int, string>(10);
+            dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
+            dictionary.Add((new KeyValuePair<int, string>(16, "oi")));
+            dictionary.Add((new KeyValuePair<int, string>(26, "aii")));
+            dictionary.Add((new KeyValuePair<int, string>(36, "heyy")));
+            dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
+
+            dictionary.Remove(6);
+            dictionary.Remove(36);
+
+            dictionary.Add((new KeyValuePair<int, string>(4, "mos")));
+            dictionary.Add((new KeyValuePair<int, string>(7, "far")));
+
+            Assert.Equal(5, dictionary.Count);
+        }
     }
 }

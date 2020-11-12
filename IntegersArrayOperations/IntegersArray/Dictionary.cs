@@ -110,13 +110,15 @@ namespace IntegersArray
                 throw new ArgumentException("An element with the same key already exists!");
             }
 
-            int bucketIndex = GetBucketIndex(key);
-            elements[Count] = new Element<TKey, TValue>();
-            elements[Count].Key = key;
-            elements[Count].Value = value;
-            elements[Count].Next = buckets[bucketIndex];
-            buckets[bucketIndex] = Count;
-            Count++;
+            if (freeIndex.Count == 0)
+            {
+                AddElement(Count, key, value);
+            }
+            else
+            {
+                AddElement(freeIndex.First.Value, key, value);
+                freeIndex.RemoveFirst();
+            }
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -314,6 +316,17 @@ namespace IntegersArray
         {
             elements[elementPosition] = null;
             freeIndex.AddFirst(new LinkedListNode<int>(elementPosition));
+        }
+
+        void AddElement(int position, TKey key, TValue value)
+        {
+            int bucketIndex = GetBucketIndex(key);
+            elements[position] = new Element<TKey, TValue>();
+            elements[position].Key = key;
+            elements[position].Value = value;
+            elements[position].Next = buckets[bucketIndex];
+            buckets[bucketIndex] = Count;
+            Count++;
         }
     }
 }
