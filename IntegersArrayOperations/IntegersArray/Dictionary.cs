@@ -12,6 +12,11 @@ namespace IntegersArray
 
         public Dictionary(int size)
         {
+            if (size <= 0)
+            {
+                throw new ArgumentException("Size need to be at least 1!");
+            }
+
             buckets = new int[size];
             PopulateBuckets();
             elements = new Element<TKey, TValue>[size];
@@ -130,7 +135,7 @@ namespace IntegersArray
         {
             for (int i = 0; i < Count; i++)
             {
-                elements[i] = new Element<TKey, TValue>();
+                elements[i] = null;
             }
 
             Count = 0;
@@ -139,19 +144,7 @@ namespace IntegersArray
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
-            if (item.Key == null)
-            {
-                throw new ArgumentNullException(nameof(item));
-            }
-
-            var elementPosition = FindElementPosition(item.Key);
-
-            if (elementPosition == -1)
-            {
-                throw new KeyNotFoundException();
-            }
-
-            return elements[elementPosition].Value.Equals(item.Value);
+            return this[item.Key].Equals(item.Value);
         }
 
         public bool ContainsKey(TKey key)
@@ -255,11 +248,6 @@ namespace IntegersArray
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (key == null)
-            {
-                throw new ArgumentNullException(nameof(key));
-            }
-
             if (!ContainsKey(key))
             {
                 value = default;
@@ -321,11 +309,8 @@ namespace IntegersArray
         void AddElement(int position, TKey key, TValue value)
         {
             int bucketIndex = GetBucketIndex(key);
-            elements[position] = new Element<TKey, TValue>();
-            elements[position].Key = key;
-            elements[position].Value = value;
-            elements[position].Next = buckets[bucketIndex];
-            buckets[bucketIndex] = Count;
+            elements[position] = new Element<TKey, TValue>(key, value, buckets[bucketIndex]);
+            buckets[bucketIndex] = position;
             Count++;
         }
     }

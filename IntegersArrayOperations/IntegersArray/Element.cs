@@ -2,11 +2,11 @@
 {
     internal class Element<TKey, TValue>
     {
-        internal Element()
+        internal Element(TKey key = default, TValue value = default, int next = -1)
         {
-            Key = default;
-            Value = default;
-            Next = -1;
+            Key = key;
+            Value = value;
+            Next = next;
         }
 
         internal TKey Key

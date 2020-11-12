@@ -9,6 +9,13 @@ namespace IntegersArrayFacts
     {
         [Fact]
 
+        public void DictionaryShouldThrowArgumentExceptionWhenGivenSizeIsZeroOrLess()
+        {
+            Assert.Throws<ArgumentException>(() => new IntegersArray.Dictionary<int, string>(0));
+        }
+
+        [Fact]
+
         public void AddMethodShouldAddNewElement()
         {
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
@@ -296,8 +303,9 @@ namespace IntegersArrayFacts
 
             dictionary.Add((new KeyValuePair<int, string>(4, "mos")));
             dictionary.Add((new KeyValuePair<int, string>(7, "far")));
+            dictionary.Add((new KeyValuePair<int, string>(17, "yaa")));
 
-            Assert.Equal(5, dictionary.Count);
+            Assert.Equal(6, dictionary.Count);
         }
     }
 }
