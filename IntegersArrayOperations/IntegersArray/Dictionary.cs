@@ -29,7 +29,21 @@ namespace IntegersArray
             get; internal set;
         }
 
-        public System.Collections.Generic.ICollection<TKey> Keys => throw new NotImplementedException();
+        public System.Collections.Generic.ICollection<TKey> Keys
+        {
+            get
+            {
+                TKey[] keys = new TKey[Count];
+                int index = 0;
+                foreach (var element in this)
+                {
+                    keys[index] = element.Key;
+                    index++;
+                }
+
+                return keys;
+            }
+        }
 
         public System.Collections.Generic.ICollection<TValue> Values => throw new NotImplementedException();
 
@@ -165,11 +179,6 @@ namespace IntegersArray
             {
                 if (elements[i] == null)
                 {
-                    break;
-                }
-
-                if (elements[i].Key.Equals(default) && elements[i].Value.Equals(default))
-                {
                     continue;
                 }
 
@@ -289,7 +298,7 @@ namespace IntegersArray
 
         void RemoveElement(int elementPosition)
         {
-            elements[elementPosition] = new Element<TKey, TValue>();
+            elements[elementPosition] = null;
             freeIndex.AddFirst(new LinkedListNode<int>(elementPosition));
         }
     }
