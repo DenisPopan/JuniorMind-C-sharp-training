@@ -8,19 +8,19 @@ namespace IntegersArray
     {
         readonly int[] buckets;
         readonly Element<TKey, TValue>[] elements;
-        readonly LinkedList<int> freeIndex;
+        int freeIndex;
 
         public Dictionary(int size)
         {
             if (size <= 0)
             {
-                throw new ArgumentException("Size need to be at least 1!");
+                throw new ArgumentException("Size needs to be at least 1!");
             }
 
             buckets = new int[size];
             PopulateBuckets();
             elements = new Element<TKey, TValue>[size];
-            freeIndex = new LinkedList<int>();
+            freeIndex = -1;
             Count = 0;
         }
 
@@ -38,12 +38,10 @@ namespace IntegersArray
         {
             get
             {
-                TKey[] keys = new TKey[Count];
-                int index = 0;
+                var keys = new LinkedList<TKey>();
                 foreach (var element in this)
                 {
-                    keys[index] = element.Key;
-                    index++;
+                    keys.AddLast(element.Key);
                 }
 
                 return keys;
@@ -54,12 +52,10 @@ namespace IntegersArray
         {
             get
             {
-                TValue[] values = new TValue[Count];
-                int index = 0;
+                var values = new LinkedList<TValue>();
                 foreach (var element in this)
                 {
-                    values[index] = element.Value;
-                    index++;
+                   values.AddLast(element.Value);
                 }
 
                 return values;
@@ -115,14 +111,15 @@ namespace IntegersArray
                 throw new ArgumentException("An element with the same key already exists!");
             }
 
-            if (freeIndex.Count == 0)
+            if (freeIndex == -1)
             {
                 AddElement(Count, key, value);
             }
             else
             {
-                AddElement(freeIndex.First.Value, key, value);
-                freeIndex.RemoveFirst();
+                int elementToAddPosition = freeIndex;
+                freeIndex = elements[freeIndex].Next;
+                AddElement(elementToAddPosition, key, value);
             }
         }
 
@@ -184,19 +181,17 @@ namespace IntegersArray
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            for (int i = 0; i < elements.Length; i++)
+            for (int i = 0; i < buckets.Length; i++)
             {
-                if (elements[i] == null)
-                {
-                    break;
-                }
-
-                if (freeIndex.Contains(i))
+                if (buckets[i] == -1)
                 {
                     continue;
                 }
 
-                yield return new KeyValuePair<TKey, TValue>(elements[i].Key, elements[i].Value);
+                for (int elementPosition = buckets[i]; elementPosition != -1; elementPosition = elements[elementPosition].Next)
+                {
+                    yield return new KeyValuePair<TKey, TValue>(elements[elementPosition].Key, elements[elementPosition].Value);
+                }
             }
         }
 
@@ -214,35 +209,24 @@ namespace IntegersArray
 
             var bucketIndex = GetBucketIndex(key);
 
-            var elementToRemovePosition = FindElementPosition(key);
+            int previousIndex;
+            var elementToRemovePosition = FindElementPosition(key, out previousIndex);
 
             if (elementToRemovePosition == -1)
             {
                 return false;
             }
 
-            if (buckets[bucketIndex] == elementToRemovePosition)
+            if (previousIndex == -1)
             {
                 buckets[bucketIndex] = elements[elementToRemovePosition].Next;
-                freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
             }
             else
             {
-                var currentElementPosition = buckets[bucketIndex];
-                while (elements[currentElementPosition].Next != -1)
-                {
-                    if (elements[currentElementPosition].Next == elementToRemovePosition)
-                    {
-                        elements[currentElementPosition].Next = elements[elementToRemovePosition].Next;
-                        freeIndex.AddFirst(new LinkedListNode<int>(elementToRemovePosition));
-                        break;
-                    }
-
-                    currentElementPosition = elements[currentElementPosition].Next;
-                }
+                elements[previousIndex].Next = elements[elementToRemovePosition].Next;
             }
 
-            Count--;
+            RemoveElement(elementToRemovePosition);
             return true;
         }
 
@@ -278,6 +262,12 @@ namespace IntegersArray
 
         int FindElementPosition(TKey key)
         {
+            return FindElementPosition(key, out int previousPosition);
+        }
+
+        int FindElementPosition(TKey key, out int previousPosition)
+        {
+            previousPosition = -1;
             int bucketIndex = GetBucketIndex(key);
 
             if (bucketIndex < 0 || bucketIndex >= elements.Length || buckets[bucketIndex] == -1)
@@ -285,21 +275,14 @@ namespace IntegersArray
                 return -1;
             }
 
-            var currentElement = elements[buckets[bucketIndex]];
-
-            if (currentElement.Key.Equals(key))
+            for (int elementPosition = buckets[bucketIndex]; elementPosition != -1; elementPosition = elements[elementPosition].Next)
             {
-                return buckets[bucketIndex];
-            }
-
-            while (currentElement.Next != -1)
-            {
-                if (elements[currentElement.Next].Key.Equals(key))
+                if (elements[elementPosition].Key.Equals(key))
                 {
-                    return currentElement.Next;
+                    return elementPosition;
                 }
 
-                currentElement = elements[currentElement.Next];
+                previousPosition = elementPosition;
             }
 
             return -1;
@@ -311,6 +294,13 @@ namespace IntegersArray
             elements[position] = new Element<TKey, TValue>(key, value, buckets[bucketIndex]);
             buckets[bucketIndex] = position;
             Count++;
+        }
+
+        void RemoveElement(int elementPosition)
+        {
+            elements[elementPosition].Next = freeIndex;
+            freeIndex = elementPosition;
+            Count--;
         }
     }
 }

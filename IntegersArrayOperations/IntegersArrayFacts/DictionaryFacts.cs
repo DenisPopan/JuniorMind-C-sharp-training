@@ -150,10 +150,10 @@ namespace IntegersArrayFacts
             dictionary.Add((new KeyValuePair<int, string>(2, "hehe")));
             KeyValuePair<int, string>[] array = new KeyValuePair<int, string>[10];
             dictionary.CopyTo(array, 0);
-            Assert.Equal(6, array[0].Key);
+            Assert.Equal(2, array[0].Key);
             Assert.Equal(16, array[1].Key);
-            Assert.Equal(8, array[2].Key);
-            Assert.Equal(2, array[3].Key);
+            Assert.Equal(6, array[2].Key);
+            Assert.Equal(8, array[3].Key);
             Assert.Throws<ArgumentNullException>(() => dictionary.CopyTo(null, 0));
             Assert.Throws<ArgumentOutOfRangeException>(() => dictionary.CopyTo(array, -1));
             Assert.Throws<ArgumentException>(() => dictionary.CopyTo(array, 9));
@@ -247,7 +247,7 @@ namespace IntegersArrayFacts
 
         [Fact]
 
-        public void KeysPropertyShouldReturnAnArrayWithAllTheDictionaryKeys()
+        public void KeysPropertyShouldReturnAListWithAllTheDictionaryKeys()
         {
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
@@ -258,17 +258,17 @@ namespace IntegersArrayFacts
 
             dictionary.Remove(26);
 
-            int[] keys = new int[4];
-            keys = (int[])dictionary.Keys;
-            Assert.Equal(6, keys[0]);
-            Assert.Equal(16, keys[1]);
-            Assert.Equal(36, keys[2]);
-            Assert.Equal(2, keys[3]);
+            var keys = new LinkedList<string>();
+            keys = (LinkedList<string>)dictionary.Values;
+            Assert.True(keys.Contains("oi"));
+            Assert.True(keys.Contains("hey"));
+            Assert.True(keys.Contains("hehe"));
+            Assert.True(keys.Contains("heyy"));
         }
 
         [Fact]
 
-        public void ValuesPropertyShouldReturnAnArrayWithAllTheDictionaryValues()
+        public void ValuesPropertyShouldReturnAListWithAllTheDictionaryValues()
         {
             var dictionary = new IntegersArray.Dictionary<int, string>(10);
             dictionary.Add(new KeyValuePair<int, string>(6, "hey"));
@@ -280,11 +280,11 @@ namespace IntegersArrayFacts
             dictionary.Remove(6);
             dictionary.Remove(36);
 
-            string[] values = new string[3];
-            values = (string[])dictionary.Values;
-            Assert.Equal("oi", values[0]);
-            Assert.Equal("aii", values[1]);
-            Assert.Equal("hehe", values[2]);
+            var values = new LinkedList<string>();
+            values = (LinkedList<string>)dictionary.Values;
+            Assert.True(values.Contains("oi"));
+            Assert.True(values.Contains("aii"));
+            Assert.True(values.Contains("hehe"));
         }
 
         [Fact]
