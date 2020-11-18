@@ -60,5 +60,21 @@ namespace LinqFacts
             Assert.Throws<ArgumentNullException>(() => LinqMethods.First<int>(null, c => c % 2 == 0));
             Assert.Throws<ArgumentNullException>(() => LinqMethods.First<int>(array, null));
         }
+
+        [Fact]
+        public void SelectMethodShouldReturnAModifiedGivenCollection()
+        {
+            var array = new int[3];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+
+            var array1 = new List<string>();
+            array1 = (List<string>)LinqMethods.Select<int, string>(array, c => c.ToString());
+
+            Assert.Equal("6", array1[0]);
+            Assert.Equal("7", array1[1]);
+            Assert.Equal("10", array1[2]);
+        }
     }
 }

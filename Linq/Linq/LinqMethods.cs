@@ -73,5 +73,26 @@ namespace Linq
 
             throw new InvalidOperationException();
         }
+
+        public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            var result = new List<TResult>();
+            foreach (var element in source)
+            {
+                result.Add(selector(element));
+            }
+
+            return result;
+        }
     }
 }
