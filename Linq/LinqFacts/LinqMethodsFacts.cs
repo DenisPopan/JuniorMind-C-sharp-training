@@ -24,5 +24,23 @@ namespace LinqFacts
             Assert.Throws<ArgumentNullException>(() => LinqMethods.All<int>(null, c => c % 2 == 0));
             Assert.Throws<ArgumentNullException>(() => LinqMethods.All<int>(array, null));
         }
+
+        [Fact]
+        public void AnyMethodShouldReturnTrueIFAnyElementMeetsTheGivenCondition()
+        {
+            var array = new int[3];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+
+            var array1 = new int[2];
+            array1[0] = 3;
+            array1[1] = 9;
+
+            Assert.True(LinqMethods.Any<int>(array, c => c % 2 == 0));
+            Assert.False(LinqMethods.Any<int>(array1, c => c % 2 == 0));
+            Assert.Throws<ArgumentNullException>(() => LinqMethods.Any<int>(null, c => c % 2 == 0));
+            Assert.Throws<ArgumentNullException>(() => LinqMethods.Any<int>(array, null));
+        }
     }
 }
