@@ -143,6 +143,36 @@ namespace Linq
             return result;
         }
 
+        public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
+
+            if (elementSelector == null)
+            {
+                throw new ArgumentNullException(nameof(elementSelector));
+            }
+
+            var dictionary = new Dictionary<TKey, TElement>();
+
+            foreach (var element in source)
+            {
+                dictionary.Add(keySelector(element), elementSelector(element));
+            }
+
+            return dictionary;
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {

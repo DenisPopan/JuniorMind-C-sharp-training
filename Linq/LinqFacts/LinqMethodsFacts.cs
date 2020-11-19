@@ -115,5 +115,26 @@ namespace LinqFacts
             Assert.Equal(18, list[2]);
             Assert.Equal(22, list[3]);
         }
+
+        [Fact]
+        public void ToDictionaryMethodShouldReturnADictionaryWithAllTheElementsOfOurCollection()
+        {
+            var array = new int[6];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+            array[3] = 15;
+            array[4] = 18;
+            array[5] = 22;
+
+            var dictionary = new Dictionary<string, string>();
+            dictionary = (Dictionary<string, string>)LinqMethods.ToDictionary<int, string, string>(array, c => c.ToString(), c => c.ToString());
+
+            Assert.Equal("6", dictionary["6"]);
+            Assert.Equal("10", dictionary["10"]);
+            Assert.Equal("18", dictionary["18"]);
+            Assert.Equal("15", dictionary["15"]);
+            Assert.Equal("22", dictionary["22"]);
+        }
     }
 }
