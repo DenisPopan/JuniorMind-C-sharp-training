@@ -69,12 +69,31 @@ namespace LinqFacts
             array[1] = 7;
             array[2] = 10;
 
-            var array1 = new List<string>();
-            array1 = (List<string>)LinqMethods.Select<int, string>(array, c => c.ToString());
+            var list = new List<string>();
+            list = (List<string>)LinqMethods.Select<int, string>(array, c => c.ToString());
 
-            Assert.Equal("6", array1[0]);
-            Assert.Equal("7", array1[1]);
-            Assert.Equal("10", array1[2]);
+            Assert.Equal("6", list[0]);
+            Assert.Equal("7", list[1]);
+            Assert.Equal("10", list[2]);
+        }
+
+        [Fact]
+        public void SelectManyMethodShouldReturnAModifiedGivenCollection()
+        {
+            var array = new int[6];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+
+            var list = new List<string>();
+            list = (List<string>)LinqMethods.SelectMany<int, string>(array, LinqMethods.SelectManySelector);
+
+            Assert.Equal("6", list[0]);
+            Assert.Equal("6", list[1]);
+            Assert.Equal("7", list[2]);
+            Assert.Equal("7", list[3]);
+            Assert.Equal("10", list[4]);
+            Assert.Equal("10", list[5]);
         }
     }
 }

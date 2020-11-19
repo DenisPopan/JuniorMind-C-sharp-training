@@ -94,5 +94,39 @@ namespace Linq
 
             return result;
         }
+
+        public static IEnumerable<TResult> SelectMany<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (selector == null)
+            {
+                throw new ArgumentNullException(nameof(selector));
+            }
+
+            var result = new List<TResult>();
+            foreach (var element in source)
+            {
+                foreach (var returnedElement in selector(element))
+                {
+                    result.Add(returnedElement);
+                }
+            }
+
+            return result;
+        }
+
+        // A helper method
+        public static IEnumerable<string> SelectManySelector<T>(T element)
+        {
+            var list = new List<string>();
+            list.Add(element.ToString());
+            list.Add(element.ToString());
+
+            return list;
+        }
     }
 }
