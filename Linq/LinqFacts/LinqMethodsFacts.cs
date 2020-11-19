@@ -95,5 +95,25 @@ namespace LinqFacts
             Assert.Equal("10", list[4]);
             Assert.Equal("10", list[5]);
         }
+
+        [Fact]
+        public void WhereMethodShouldReturnACollectionWithAllTheElementsThatMeetAGivenCondition()
+        {
+            var array = new int[6];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+            array[3] = 15;
+            array[4] = 18;
+            array[5] = 22;
+
+            var list = new List<int>();
+            list = (List<int>)LinqMethods.Where<int>(array, c => c % 2 == 0);
+
+            Assert.Equal(6, list[0]);
+            Assert.Equal(10, list[1]);
+            Assert.Equal(18, list[2]);
+            Assert.Equal(22, list[3]);
+        }
     }
 }

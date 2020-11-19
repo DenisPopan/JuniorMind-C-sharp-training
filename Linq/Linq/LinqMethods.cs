@@ -119,6 +119,30 @@ namespace Linq
             return result;
         }
 
+        public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            var result = new List<TSource>();
+            foreach (var element in source)
+            {
+                if (predicate(element))
+                {
+                    result.Add(element);
+                }
+            }
+
+            return result;
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {
