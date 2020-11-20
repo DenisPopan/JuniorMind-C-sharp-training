@@ -173,6 +173,37 @@ namespace Linq
             return dictionary;
         }
 
+        public static IEnumerable<TResult> Zip<TFirst, TSecond, TResult>(
+            this IEnumerable<TFirst> first,
+            IEnumerable<TSecond> second,
+            Func<TFirst, TSecond, TResult> resultSelector)
+        {
+            if (first == null)
+            {
+                throw new ArgumentNullException(nameof(first));
+            }
+
+            if (second == null)
+            {
+                throw new ArgumentNullException(nameof(second));
+            }
+
+            if (resultSelector == null)
+            {
+                throw new ArgumentNullException(nameof(resultSelector));
+            }
+
+            var result = new List<TResult>();
+            var firstEnumerator = first.GetEnumerator();
+            var secondEnumerator = second.GetEnumerator();
+            while (firstEnumerator.MoveNext() && secondEnumerator.MoveNext())
+            {
+                result.Add(resultSelector(firstEnumerator.Current, secondEnumerator.Current));
+            }
+
+            return result;
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {

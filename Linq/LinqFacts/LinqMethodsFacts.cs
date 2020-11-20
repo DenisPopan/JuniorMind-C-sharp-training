@@ -136,5 +136,39 @@ namespace LinqFacts
             Assert.Equal("15", dictionary["15"]);
             Assert.Equal("22", dictionary["22"]);
         }
+
+        [Fact]
+        public void ZipMethodShouldMergeTwoEnumerations()
+        {
+            var array = new int[4];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+            array[3] = 15;
+
+            var array1 = new int[5];
+            array1[0] = 2;
+            array1[1] = 3;
+            array1[2] = 50;
+            array1[3] = 7;
+
+            var list = new List<int>();
+            list = (List<int>)LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c);
+
+            Assert.Equal(8, list[0]);
+            Assert.Equal(10, list[1]);
+            Assert.Equal(60, list[2]);
+            Assert.Equal(22, list[3]);
+
+            array1[4] = 9;
+            list.Clear();
+            list = (List<int>)LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c);
+
+            Assert.Equal(8, list[0]);
+            Assert.Equal(10, list[1]);
+            Assert.Equal(60, list[2]);
+            Assert.Equal(22, list[3]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list[4]);
+        }
     }
 }
