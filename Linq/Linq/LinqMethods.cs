@@ -204,6 +204,34 @@ namespace Linq
             return result;
         }
 
+        public static TAccumulate Aggregate<TSource, TAccumulate>(
+            this IEnumerable<TSource> source,
+            TAccumulate seed,
+            Func<TAccumulate, TSource, TAccumulate> func)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (func == null)
+            {
+                throw new ArgumentNullException(nameof(func));
+            }
+
+            if (seed == null)
+            {
+                throw new ArgumentNullException(nameof(seed));
+            }
+
+            foreach (var element in source)
+            {
+                seed = func(seed, element);
+            }
+
+            return seed;
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {

@@ -170,5 +170,17 @@ namespace LinqFacts
             Assert.Equal(22, list[3]);
             Assert.Throws<ArgumentOutOfRangeException>(() => list[4]);
         }
+
+        [Fact]
+        public void AggregateMethodShouldApplyGivenFunctionOnAllSourceElements()
+        {
+            var array = new int[4];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+            array[3] = 15;
+
+            Assert.Equal(38, LinqMethods.Aggregate<int, int>(array, 0, (b, c) => b + c));
+        }
     }
 }
