@@ -182,5 +182,32 @@ namespace LinqFacts
 
             Assert.Equal(38, LinqMethods.Aggregate<int, int>(array, 0, (b, c) => b + c));
         }
+
+        [Fact]
+        public void JoinMethodShouldCorelateElementsOfTwoCollectionsBasedOnTheirKeys()
+        {
+            var array = new int[4];
+            array[0] = 6;
+            array[1] = 7;
+            array[2] = 10;
+            array[3] = 15;
+
+            var array1 = new int[4];
+            array1[0] = 2;
+            array1[1] = 7;
+            array1[2] = 50;
+            array1[3] = 24;
+
+            var list = new List<int>();
+            list = (List<int>)LinqMethods.Join<int, int, string, int>(
+                array, 
+                array1, 
+                a => a.ToString(),
+                a => a.ToString(),
+                (b, c) => b + c);
+
+            Assert.Equal(14, list[0]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list[1]);
+        }
     }
 }

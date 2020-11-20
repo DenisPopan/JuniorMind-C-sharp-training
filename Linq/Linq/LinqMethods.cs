@@ -232,6 +232,52 @@ namespace Linq
             return seed;
         }
 
+        public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(
+            this IEnumerable<TOuter> outer,
+            IEnumerable<TInner> inner,
+            Func<TOuter, TKey> outerKeySelector,
+            Func<TInner, TKey> innerKeySelector,
+            Func<TOuter, TInner, TResult> resultSelector)
+        {
+            if (outer == null)
+            {
+                throw new ArgumentNullException(nameof(outer));
+            }
+
+            if (inner == null)
+            {
+                throw new ArgumentNullException(nameof(inner));
+            }
+
+            if (outerKeySelector == null)
+            {
+                throw new ArgumentNullException(nameof(outerKeySelector));
+            }
+
+            if (innerKeySelector == null)
+            {
+                throw new ArgumentNullException(nameof(innerKeySelector));
+            }
+
+            if (resultSelector == null)
+            {
+                throw new ArgumentNullException(nameof(resultSelector));
+            }
+
+            var result = new List<TResult>();
+            var outerEnumerator = outer.GetEnumerator();
+            var innerEnumerator = inner.GetEnumerator();
+            while (outerEnumerator.MoveNext() && innerEnumerator.MoveNext())
+            {
+                if (outerKeySelector(outerEnumerator.Current).Equals(innerKeySelector(innerEnumerator.Current)))
+                {
+                    result.Add(resultSelector(outerEnumerator.Current, innerEnumerator.Current));
+                }
+            }
+
+            return result;
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {
