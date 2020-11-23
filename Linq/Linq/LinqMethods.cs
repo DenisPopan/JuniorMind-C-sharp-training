@@ -325,6 +325,41 @@ namespace Linq
             return result;
         }
 
+        public static IEnumerable<TSource> Union<TSource>(
+            this IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (first == null)
+            {
+                throw new ArgumentNullException(nameof(first));
+            }
+
+            if (second == null)
+            {
+                throw new ArgumentNullException(nameof(second));
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            var result = new List<TSource>();
+
+            foreach (var element in first)
+            {
+                result.Add(element);
+            }
+
+            foreach (var element in second)
+            {
+                result.Add(element);
+            }
+
+            return Distinct(result, comparer);
+        }
+
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {

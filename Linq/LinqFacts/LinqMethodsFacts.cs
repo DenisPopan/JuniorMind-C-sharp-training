@@ -228,5 +228,47 @@ namespace LinqFacts
             Assert.Equal("10", list[2]);
             Assert.Throws<ArgumentOutOfRangeException>(() => list[3]);
         }
+
+        [Fact]
+        public void UnionMethodShouldReturnAnUnionOfTwoEnumerations()
+        {
+            var array = new int[8];
+            array[0] = 5;
+            array[1] = 3;
+            array[2] = 9;
+            array[3] = 7;
+            array[4] = 5;
+            array[5] = 9;
+            array[6] = 3;
+            array[7] = 7;
+
+            var array1 = new int[8];
+            array1[0] = 8;
+            array1[1] = 3;
+            array1[2] = 6;
+            array1[3] = 4;
+            array1[4] = 4;
+            array1[5] = 9;
+            array1[6] = 1;
+            array1[7] = 0;
+
+            var list = new List<int>();
+            list = (List<int>)LinqMethods.Union<int>(
+                array,
+                array1,
+                EqualityComparer<int>.Default);
+
+            Assert.Equal(9, list.Count);
+            Assert.Equal(5, list[0]);
+            Assert.Equal(3, list[1]);
+            Assert.Equal(9, list[2]);
+            Assert.Equal(7, list[3]);
+            Assert.Equal(8, list[4]);
+            Assert.Equal(6, list[5]);
+            Assert.Equal(4, list[6]);
+            Assert.Equal(1, list[7]);
+            Assert.Equal(0, list[8]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list[9]);
+        }
     }
 }
