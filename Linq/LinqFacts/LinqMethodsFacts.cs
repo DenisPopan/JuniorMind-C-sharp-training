@@ -209,5 +209,24 @@ namespace LinqFacts
             Assert.Equal(14, list[0]);
             Assert.Throws<ArgumentOutOfRangeException>(() => list[1]);
         }
+
+        [Fact]
+        public void DistinctMethodShouldReturnAnEnumerationWithAllTheDistinctElements()
+        {
+            var array = new string[6];
+            array[0] = "6";
+            array[1] = "7";
+            array[2] = "6";
+            array[3] = "7";
+            array[4] = "6";
+            array[5] = "10";
+            var list = new List<string>();
+            list = (List<string>)LinqMethods.Distinct<string>(array, StringComparer.OrdinalIgnoreCase);
+
+            Assert.Equal("6", list[0]);
+            Assert.Equal("7", list[1]);
+            Assert.Equal("10", list[2]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list[3]);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Linq
@@ -272,6 +273,52 @@ namespace Linq
                 if (outerKeySelector(outerEnumerator.Current).Equals(innerKeySelector(innerEnumerator.Current)))
                 {
                     result.Add(resultSelector(outerEnumerator.Current, innerEnumerator.Current));
+                }
+            }
+
+            return result;
+        }
+
+        public static IEnumerable<TSource> Distinct<TSource>(
+            this IEnumerable<TSource> source,
+            IEqualityComparer<TSource> comparer)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            var result = new List<TSource>();
+            var stepsNumber = 0;
+            var stepsNumber2 = 0;
+            foreach (var element in source)
+            {
+                var hasDuplicate = false;
+                stepsNumber++;
+                stepsNumber2 = 0;
+                foreach (var element2 in source)
+                {
+                    stepsNumber2++;
+                    if (stepsNumber2 >= stepsNumber)
+                    {
+                        break;
+                    }
+
+                    if (comparer.Equals(element, element2))
+                    {
+                        hasDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!hasDuplicate)
+                {
+                    result.Add(element);
                 }
             }
 
