@@ -270,5 +270,40 @@ namespace LinqFacts
             Assert.Equal(0, list[8]);
             Assert.Throws<ArgumentOutOfRangeException>(() => list[9]);
         }
+
+        [Fact]
+        public void IntersectMethodShouldReturnAnIntersectionOfTwoGivenEnumerations()
+        {
+            var array = new int[8];
+            array[0] = 5;
+            array[1] = 3;
+            array[2] = 9;
+            array[3] = 7;
+            array[4] = 5;
+            array[5] = 9;
+            array[6] = 3;
+            array[7] = 7;
+
+            var array1 = new int[8];
+            array1[0] = 8;
+            array1[1] = 3;
+            array1[2] = 6;
+            array1[3] = 4;
+            array1[4] = 4;
+            array1[5] = 9;
+            array1[6] = 1;
+            array1[7] = 0;
+
+            var list = new List<int>();
+            list = (List<int>)LinqMethods.Intersect<int>(
+                array,
+                array1,
+                EqualityComparer<int>.Default);
+
+            Assert.Equal(2, list.Count);
+            Assert.Equal(3, list[0]);
+            Assert.Equal(9, list[1]);
+            Assert.Throws<ArgumentOutOfRangeException>(() => list[2]);
+        }
     }
 }
