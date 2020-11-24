@@ -69,31 +69,39 @@ namespace LinqFacts
             array[1] = 7;
             array[2] = 10;
 
-            var list = new List<string>();
-            list = (List<string>)LinqMethods.Select<int, string>(array, c => c.ToString());
-
-            Assert.Equal("6", list[0]);
-            Assert.Equal("7", list[1]);
-            Assert.Equal("10", list[2]);
+            var enumerator = LinqMethods.Select<int, string>(array, c => c.ToString()).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("6", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("7", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("10", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
         public void SelectManyMethodShouldReturnAModifiedGivenCollection()
         {
-            var array = new int[6];
+            var array = new int[3];
             array[0] = 6;
             array[1] = 7;
             array[2] = 10;
 
-            var list = new List<string>();
-            list = (List<string>)LinqMethods.SelectMany<int, string>(array, LinqMethods.SelectManySelector);
+            var enumerator = LinqMethods.SelectMany<int, string>(array, LinqMethods.SelectManySelector).GetEnumerator();
 
-            Assert.Equal("6", list[0]);
-            Assert.Equal("6", list[1]);
-            Assert.Equal("7", list[2]);
-            Assert.Equal("7", list[3]);
-            Assert.Equal("10", list[4]);
-            Assert.Equal("10", list[5]);
+            enumerator.MoveNext();
+            Assert.Equal("6", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("6", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("7", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("7", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("10", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("10", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
@@ -107,13 +115,17 @@ namespace LinqFacts
             array[4] = 18;
             array[5] = 22;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Where<int>(array, c => c % 2 == 0);
+            var enumerator = LinqMethods.Where<int>(array, c => c % 2 == 0).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal(6, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(10, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(18, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(22, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
 
-            Assert.Equal(6, list[0]);
-            Assert.Equal(10, list[1]);
-            Assert.Equal(18, list[2]);
-            Assert.Equal(22, list[3]);
         }
 
         [Fact]
@@ -152,23 +164,30 @@ namespace LinqFacts
             array1[2] = 50;
             array1[3] = 7;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c);
+            var enumerator = LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c).GetEnumerator();
 
-            Assert.Equal(8, list[0]);
-            Assert.Equal(10, list[1]);
-            Assert.Equal(60, list[2]);
-            Assert.Equal(22, list[3]);
+            enumerator.MoveNext();
+            Assert.Equal(8, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(10, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(60, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(22, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
 
             array1[4] = 9;
-            list.Clear();
-            list = (List<int>)LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c);
+            var enumerator1 = LinqMethods.Zip<int, int, int>(array, array1, (b, c) => b + c).GetEnumerator();
 
-            Assert.Equal(8, list[0]);
-            Assert.Equal(10, list[1]);
-            Assert.Equal(60, list[2]);
-            Assert.Equal(22, list[3]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[4]);
+            enumerator1.MoveNext();
+            Assert.Equal(8, enumerator1.Current);
+            enumerator1.MoveNext();
+            Assert.Equal(10, enumerator1.Current);
+            enumerator1.MoveNext();
+            Assert.Equal(60, enumerator1.Current);
+            enumerator1.MoveNext();
+            Assert.Equal(22, enumerator1.Current);
+            Assert.False(enumerator1.MoveNext());
         }
 
         [Fact]
@@ -198,16 +217,17 @@ namespace LinqFacts
             array1[2] = 50;
             array1[3] = 24;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Join<int, int, string, int>(
+            var enumerator = LinqMethods.Join<int, int, string, int>(
                 array, 
                 array1, 
                 a => a.ToString(),
                 a => a.ToString(),
-                (b, c) => b + c);
+                (b, c) => b + c).GetEnumerator();
 
-            Assert.Equal(14, list[0]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[1]);
+            enumerator.MoveNext();
+
+            Assert.Equal(14, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
@@ -220,13 +240,16 @@ namespace LinqFacts
             array[3] = "7";
             array[4] = "6";
             array[5] = "10";
-            var list = new List<string>();
-            list = (List<string>)LinqMethods.Distinct<string>(array, StringComparer.OrdinalIgnoreCase);
 
-            Assert.Equal("6", list[0]);
-            Assert.Equal("7", list[1]);
-            Assert.Equal("10", list[2]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[3]);
+            var enumerator = LinqMethods.Distinct<string>(array, StringComparer.OrdinalIgnoreCase).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal("6", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("7", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("10", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
@@ -252,23 +275,30 @@ namespace LinqFacts
             array1[6] = 1;
             array1[7] = 0;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Union<int>(
+            var enumerator = LinqMethods.Union<int>(
                 array,
                 array1,
-                EqualityComparer<int>.Default);
+                EqualityComparer<int>.Default).GetEnumerator();
 
-            Assert.Equal(9, list.Count);
-            Assert.Equal(5, list[0]);
-            Assert.Equal(3, list[1]);
-            Assert.Equal(9, list[2]);
-            Assert.Equal(7, list[3]);
-            Assert.Equal(8, list[4]);
-            Assert.Equal(6, list[5]);
-            Assert.Equal(4, list[6]);
-            Assert.Equal(1, list[7]);
-            Assert.Equal(0, list[8]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[9]);
+            enumerator.MoveNext();
+            Assert.Equal(5, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(3, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(9, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(7, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(8, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(6, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(4, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(1, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(0, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
@@ -294,16 +324,16 @@ namespace LinqFacts
             array1[6] = 1;
             array1[7] = 0;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Intersect<int>(
+            var enumerator = LinqMethods.Intersect<int>(
                 array,
                 array1,
-                EqualityComparer<int>.Default);
+                EqualityComparer<int>.Default).GetEnumerator();
 
-            Assert.Equal(2, list.Count);
-            Assert.Equal(3, list[0]);
-            Assert.Equal(9, list[1]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[2]);
+            enumerator.MoveNext();
+            Assert.Equal(3, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(9, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]
@@ -329,16 +359,16 @@ namespace LinqFacts
             array1[6] = 1;
             array1[7] = 0;
 
-            var list = new List<int>();
-            list = (List<int>)LinqMethods.Except<int>(
+            var enumerator = LinqMethods.Except<int>(
                 array,
                 array1,
-                EqualityComparer<int>.Default);
+                EqualityComparer<int>.Default).GetEnumerator();
 
-            Assert.Equal(2, list.Count);
-            Assert.Equal(5, list[0]);
-            Assert.Equal(7, list[1]);
-            Assert.Throws<ArgumentOutOfRangeException>(() => list[2]);
+            enumerator.MoveNext();
+            Assert.Equal(5, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(7, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
     }
 }

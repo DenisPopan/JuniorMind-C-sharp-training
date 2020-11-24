@@ -87,13 +87,10 @@ namespace Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            var result = new List<TResult>();
             foreach (var element in source)
             {
-                result.Add(selector(element));
+                yield return selector(element);
             }
-
-            return result;
         }
 
         public static IEnumerable<TResult> SelectMany<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
@@ -108,16 +105,13 @@ namespace Linq
                 throw new ArgumentNullException(nameof(selector));
             }
 
-            var result = new List<TResult>();
             foreach (var element in source)
             {
                 foreach (var returnedElement in selector(element))
                 {
-                    result.Add(returnedElement);
+                    yield return returnedElement;
                 }
             }
-
-            return result;
         }
 
         public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
@@ -132,16 +126,13 @@ namespace Linq
                 throw new ArgumentNullException(nameof(predicate));
             }
 
-            var result = new List<TSource>();
             foreach (var element in source)
             {
                 if (predicate(element))
                 {
-                    result.Add(element);
+                    yield return element;
                 }
             }
-
-            return result;
         }
 
         public static Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(
@@ -194,15 +185,12 @@ namespace Linq
                 throw new ArgumentNullException(nameof(resultSelector));
             }
 
-            var result = new List<TResult>();
             var firstEnumerator = first.GetEnumerator();
             var secondEnumerator = second.GetEnumerator();
             while (firstEnumerator.MoveNext() && secondEnumerator.MoveNext())
             {
-                result.Add(resultSelector(firstEnumerator.Current, secondEnumerator.Current));
+                yield return resultSelector(firstEnumerator.Current, secondEnumerator.Current);
             }
-
-            return result;
         }
 
         public static TAccumulate Aggregate<TSource, TAccumulate>(
@@ -265,18 +253,15 @@ namespace Linq
                 throw new ArgumentNullException(nameof(resultSelector));
             }
 
-            var result = new List<TResult>();
             var outerEnumerator = outer.GetEnumerator();
             var innerEnumerator = inner.GetEnumerator();
             while (outerEnumerator.MoveNext() && innerEnumerator.MoveNext())
             {
                 if (outerKeySelector(outerEnumerator.Current).Equals(innerKeySelector(innerEnumerator.Current)))
                 {
-                    result.Add(resultSelector(outerEnumerator.Current, innerEnumerator.Current));
+                    yield return resultSelector(outerEnumerator.Current, innerEnumerator.Current);
                 }
             }
-
-            return result;
         }
 
         public static IEnumerable<TSource> Distinct<TSource>(
@@ -293,7 +278,6 @@ namespace Linq
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            var result = new List<TSource>();
             var stepsNumber = 0;
             var stepsNumber2 = 0;
             foreach (var element in source)
@@ -318,11 +302,9 @@ namespace Linq
 
                 if (!hasDuplicate)
                 {
-                    result.Add(element);
+                    yield return element;
                 }
             }
-
-            return result;
         }
 
         public static IEnumerable<TSource> Union<TSource>(
@@ -367,7 +349,6 @@ namespace Linq
         {
             first = Distinct(first, comparer);
             second = Distinct(second, comparer);
-            var result = new List<TSource>();
 
             foreach (var element in first)
             {
@@ -375,13 +356,11 @@ namespace Linq
                 {
                     if (comparer.Equals(element, element2))
                     {
-                        result.Add(element);
+                        yield return element;
                         break;
                     }
                 }
             }
-
-            return result;
         }
 
         public static IEnumerable<TSource> Except<TSource>(
@@ -391,7 +370,6 @@ namespace Linq
         {
             first = Distinct(first, comparer);
             second = Distinct(second, comparer);
-            var result = new List<TSource>();
 
             foreach (var element in first)
             {
@@ -407,21 +385,18 @@ namespace Linq
 
                 if (!hasDuplicate)
                 {
-                    result.Add(element);
+                    yield return element;
                 }
             }
-
-            return result;
         }
 
         // A helper method
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {
-            var list = new List<string>();
-            list.Add(element.ToString());
-            list.Add(element.ToString());
-
-            return list;
+            for (int i = 0; i < 2; i++)
+            {
+                yield return element.ToString();
+            }
         }
     }
 }
