@@ -322,11 +322,6 @@ namespace Linq
                 throw new ArgumentNullException(nameof(second));
             }
 
-            if (comparer == null)
-            {
-                throw new ArgumentNullException(nameof(comparer));
-            }
-
             var result = new List<TSource>();
 
             foreach (var element in first)
@@ -390,13 +385,88 @@ namespace Linq
             }
         }
 
-        // A helper method
+        public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            Func<TSource, TElement> elementSelector,
+            Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
+            IEqualityComparer<TKey> comparer)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
+
+            if (elementSelector == null)
+            {
+                throw new ArgumentNullException(nameof(elementSelector));
+            }
+
+            if (resultSelector == null)
+            {
+                throw new ArgumentNullException(nameof(resultSelector));
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            var keys = new List<TKey>();
+            foreach (var element in source)
+            {
+                var key = keySelector(element);
+                if (!keys.Contains(key))
+                {
+                    keys.Add(key);
+                }
+            }
+
+            var result = new List<TElement>();
+            foreach (var key in keys)
+            {
+                foreach (var element in source)
+                {
+                    if (comparer.Equals(key, keySelector(element)))
+                    {
+                        result.Add(elementSelector(element));
+                    }
+                }
+
+                yield return resultSelector(key, result);
+                result.Clear();
+            }
+        }
+
+        // Helper methods
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {
             for (int i = 0; i < 2; i++)
             {
                 yield return element.ToString();
             }
+        }
+
+        public static int Count<T>(int key, IEnumerable<T> elements)
+        {
+            if (elements == null)
+            {
+                throw new ArgumentNullException(nameof(elements));
+            }
+
+            int count = 0;
+
+            foreach (var element in elements)
+            {
+                count++;
+            }
+
+            return count;
         }
     }
 }

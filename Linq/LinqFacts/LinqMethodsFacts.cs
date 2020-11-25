@@ -64,12 +64,7 @@ namespace LinqFacts
         [Fact]
         public void SelectMethodShouldReturnAModifiedGivenCollection()
         {
-            var array = new int[3];
-            array[0] = 6;
-            array[1] = 7;
-            array[2] = 10;
-
-            var enumerator = LinqMethods.Select<int, string>(array, c => c.ToString()).GetEnumerator();
+            var enumerator = LinqMethods.Select<int, string>(new[] {6, 7, 10 }, c => c.ToString()).GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("6", enumerator.Current);
             enumerator.MoveNext();
@@ -368,6 +363,27 @@ namespace LinqFacts
             Assert.Equal(5, enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal(7, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Fact]
+        public void GroupByMethodShouldGroupElementsByTheirKeysAndReturnAnEnumerationOfPropertiesOfTheseGroups()
+        {
+            var enumerator = LinqMethods.GroupBy<int, int, string, int>(
+                new[] { 6,7,8,9,6,6,7,8,7 },
+                a => a.GetHashCode(),
+                a => a.ToString(),
+                LinqMethods.Count,
+                EqualityComparer<int>.Default).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal(3, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(3, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(2, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(1, enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
     }
