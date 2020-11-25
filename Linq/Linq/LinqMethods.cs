@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Linq
 {
@@ -417,19 +418,10 @@ namespace Linq
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            var keys = new List<TKey>();
-            foreach (var element in source)
-            {
-                var key = keySelector(element);
-                if (!keys.Contains(key))
-                {
-                    keys.Add(key);
-                }
-            }
-
             var result = new List<TElement>();
-            foreach (var key in keys)
+            foreach (var distinctElement in Distinct<TSource>(source, EqualityComparer<TSource>.Default))
             {
+                var key = keySelector(distinctElement);
                 foreach (var element in source)
                 {
                     if (comparer.Equals(key, keySelector(element)))
@@ -452,7 +444,7 @@ namespace Linq
             }
         }
 
-        public static int Count<T>(int key, IEnumerable<T> elements)
+        public static string Count<T>(int key, IEnumerable<T> elements)
         {
             if (elements == null)
             {
@@ -466,7 +458,7 @@ namespace Linq
                 count++;
             }
 
-            return count;
+            return $"{key}:{count}";
         }
     }
 }

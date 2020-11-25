@@ -369,21 +369,21 @@ namespace LinqFacts
         [Fact]
         public void GroupByMethodShouldGroupElementsByTheirKeysAndReturnAnEnumerationOfPropertiesOfTheseGroups()
         {
-            var enumerator = LinqMethods.GroupBy<int, int, string, int>(
+            var enumerator = LinqMethods.GroupBy<int, int, int, string>(
                 new[] { 6,7,8,9,6,6,7,8,7 },
                 a => a.GetHashCode(),
-                a => a.ToString(),
+                a => a,
                 LinqMethods.Count,
                 EqualityComparer<int>.Default).GetEnumerator();
 
             enumerator.MoveNext();
-            Assert.Equal(3, enumerator.Current);
+            Assert.Equal("6:3", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal(3, enumerator.Current);
+            Assert.Equal("7:3", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal(2, enumerator.Current);
+            Assert.Equal("8:2", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal(1, enumerator.Current);
+            Assert.Equal("9:1", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
     }
