@@ -435,6 +435,29 @@ namespace Linq
             }
         }
 
+        public static IOrderedEnumerable<TSource> OrderBy<TSource, TKey>(
+            this IEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            IComparer<TKey> comparer)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (keySelector == null)
+            {
+                throw new ArgumentNullException(nameof(keySelector));
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
+        }
+
         // Helper methods
         public static IEnumerable<string> SelectManySelector<T>(T element)
         {

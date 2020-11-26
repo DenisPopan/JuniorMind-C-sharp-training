@@ -386,5 +386,57 @@ namespace LinqFacts
             Assert.Equal("9:1", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
+
+        [Fact]
+        public void OderByMethodShouldOrderElementsByTheirKey()
+        {
+            var enumerator = LinqMethods.OrderBy<int, int>(
+                new[] { 6, 7, 8, 9, 26, 16, 17, 18, 27 },
+                a => Math.Abs(a.GetHashCode() % 10),
+                Comparer<int>.Default).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal(6, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(26, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(16, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(7, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(17, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(27, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(8, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(18, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(9, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+            
+            // checked if it works for descending order
+            // and it does
+
+            /*enumerator.MoveNext();
+            Assert.Equal(9, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(8, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(18, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(7, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(17, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(27, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(6, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(26, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(16, enumerator.Current);
+            Assert.False(enumerator.MoveNext());*/
+        }
     }
 }
