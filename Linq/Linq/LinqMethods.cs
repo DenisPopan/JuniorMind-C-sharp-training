@@ -181,9 +181,13 @@ namespace Linq
             EnsureIsNotNull(source, nameof(source));
             EnsureIsNotNull(comparer, nameof(comparer));
 
-            foreach (var element in new HashSet<TSource>(source, comparer))
+            var hashSet = new HashSet<TSource>(comparer);
+            foreach (var element in source)
             {
-                yield return element;
+                if (hashSet.Add(element))
+                {
+                    yield return element;
+                }
             }
         }
 
