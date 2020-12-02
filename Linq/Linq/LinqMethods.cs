@@ -9,15 +9,8 @@ namespace Linq
     {
         public static bool All<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(predicate, nameof(source));
 
             foreach (var element in source)
             {
@@ -32,15 +25,8 @@ namespace Linq
 
         public static bool Any<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(predicate, nameof(source));
 
             foreach (var element in source)
             {
@@ -55,15 +41,8 @@ namespace Linq
 
         public static TSource First<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(predicate, nameof(source));
 
             foreach (var element in source)
             {
@@ -78,15 +57,8 @@ namespace Linq
 
         public static IEnumerable<TResult> Select<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, TResult> selector)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(selector, nameof(selector));
 
             foreach (var element in source)
             {
@@ -96,15 +68,8 @@ namespace Linq
 
         public static IEnumerable<TResult> SelectMany<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (selector == null)
-            {
-                throw new ArgumentNullException(nameof(selector));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(selector, nameof(selector));
 
             foreach (var element in source)
             {
@@ -117,15 +82,8 @@ namespace Linq
 
         public static IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSource, bool> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(predicate, nameof(predicate));
 
             foreach (var element in source)
             {
@@ -141,20 +99,9 @@ namespace Linq
             Func<TSource, TKey> keySelector,
             Func<TSource, TElement> elementSelector)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (keySelector == null)
-            {
-                throw new ArgumentNullException(nameof(keySelector));
-            }
-
-            if (elementSelector == null)
-            {
-                throw new ArgumentNullException(nameof(elementSelector));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(keySelector, nameof(keySelector));
+            EnsureIsNotNull(elementSelector, nameof(elementSelector));
 
             var dictionary = new Dictionary<TKey, TElement>();
 
@@ -171,20 +118,9 @@ namespace Linq
             IEnumerable<TSecond> second,
             Func<TFirst, TSecond, TResult> resultSelector)
         {
-            if (first == null)
-            {
-                throw new ArgumentNullException(nameof(first));
-            }
-
-            if (second == null)
-            {
-                throw new ArgumentNullException(nameof(second));
-            }
-
-            if (resultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(resultSelector));
-            }
+            EnsureIsNotNull(first, nameof(first));
+            EnsureIsNotNull(second, nameof(second));
+            EnsureIsNotNull(resultSelector, nameof(resultSelector));
 
             var firstEnumerator = first.GetEnumerator();
             var secondEnumerator = second.GetEnumerator();
@@ -199,27 +135,18 @@ namespace Linq
             TAccumulate seed,
             Func<TAccumulate, TSource, TAccumulate> func)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(func, nameof(func));
+            EnsureIsNotNull(seed, nameof(seed));
 
-            if (func == null)
-            {
-                throw new ArgumentNullException(nameof(func));
-            }
-
-            if (seed == null)
-            {
-                throw new ArgumentNullException(nameof(seed));
-            }
+            var acummulator = seed;
 
             foreach (var element in source)
             {
-                seed = func(seed, element);
+                acummulator = func(acummulator, element);
             }
 
-            return seed;
+            return acummulator;
         }
 
         public static IEnumerable<TResult> Join<TOuter, TInner, TKey, TResult>(
@@ -229,38 +156,20 @@ namespace Linq
             Func<TInner, TKey> innerKeySelector,
             Func<TOuter, TInner, TResult> resultSelector)
         {
-            if (outer == null)
-            {
-                throw new ArgumentNullException(nameof(outer));
-            }
+            EnsureIsNotNull(outer, nameof(outer));
+            EnsureIsNotNull(inner, nameof(inner));
+            EnsureIsNotNull(outerKeySelector, nameof(outerKeySelector));
+            EnsureIsNotNull(innerKeySelector, nameof(innerKeySelector));
+            EnsureIsNotNull(resultSelector, nameof(resultSelector));
 
-            if (inner == null)
+            foreach (var outerElement in outer)
             {
-                throw new ArgumentNullException(nameof(inner));
-            }
-
-            if (outerKeySelector == null)
-            {
-                throw new ArgumentNullException(nameof(outerKeySelector));
-            }
-
-            if (innerKeySelector == null)
-            {
-                throw new ArgumentNullException(nameof(innerKeySelector));
-            }
-
-            if (resultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(resultSelector));
-            }
-
-            var outerEnumerator = outer.GetEnumerator();
-            var innerEnumerator = inner.GetEnumerator();
-            while (outerEnumerator.MoveNext() && innerEnumerator.MoveNext())
-            {
-                if (outerKeySelector(outerEnumerator.Current).Equals(innerKeySelector(innerEnumerator.Current)))
+                foreach (var innerElement in inner)
                 {
-                    yield return resultSelector(outerEnumerator.Current, innerEnumerator.Current);
+                    if (outerKeySelector(outerElement).Equals(innerKeySelector(innerElement)))
+                    {
+                        yield return resultSelector(outerElement, innerElement);
+                    }
                 }
             }
         }
@@ -269,15 +178,8 @@ namespace Linq
             this IEnumerable<TSource> source,
             IEqualityComparer<TSource> comparer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (comparer == null)
-            {
-                throw new ArgumentNullException(nameof(comparer));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(comparer, nameof(comparer));
 
             var stepsNumber = 0;
             var stepsNumber2 = 0;
@@ -313,15 +215,8 @@ namespace Linq
             IEnumerable<TSource> second,
             IEqualityComparer<TSource> comparer)
         {
-            if (first == null)
-            {
-                throw new ArgumentNullException(nameof(first));
-            }
-
-            if (second == null)
-            {
-                throw new ArgumentNullException(nameof(second));
-            }
+            EnsureIsNotNull(first, nameof(first));
+            EnsureIsNotNull(second, nameof(second));
 
             var result = new List<TSource>();
 
@@ -346,6 +241,8 @@ namespace Linq
             first = Distinct(first, comparer);
             second = Distinct(second, comparer);
 
+            EnsureIsNotNull(comparer, nameof(comparer));
+
             foreach (var element in first)
             {
                 foreach (var element2 in second)
@@ -366,6 +263,8 @@ namespace Linq
         {
             first = Distinct(first, comparer);
             second = Distinct(second, comparer);
+
+            EnsureIsNotNull(comparer, nameof(comparer));
 
             foreach (var element in first)
             {
@@ -393,30 +292,11 @@ namespace Linq
             Func<TKey, IEnumerable<TElement>, TResult> resultSelector,
             IEqualityComparer<TKey> comparer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (keySelector == null)
-            {
-                throw new ArgumentNullException(nameof(keySelector));
-            }
-
-            if (elementSelector == null)
-            {
-                throw new ArgumentNullException(nameof(elementSelector));
-            }
-
-            if (resultSelector == null)
-            {
-                throw new ArgumentNullException(nameof(resultSelector));
-            }
-
-            if (comparer == null)
-            {
-                throw new ArgumentNullException(nameof(comparer));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(elementSelector, nameof(elementSelector));
+            EnsureIsNotNull(keySelector, nameof(keySelector));
+            EnsureIsNotNull(resultSelector, nameof(resultSelector));
+            EnsureIsNotNull(comparer, nameof(comparer));
 
             var result = new List<TElement>();
             foreach (var distinctElement in Distinct<TSource>(source, EqualityComparer<TSource>.Default))
@@ -440,20 +320,9 @@ namespace Linq
             Func<TSource, TKey> keySelector,
             IComparer<TKey> comparer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-
-            if (keySelector == null)
-            {
-                throw new ArgumentNullException(nameof(keySelector));
-            }
-
-            if (comparer == null)
-            {
-                throw new ArgumentNullException(nameof(comparer));
-            }
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(keySelector, nameof(keySelector));
+            EnsureIsNotNull(comparer, nameof(comparer));
 
             return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
         }
@@ -482,6 +351,16 @@ namespace Linq
             }
 
             return $"{key}:{count}";
+        }
+
+        static void EnsureIsNotNull<T>(T source, string name)
+        {
+            if (source != null)
+            {
+                return;
+            }
+
+            throw new ArgumentNullException(name);
         }
     }
 }

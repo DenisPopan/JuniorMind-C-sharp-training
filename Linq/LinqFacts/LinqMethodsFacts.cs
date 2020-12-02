@@ -438,5 +438,31 @@ namespace LinqFacts
             Assert.Equal(16, enumerator.Current);
             Assert.False(enumerator.MoveNext());*/
         }
+
+        /*[Fact]
+        public void ThenByMethodShouldOrderElementsBasedOnTheirKeyAfterUsingOrderByMethod()
+        {
+            string[] fruits = { "grape", "passionfruit", "banana", "mango",
+                      "orange", "raspberry", "apple", "blueberry" };
+            var enumerator =
+                fruits.OrderBy(fruit => fruit.Length, Comparer<int>.Default).ThenBy(fruit => fruit, Comparer<string>.Default).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("apple", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("grape", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("mango", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("banana", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("orange", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("blueberry", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("raspberry", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("passionfruit", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }*/
     }
 }
