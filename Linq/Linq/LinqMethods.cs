@@ -224,24 +224,11 @@ namespace Linq
             IEnumerable<TSource> second,
             IEqualityComparer<TSource> comparer)
         {
-            first = Distinct(first, comparer);
-            second = Distinct(second, comparer);
-
-            EnsureIsNotNull(comparer, nameof(comparer));
-
+            first = first.Distinct(comparer);
+            EnsureIsNotNull(second, nameof(second));
             foreach (var element in first)
             {
-                var hasDuplicate = false;
-                foreach (var element2 in second)
-                {
-                    if (comparer.Equals(element, element2))
-                    {
-                        hasDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!hasDuplicate)
+                if (!second.Contains(element))
                 {
                     yield return element;
                 }
