@@ -199,19 +199,7 @@ namespace Linq
             EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
 
-            var result = new List<TSource>();
-
-            foreach (var element in first)
-            {
-                result.Add(element);
-            }
-
-            foreach (var element in second)
-            {
-                result.Add(element);
-            }
-
-            return Distinct(result, comparer);
+            return first.Concat(second).Distinct(comparer);
         }
 
         public static IEnumerable<TSource> Intersect<TSource>(
