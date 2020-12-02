@@ -248,20 +248,22 @@ namespace Linq
             EnsureIsNotNull(resultSelector, nameof(resultSelector));
             EnsureIsNotNull(comparer, nameof(comparer));
 
-            var result = new List<TElement>();
-            foreach (var distinctElement in Distinct<TSource>(source, EqualityComparer<TSource>.Default))
+            var dictionary = new Dictionary<TKey, List<TElement>>();
+
+            foreach (var element in source)
             {
-                var key = keySelector(distinctElement);
-                foreach (var element in source)
+                var key = keySelector(element);
+                if (!dictionary.ContainsKey(key))
                 {
-                    if (comparer.Equals(key, keySelector(element)))
-                    {
-                        result.Add(elementSelector(element));
-                    }
+                    dictionary.Add(key, new List<TElement>());
                 }
 
-                yield return resultSelector(key, result);
-                result.Clear();
+                dictionary[key].Add(elementSelector(element));
+            }
+
+            foreach (var group in dictionary)
+            {
+                yield return resultSelector(group.Key, group.Value);
             }
         }
 
