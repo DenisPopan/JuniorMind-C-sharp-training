@@ -181,32 +181,9 @@ namespace Linq
             EnsureIsNotNull(source, nameof(source));
             EnsureIsNotNull(comparer, nameof(comparer));
 
-            var stepsNumber = 0;
-            var stepsNumber2 = 0;
-            foreach (var element in source)
+            foreach (var element in new HashSet<TSource>(source, comparer))
             {
-                var hasDuplicate = false;
-                stepsNumber++;
-                stepsNumber2 = 0;
-                foreach (var element2 in source)
-                {
-                    stepsNumber2++;
-                    if (stepsNumber2 >= stepsNumber)
-                    {
-                        break;
-                    }
-
-                    if (comparer.Equals(element, element2))
-                    {
-                        hasDuplicate = true;
-                        break;
-                    }
-                }
-
-                if (!hasDuplicate)
-                {
-                    yield return element;
-                }
+                yield return element;
             }
         }
 
