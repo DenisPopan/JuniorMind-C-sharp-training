@@ -8,10 +8,12 @@ namespace Linq
     internal class OrderedEnumerable<TElement> : IOrderedEnumerable<TElement>
     {
         readonly IEnumerable<TElement> source;
+        readonly IComparer<TElement> comparer;
 
-        public OrderedEnumerable(IEnumerable<TElement> source)
+        public OrderedEnumerable(IEnumerable<TElement> source, IComparer<TElement> comparer)
         {
             this.source = source;
+            this.comparer = comparer;
         }
 
         public IOrderedEnumerable<TElement> CreateOrderedEnumerable<TKey>(
@@ -19,21 +21,20 @@ namespace Linq
             IComparer<TKey> comparer,
             bool descending)
         {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerator<TElement> GetEnumerator()
+        {
             var list = source.ToList();
             bool isSorted = true;
-            var condition = 1;
-            if (descending)
-            {
-                condition = -1;
-            }
-
             do
             {
                 isSorted = true;
 
                 for (int i = 0; i < list.Count - 1; i++)
                 {
-                    if (comparer.Compare(keySelector(list[i]), keySelector(list[i + 1])) * condition > 0)
+                    if (comparer.Compare(list[i], list[i + 1]) > 0)
                     {
                         var aux = list[i];
                         list[i] = list[i + 1];
@@ -44,12 +45,7 @@ namespace Linq
             }
             while (!isSorted);
 
-            return new OrderedEnumerable<TElement>(list);
-        }
-
-        public IEnumerator<TElement> GetEnumerator()
-        {
-            foreach (var element in source)
+            foreach (var element in list)
             {
                 yield return element;
             }

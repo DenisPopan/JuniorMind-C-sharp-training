@@ -276,7 +276,7 @@ namespace Linq
             EnsureIsNotNull(keySelector, nameof(keySelector));
             EnsureIsNotNull(comparer, nameof(comparer));
 
-            return new OrderedEnumerable<TSource>(source).CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
+            return new OrderedEnumerable<TSource>(source, new MainComparer<TKey, TSource>(keySelector, comparer));
         }
 
         // Helper methods
