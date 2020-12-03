@@ -179,16 +179,8 @@ namespace Linq
             IEqualityComparer<TSource> comparer)
         {
             EnsureIsNotNull(source, nameof(source));
-            EnsureIsNotNull(comparer, nameof(comparer));
 
-            var hashSet = new HashSet<TSource>(comparer);
-            foreach (var element in source)
-            {
-                if (hashSet.Add(element))
-                {
-                    yield return element;
-                }
-            }
+            return new HashSet<TSource>(source, comparer);
         }
 
         public static IEnumerable<TSource> Union<TSource>(
@@ -199,7 +191,7 @@ namespace Linq
             EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
 
-            return first.Concat(second).Distinct(comparer);
+            return Operation<TSource>(first, second, comparer, 0);
         }
 
         public static IEnumerable<TSource> Intersect<TSource>(
@@ -207,16 +199,10 @@ namespace Linq
             IEnumerable<TSource> second,
             IEqualityComparer<TSource> comparer)
         {
-            EnsureIsNotNull(comparer, nameof(comparer));
-            first = first.Distinct(comparer);
-            second = second.Distinct(comparer);
-            foreach (var element in first)
-            {
-                if (second.Contains(element))
-                {
-                    yield return element;
-                }
-            }
+            EnsureIsNotNull(first, nameof(first));
+            EnsureIsNotNull(second, nameof(second));
+
+            return Operation<TSource>(first, second, comparer, 1);
         }
 
         public static IEnumerable<TSource> Except<TSource>(
@@ -224,15 +210,33 @@ namespace Linq
             IEnumerable<TSource> second,
             IEqualityComparer<TSource> comparer)
         {
-            first = first.Distinct(comparer);
+            EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
-            foreach (var element in first)
+
+            return Operation<TSource>(first, second, comparer, 2);
+        }
+
+        public static IEnumerable<TSource> Operation<TSource>(
+            IEnumerable<TSource> first,
+            IEnumerable<TSource> second,
+            IEqualityComparer<TSource> comparer,
+            int choice)
+        {
+            var operation = new HashSet<TSource>(first, comparer);
+            switch (choice)
             {
-                if (!second.Contains(element))
-                {
-                    yield return element;
-                }
+                case 0:
+                    operation.UnionWith(new HashSet<TSource>(second, comparer));
+                    break;
+                case 1:
+                    operation.IntersectWith(new HashSet<TSource>(second, comparer));
+                    break;
+                case 2:
+                    operation.ExceptWith(new HashSet<TSource>(second, comparer));
+                    break;
             }
+
+            return operation;
         }
 
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
