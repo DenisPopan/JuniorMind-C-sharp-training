@@ -414,32 +414,9 @@ namespace LinqFacts
             enumerator.MoveNext();
             Assert.Equal(9, enumerator.Current);
             Assert.False(enumerator.MoveNext());
-            
-            // checked if it works for descending order
-            // and it does
-
-            /*enumerator.MoveNext();
-            Assert.Equal(9, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(8, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(18, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(7, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(17, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(27, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(6, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(26, enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal(16, enumerator.Current);
-            Assert.False(enumerator.MoveNext());*/
         }
 
-        /*[Fact]
+        [Fact]
         public void ThenByMethodShouldOrderElementsBasedOnTheirKeyAfterUsingOrderByMethod()
         {
             string[] fruits = { "grape", "passionfruit", "banana", "mango",
@@ -463,6 +440,6 @@ namespace LinqFacts
             enumerator.MoveNext();
             Assert.Equal("passionfruit", enumerator.Current);
             Assert.False(enumerator.MoveNext());
-        }*/
+        }
     }
 }

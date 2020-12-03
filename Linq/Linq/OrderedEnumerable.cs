@@ -21,7 +21,7 @@ namespace Linq
             IComparer<TKey> comparer,
             bool descending)
         {
-            throw new NotImplementedException();
+            return new OrderedEnumerable<TElement>(source, new CombinedComparers<TElement>(this.comparer, new MainComparer<TKey, TElement>(keySelector, comparer)));
         }
 
         public IEnumerator<TElement> GetEnumerator()

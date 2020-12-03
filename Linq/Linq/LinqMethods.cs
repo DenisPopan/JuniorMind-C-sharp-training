@@ -274,9 +274,18 @@ namespace Linq
         {
             EnsureIsNotNull(source, nameof(source));
             EnsureIsNotNull(keySelector, nameof(keySelector));
-            EnsureIsNotNull(comparer, nameof(comparer));
 
             return new OrderedEnumerable<TSource>(source, new MainComparer<TKey, TSource>(keySelector, comparer));
+        }
+
+        public static IOrderedEnumerable<TSource> ThenBy<TSource, TKey>(
+            this IOrderedEnumerable<TSource> source,
+            Func<TSource, TKey> keySelector,
+            IComparer<TKey> comparer)
+        {
+            EnsureIsNotNull(source, nameof(source));
+            EnsureIsNotNull(keySelector, nameof(keySelector));
+            return source.CreateOrderedEnumerable<TKey>(keySelector, comparer, false);
         }
 
         // Helper methods
