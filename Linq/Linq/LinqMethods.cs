@@ -191,7 +191,9 @@ namespace Linq
             EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
 
-            return Operation<TSource>(first, second, comparer, 0);
+            var union = new HashSet<TSource>(first, comparer);
+            union.UnionWith(new HashSet<TSource>(second, comparer));
+            return union;
         }
 
         public static IEnumerable<TSource> Intersect<TSource>(
@@ -202,7 +204,9 @@ namespace Linq
             EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
 
-            return Operation<TSource>(first, second, comparer, 1);
+            var intersection = new HashSet<TSource>(first, comparer);
+            intersection.IntersectWith(new HashSet<TSource>(second, comparer));
+            return intersection;
         }
 
         public static IEnumerable<TSource> Except<TSource>(
@@ -213,30 +217,9 @@ namespace Linq
             EnsureIsNotNull(first, nameof(first));
             EnsureIsNotNull(second, nameof(second));
 
-            return Operation<TSource>(first, second, comparer, 2);
-        }
-
-        public static IEnumerable<TSource> Operation<TSource>(
-            IEnumerable<TSource> first,
-            IEnumerable<TSource> second,
-            IEqualityComparer<TSource> comparer,
-            int choice)
-        {
-            var operation = new HashSet<TSource>(first, comparer);
-            switch (choice)
-            {
-                case 0:
-                    operation.UnionWith(new HashSet<TSource>(second, comparer));
-                    break;
-                case 1:
-                    operation.IntersectWith(new HashSet<TSource>(second, comparer));
-                    break;
-                case 2:
-                    operation.ExceptWith(new HashSet<TSource>(second, comparer));
-                    break;
-            }
-
-            return operation;
+            var exception = new HashSet<TSource>(first, comparer);
+            exception.ExceptWith(new HashSet<TSource>(second, comparer));
+            return exception;
         }
 
         public static IEnumerable<TResult> GroupBy<TSource, TKey, TElement, TResult>(
