@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Linq
@@ -8,12 +7,26 @@ namespace Linq
     {
         public static int VowelsNumber(this string word)
         {
-            if (word == null)
-            {
-                throw new ArgumentNullException(nameof(word));
-            }
+            EnsureIsNotNull(word, nameof(word));
 
             return word.ToCharArray().Count(x => "aeiouAEIOU".Contains(x));
+        }
+
+        public static int ConsonantsNumber(this string word)
+        {
+            EnsureIsNotNull(word, nameof(word));
+
+            return word.Length - VowelsNumber(word);
+        }
+
+        static void EnsureIsNotNull<T>(T source, string name)
+        {
+            if (source != null)
+            {
+                return;
+            }
+
+            throw new ArgumentNullException(name);
         }
     }
 }

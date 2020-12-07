@@ -14,5 +14,13 @@ namespace LinqFacts
             Assert.Equal(0, "bcds".VowelsNumber());
             Assert.Equal(4, "aeio".VowelsNumber());
         }
+
+        [Fact]
+        public void ConsonantsNumberMethodShouldReturnConsonantsNumberOfAString()
+        {
+            Assert.Equal(4, "abcdsa".ConsonantsNumber());
+            Assert.Equal(4, "bcds".ConsonantsNumber());
+            Assert.Equal(0, "aeio".ConsonantsNumber());
+        }
     }
 }
