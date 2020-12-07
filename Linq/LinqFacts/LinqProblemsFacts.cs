@@ -22,5 +22,13 @@ namespace LinqFacts
             Assert.Equal(4, "bcds".ConsonantsNumber());
             Assert.Equal(0, "aeio".ConsonantsNumber());
         }
+
+        [Fact]
+        public void FirstUniqueMethodShouldReturnFirstUniqueCharWithinAString()
+        {
+            Assert.Equal('b', "abcdsa".FirstUnique());
+            Assert.Equal('e', "hey you hail".FirstUnique());
+            Assert.Equal('-', "aeioaeio".FirstUnique());
+        }
     }
 }
