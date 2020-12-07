@@ -38,5 +38,14 @@ namespace LinqFacts
             Assert.Equal(-123, "-123".ToInt());
             Assert.Equal(23473434, "k2n3u4cb73db4y3/4t".ToInt());
         }
+
+        [Fact]
+        public void MaxOccurenceMethodShouldReturnTheCharThatOccurresTheMost()
+        {
+            Assert.Equal('a', "abcdsa".MaxOccurrence());
+            Assert.Equal('h', "hey you hail".MaxOccurrence());
+            Assert.Equal('a', "aeaoaaio".MaxOccurrence());
+            Assert.Equal('-', "".MaxOccurrence());
+        }
     }
 }
