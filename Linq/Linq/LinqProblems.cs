@@ -33,6 +33,26 @@ namespace Linq
             return '-';
         }
 
+        public static int ToInt(this string text)
+        {
+            EnsureIsNotNull(text, nameof(text));
+
+            int number = 0;
+            int sign = 1;
+
+            if (text[0] == '-')
+            {
+                sign = -1;
+            }
+
+            foreach (var digit in text.ToCharArray().Select(x => char.GetNumericValue(x)).Where(x => x > -1))
+            {
+                number = number * 10 + (int)digit;
+            }
+
+            return number * sign;
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

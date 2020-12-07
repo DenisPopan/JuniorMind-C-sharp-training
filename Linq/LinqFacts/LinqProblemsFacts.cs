@@ -30,5 +30,13 @@ namespace LinqFacts
             Assert.Equal('e', "hey you hail".FirstUnique());
             Assert.Equal('-', "aeioaeio".FirstUnique());
         }
+
+        [Fact]
+        public void ToIntMethodShouldConvertAStringToAnInteger()
+        {
+            Assert.Equal(123, "123".ToInt());
+            Assert.Equal(-123, "-123".ToInt());
+            Assert.Equal(23473434, "k2n3u4cb73db4y3/4t".ToInt());
+        }
     }
 }
