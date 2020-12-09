@@ -74,5 +74,44 @@ namespace LinqFacts
             Assert.Equal("c", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
+
+        [Fact]
+        public void SubarraysSumMethodShouldReturnAllSubarraysWhoseSumIsLessOrEqualToK()
+        {
+            var enumerator = new int[] {1, 2, 7, 2, 5, 7 }.SubarraysSum(14).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 1 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 1, 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 1, 2, 7 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 1, 2, 7, 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2, 7 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2, 7, 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 7 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 7, 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 7, 2, 5 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2, 5 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 2, 5, 7 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 5 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 5, 7 }, enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal(new int[] { 7 }, enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
     }
 }

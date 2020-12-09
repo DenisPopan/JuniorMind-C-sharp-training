@@ -84,10 +84,34 @@ namespace Linq
             int length = charArray.Length;
             while (length > 0 && index <= length)
             {
-                var palindromicPartition = charArray.TakeLast(length).Take(index);
-                if (palindromicPartition.SequenceEqual(palindromicPartition.Reverse()))
+                var partition = charArray.TakeLast(length).Take(index);
+                if (partition.SequenceEqual(partition.Reverse()))
                 {
-                    yield return new string(palindromicPartition.ToArray());
+                    yield return new string(partition.ToArray());
+                }
+
+                if (index == length)
+                {
+                    length--;
+                    index = 0;
+                }
+
+                index++;
+            }
+        }
+
+        public static IEnumerable<IEnumerable<int>> SubarraysSum(this IEnumerable<int> array, int k)
+        {
+            EnsureIsNotNull(array, nameof(array));
+
+            int index = 1;
+            int length = array.Count();
+            while (length > 0 && index <= length)
+            {
+                var subarray = array.TakeLast(length).Take(index);
+                if (subarray.Sum() <= k)
+                {
+                    yield return subarray;
                 }
 
                 if (index == length)
