@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Linq
@@ -22,7 +23,11 @@ namespace Linq
         public static char FirstUnique(this string text)
         {
             EnsureIsNotNull(text, nameof(text));
-            foreach (var group in text.ToCharArray().GroupBy(x => x))
+
+            var query = from character in text.ToCharArray()
+                        group character by character;
+
+            foreach (var group in query)
             {
                 if (group.Count() == 1)
                 {
@@ -68,6 +73,31 @@ namespace Linq
             }
 
             return maxOccurrenceChar;
+        }
+
+        public static IEnumerable<string> PalindromicPartitions(this string text)
+        {
+            EnsureIsNotNull(text, nameof(text));
+
+            var charArray = text.ToCharArray();
+            int index = 1;
+            int length = charArray.Length;
+            while (length > 0 && index <= length)
+            {
+                var palindromicPartition = charArray.TakeLast(length).Take(index);
+                if (palindromicPartition.SequenceEqual(palindromicPartition.Reverse()))
+                {
+                    yield return new string(palindromicPartition.ToArray());
+                }
+
+                if (index == length)
+                {
+                    length--;
+                    index = 0;
+                }
+
+                index++;
+            }
         }
 
         static void EnsureIsNotNull<T>(T source, string name)

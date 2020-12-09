@@ -40,12 +40,39 @@ namespace LinqFacts
         }
 
         [Fact]
-        public void MaxOccurenceMethodShouldReturnTheCharThatOccurresTheMost()
+        public void MaxOccurenceMethodShouldReturnTheCharThatOccurrsTheMost()
         {
             Assert.Equal('a', "abcdsa".MaxOccurrence());
             Assert.Equal('h', "hey you hail".MaxOccurrence());
             Assert.Equal('a', "aeaoaaio".MaxOccurrence());
             Assert.Equal('-', "".MaxOccurrence());
+        }
+
+        [Fact]
+        public void PalindromicPartitionsMethodShouldGenerateAllPalindromicPartitionsOfAString()
+        {
+            var enumerator = "aabaac".PalindromicPartitions().GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("a", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("aa", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("aabaa", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("a", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("aba", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("b", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("a", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("aa", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("a", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("c", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
     }
 }
