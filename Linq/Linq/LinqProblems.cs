@@ -129,6 +129,11 @@ namespace Linq
             return productList.Where(product => product.Features.Intersect(featureList).Any());
         }
 
+        public static IEnumerable<Product> AllFeatures(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
+        {
+            return productList.Where(product => product.Features.Intersect(featureList).Count() == featureList.Count());
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
