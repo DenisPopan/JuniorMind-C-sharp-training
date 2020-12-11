@@ -114,21 +114,23 @@ namespace LinqFacts
             Assert.False(enumerator.MoveNext());
         }
 
+        [Fact]
+
         public void AtLeastOneFeatureMethodShouldReturnAllProductsThatHaveAtLeastOneFeatureFromAGivenList()
         {
-            var f1 = new Feature { Id = 1 };
-            var f2 = new Feature { Id = 2 };
-            var f3 = new Feature { Id = 3 };
-            var f4 = new Feature { Id = 4 };
-            var f5 = new Feature { Id = 5 };
-            var f6 = new Feature { Id = 6 };
-            var f7 = new Feature { Id = 7 };
-            var product1 = new Product { Name = "Phone", Features = { f1, f3, f5, f7 } };
-            var product2 = new Product { Name = "Tablet", Features = { f2, f5, f6 } };
-            var product3 = new Product { Name = "Laptop", Features = { f3, f4, f5 } };
-            var product4 = new Product { Name = "Mouse", Features = { f1, f2, f5 } };
-            var product5 = new Product { Name = "Keyboard", Features = { f2, f4, f6, f7 } };
-            var product6 = new Product { Name = "Camera", Features = { f1, f3, f5 } };
+            Feature f1 = new Feature { Id = 1 };
+            Feature f2 = new Feature { Id = 2 };
+            Feature f3 = new Feature { Id = 3 };
+            Feature f4 = new Feature { Id = 4 };
+            Feature f5 = new Feature { Id = 5 };
+            Feature f6 = new Feature { Id = 6 };
+            Feature f7 = new Feature { Id = 7 };
+            var product1 = new Product { Name = "Phone", Features = new List<Feature> { f1, f3, f5, f7 } };
+            var product2 = new Product { Name = "Tablet", Features = new List<Feature> { f2, f5, f6 } };
+            var product3 = new Product { Name = "Laptop", Features = new List<Feature> { f3, f4, f5 } };
+            var product4 = new Product { Name = "Mouse", Features = new List<Feature> { f1, f2, f5 } };
+            var product5 = new Product { Name = "Keyboard", Features = new List<Feature> { f2, f4, f6, f7 } };
+            var product6 = new Product { Name = "Camera", Features = new List<Feature> { f1, f3, f5 } };
 
             var productList = new List<Product> { product1, product2, product3, product4, product5, product6 };
 
@@ -147,6 +149,7 @@ namespace LinqFacts
             Assert.False(enumerator.MoveNext());
         }
 
+        [Fact]
         public void AllFeaturesMethodShouldReturnAllProductsThatHaveAllFeaturesFromAGivenList()
         {
             var f1 = new Feature { Id = 1 };
@@ -156,21 +159,49 @@ namespace LinqFacts
             var f5 = new Feature { Id = 5 };
             var f6 = new Feature { Id = 6 };
             var f7 = new Feature { Id = 7 };
-            var product1 = new Product { Name = "Phone", Features = { f1, f3, f5, f7 } };
-            var product2 = new Product { Name = "Tablet", Features = { f2, f5, f6 } };
-            var product3 = new Product { Name = "Laptop", Features = { f3, f4, f5 } };
-            var product4 = new Product { Name = "Mouse", Features = { f1, f2, f5 } };
-            var product5 = new Product { Name = "Keyboard", Features = { f2, f4, f6, f7 } };
-            var product6 = new Product { Name = "Camera", Features = { f1, f3, f5 } };
+            var product1 = new Product { Name = "Phone", Features = new List<Feature> { f1, f3, f5, f7 } };
+            var product2 = new Product { Name = "Tablet", Features = new List<Feature> { f2, f5, f6 } };
+            var product3 = new Product { Name = "Laptop", Features = new List<Feature> { f3, f4, f5 } };
+            var product4 = new Product { Name = "Mouse", Features = new List<Feature> { f1, f2, f5 } };
+            var product5 = new Product { Name = "Keyboard", Features = new List<Feature> { f2, f4, f6, f7 } };
+            var product6 = new Product { Name = "Camera", Features = new List<Feature> { f1, f3, f5 } };
 
             var productList = new List<Product> { product1, product2, product3, product4, product5, product6 };
 
-            var featureList = new List<Feature> { f2, f4, f7 };
+            var featureList = new List<Feature> { f2, f4 };
 
             var enumerator = productList.AllFeatures(featureList).GetEnumerator();
 
             enumerator.MoveNext();
             Assert.Equal("Keyboard", enumerator.Current.Name);
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Fact]
+        public void NotTheseFeaturesMethodShouldReturnAllProductsThatHaveFeaturesBesidesThoseFromAGivenList()
+        {
+            var f1 = new Feature { Id = 1 };
+            var f2 = new Feature { Id = 2 };
+            var f3 = new Feature { Id = 3 };
+            var f4 = new Feature { Id = 4 };
+            var f5 = new Feature { Id = 5 };
+            var f6 = new Feature { Id = 6 };
+            var f7 = new Feature { Id = 7 };
+            var product1 = new Product { Name = "Phone", Features = new List<Feature> { f1, f3, f5, f7 } };
+            var product2 = new Product { Name = "Tablet", Features = new List<Feature> { f2, f5, f6 } };
+            var product3 = new Product { Name = "Laptop", Features = new List<Feature> { f3, f4, f5 } };
+            var product4 = new Product { Name = "Mouse", Features = new List<Feature> { f1, f2, f5 } };
+            var product5 = new Product { Name = "Keyboard", Features = new List<Feature> { f2, f4, f6, f7 } };
+            var product6 = new Product { Name = "Camera", Features = new List<Feature> { f1, f3, f5 } };
+
+            var productList = new List<Product> { product1, product2, product3, product4, product5, product6 };
+
+            var featureList = new List<Feature> { f2, f4, f7 };
+
+            var enumerator = productList.NotTheseFeatures(featureList).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal("Camera", enumerator.Current.Name);
             Assert.False(enumerator.MoveNext());
         }
     }
