@@ -124,6 +124,11 @@ namespace Linq
             }
         }
 
+        public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
+        {
+            return productList.Where(product => product.Features.Intersect(featureList).Any());
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

@@ -113,5 +113,38 @@ namespace LinqFacts
             Assert.Equal(new int[] { 7 }, enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
+
+        public void AtLeastOneFeatureMethodShouldReturnAllProductsThatHaveAtLeastOneFeatureFromAGivenList()
+        {
+            var f1 = new Feature { Id = 1 };
+            var f2 = new Feature { Id = 2 };
+            var f3 = new Feature { Id = 3 };
+            var f4 = new Feature { Id = 4 };
+            var f5 = new Feature { Id = 5 };
+            var f6 = new Feature { Id = 6 };
+            var f7 = new Feature { Id = 7 };
+            var product1 = new Product { Name = "Phone", Features = { f1, f3, f5, f7 } };
+            var product2 = new Product { Name = "Tablet", Features = { f2, f5, f6 } };
+            var product3 = new Product { Name = "Laptop", Features = { f3, f4, f5 } };
+            var product4 = new Product { Name = "Mouse", Features = { f1, f2, f5 } };
+            var product5 = new Product { Name = "Keyboard", Features = { f2, f4, f6, f7 } };
+            var product6 = new Product { Name = "Camera", Features = { f1, f3, f5 } };
+
+            var productList = new List<Product> { product1, product2, product3, product4, product5, product6 };
+
+            var featureList = new List<Feature> { f2, f4 };
+
+            var enumerator = productList.AtLeastOneFeature(featureList).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal("Tablet", enumerator.Current.Name);
+            enumerator.MoveNext();
+            Assert.Equal("Laptop", enumerator.Current.Name);
+            enumerator.MoveNext();
+            Assert.Equal("Mouse", enumerator.Current.Name);
+            enumerator.MoveNext();
+            Assert.Equal("Keyboard", enumerator.Current.Name);
+            Assert.False(enumerator.MoveNext());
+        }
     }
 }
