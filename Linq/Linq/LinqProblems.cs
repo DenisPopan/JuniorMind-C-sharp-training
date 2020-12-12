@@ -184,6 +184,48 @@ namespace Linq
             }
         }
 
+        public static bool IsSudokuValid(this int[,] sudoku)
+        {
+            EnsureIsNotNull(sudoku, nameof(sudoku));
+            if (sudoku.GetLength(0) != sudoku.GetLength(1))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < sudoku.GetLength(0); i++)
+            {
+                var row = sudoku.Row(i);
+                var column = sudoku.Column(i);
+                if (!(row.All(x => x > 0 && x <= 9) && row.Distinct().Count() == 9))
+                {
+                    return false;
+                }
+
+                if (!(column.All(x => x > 0 && x <= 9) && column.Distinct().Count() == 9))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        static IEnumerable<int> Row(this int[,] array, int row)
+        {
+            for (var i = 0; i < array.GetLength(0); i++)
+            {
+                yield return array[row, i];
+            }
+        }
+
+        static IEnumerable<int> Column(this int[,] array, int column)
+        {
+            for (var i = 0; i < array.GetLength(0); i++)
+            {
+                yield return array[i, column];
+            }
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

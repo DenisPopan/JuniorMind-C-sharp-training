@@ -77,7 +77,7 @@ namespace LinqFacts
         [Fact]
         public void SubarraysSumMethodShouldReturnAllSubarraysWhoseSumIsLessOrEqualToK()
         {
-            var enumerator = new int[] {1, 2, 7, 2, 5, 7 }.SubarraysSum(14).GetEnumerator();
+            var enumerator = new int[] { 1, 2, 7, 2, 5, 7 }.SubarraysSum(14).GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal(new int[] { 1 }, enumerator.Current);
             enumerator.MoveNext();
@@ -240,7 +240,7 @@ namespace LinqFacts
             var test1 = new TestResults { Id = "1", FamilyId = "1", Score = 16 };
             var test2 = new TestResults { Id = "2", FamilyId = "2", Score = 4 };
             var test3 = new TestResults { Id = "3", FamilyId = "3", Score = 457 };
-            var test4 = new TestResults { Id = "4", FamilyId = "4", Score = 253};
+            var test4 = new TestResults { Id = "4", FamilyId = "4", Score = 253 };
             var test5 = new TestResults { Id = "5", FamilyId = "2", Score = 47 };
             var test6 = new TestResults { Id = "6", FamilyId = "3", Score = 1243 };
             var test7 = new TestResults { Id = "7", FamilyId = "1", Score = 12 };
@@ -272,6 +272,49 @@ namespace LinqFacts
             Assert.Equal("hey", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("we're", enumerator.Current);
+        }
+
+        [Fact]
+
+        public void ahha()
+        {
+            var sudoku = new int[9, 9] {
+                { 9, 6, 8, 7, 1, 2, 5, 3, 4 },
+                { 5, 3, 4, 6, 9, 8, 7, 2, 1 },
+                { 1, 7, 2, 5, 4, 3, 9, 6, 8 },
+                { 2, 9, 3, 4, 5, 6, 8, 1, 7 },
+                { 7, 8, 1, 2, 3, 9, 4, 5, 6 },
+                { 6, 4, 5, 8, 7, 1, 3, 9, 2 },
+                { 4, 1, 7, 3, 6, 5, 2, 8, 9 },
+                { 8, 5, 9, 1, 2, 4, 6, 7, 3 },
+                { 3, 2, 6, 9, 8, 7, 1, 4, 5 }};
+
+            Assert.True(sudoku.IsSudokuValid());
+
+            var sudoku2 = new int[9, 9] {
+                { 9, 6, 8, 7, 1, 2, 5, 3, 4 },
+                { 5, 3, 4, 6, 9, 8, 7, 2, 1 },
+                { 1, 7, 2, 5, 4, 3, 9, 6, 8 },
+                { 2, 9, 2, 4, 5, 6, 8, 1, 7 },
+                { 7, 8, 1, 2, 3, 9, 4, 5, 6 },
+                { 6, 4, 5, 8, 7, 1, 3, 9, 2 },
+                { 4, 1, 7, 3, 6, 5, 2, 8, 9 },
+                { 8, 5, 9, 1, 2, 4, 6, 7, 3 },
+                { 3, 2, 6, 9, 8, 7, 1, 4, 5 }};
+
+            Assert.False(sudoku2.IsSudokuValid());
+            var sudoku3 = new int[9, 9] {
+                { 9, 6, 8, 7, 1, 2, 5, 3, 4 },
+                { 5, 3, 4, 6, 9, 8, 7, 2, 1 },
+                { 1, 7, 2, 5, 4, 3, 9, 6, 8 },
+                { 2, 9, 3, 4, 5, 6, 8, 1, 7 },
+                { 7, 8, 1, 2, 3, 9, 4, 5, 6 },
+                { 6, 4, 5, 8, 7, 1, 3, 9, 2 },
+                { 4, 1, 7, 3, 6, 5, 2, 8, 9 },
+                { 8, 5, 9, 1, 2, 4, 6, 7, 3 },
+                { 3, 2, 6, 0, 8, 7, 1, 4, 5 }};
+
+            Assert.False(sudoku3.IsSudokuValid());
         }
     }
 }
