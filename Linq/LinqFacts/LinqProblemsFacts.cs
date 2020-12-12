@@ -259,5 +259,19 @@ namespace LinqFacts
             Assert.Equal(("4", 253), (enumerator.Current.FamilyId, enumerator.Current.Score));
             Assert.False(enumerator.MoveNext());
         }
+
+        [Fact]
+        public void TopWordsMethodShouldReturnTheTopThreeMostUsedWordsInAText()
+        {
+            string text = "hey Hey, how are you doing? I'm Daniel and this is Jhonny Silverhand, we're pleased to see you." +
+                "we're also thrilled to work with You";
+            var enumerator = text.TopWords().GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("you", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("hey", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("we're", enumerator.Current);
+        }
     }
 }

@@ -164,6 +164,26 @@ namespace Linq
                         .First());
         }
 
+        public static IEnumerable<string> TopWords(this string text)
+        {
+            EnsureIsNotNull(text, nameof(text));
+
+            var topWords = text.Split(" .,?!".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+                .GroupBy(word => word.ToLower())
+                .OrderByDescending(group => group.Count())
+                .Select(group => group.Key);
+            int index = 0;
+            foreach (var word in topWords)
+            {
+                index++;
+                yield return word;
+                if (index == 3)
+                {
+                    break;
+                }
+            }
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
