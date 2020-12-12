@@ -232,5 +232,32 @@ namespace LinqFacts
             Assert.Equal(("orange", 200), (enumerator.Current.Name, enumerator.Current.Quantity));
             Assert.False(enumerator.MoveNext());
         }
+
+        [Fact]
+
+        public void HighestScoreMethodShouldReturnAListWithEachFamiliyHighestScore()
+        {
+            var test1 = new TestResults { Id = "1", FamilyId = "1", Score = 16 };
+            var test2 = new TestResults { Id = "2", FamilyId = "2", Score = 4 };
+            var test3 = new TestResults { Id = "3", FamilyId = "3", Score = 457 };
+            var test4 = new TestResults { Id = "4", FamilyId = "4", Score = 253};
+            var test5 = new TestResults { Id = "5", FamilyId = "2", Score = 47 };
+            var test6 = new TestResults { Id = "6", FamilyId = "3", Score = 1243 };
+            var test7 = new TestResults { Id = "7", FamilyId = "1", Score = 12 };
+            var test8 = new TestResults { Id = "8", FamilyId = "2", Score = 66 };
+
+            var testResults = new TestResults[] { test1, test2, test3, test4, test5, test6, test7, test8 };
+
+            var enumerator = testResults.HighestTestScore().GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal(("1", 16), (enumerator.Current.FamilyId, enumerator.Current.Score));
+            enumerator.MoveNext();
+            Assert.Equal(("2", 66), (enumerator.Current.FamilyId, enumerator.Current.Score));
+            enumerator.MoveNext();
+            Assert.Equal(("3", 1243), (enumerator.Current.FamilyId, enumerator.Current.Score));
+            enumerator.MoveNext();
+            Assert.Equal(("4", 253), (enumerator.Current.FamilyId, enumerator.Current.Score));
+            Assert.False(enumerator.MoveNext());
+        }
     }
 }

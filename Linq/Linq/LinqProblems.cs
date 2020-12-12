@@ -156,6 +156,14 @@ namespace Linq
                 });
         }
 
+        public static IEnumerable<TestResults> HighestTestScore(this TestResults[] list)
+        {
+            return list.GroupBy(x => x.FamilyId)
+                .Select(group => group
+                    .OrderByDescending(testResult => testResult.Score)
+                        .First());
+        }
+
         static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
