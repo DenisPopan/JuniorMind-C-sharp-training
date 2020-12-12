@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Linq;
 using Xunit;
 
@@ -202,6 +201,35 @@ namespace LinqFacts
 
             enumerator.MoveNext();
             Assert.Equal("Camera", enumerator.Current.Name);
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Fact]
+
+        public void TotalQuantityMethodShouldReturnAListWithAllDistinctProductsAndTheTotalQuantity()
+        {
+            var product1 = new ProductStruct { Name = "banana", Quantity = 600 };
+            var product2 = new ProductStruct { Name = "apple", Quantity = 200 };
+            var product3 = new ProductStruct { Name = "grape", Quantity = 500 };
+            var product4 = new ProductStruct { Name = "blueberry", Quantity = 400 };
+            var product5 = new ProductStruct { Name = "apple", Quantity = 100 };
+            var product6 = new ProductStruct { Name = "orange", Quantity = 200 };
+            var product7 = new ProductStruct { Name = "banana", Quantity = 900 };
+            var firstProductList = new ProductStruct[] { product1, product2, product3 };
+            var secondProductList = new ProductStruct[] { product4, product5, product6, product7 };
+
+            var enumerator = firstProductList.TotalQuantity(secondProductList).GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal(("banana", 1500), (enumerator.Current.Name, enumerator.Current.Quantity));
+            enumerator.MoveNext();
+            Assert.Equal(("apple", 300), (enumerator.Current.Name, enumerator.Current.Quantity));
+            enumerator.MoveNext();
+            Assert.Equal(("grape", 500), (enumerator.Current.Name, enumerator.Current.Quantity));
+            enumerator.MoveNext();
+            Assert.Equal(("blueberry", 400), (enumerator.Current.Name, enumerator.Current.Quantity));
+            enumerator.MoveNext();
+            Assert.Equal(("orange", 200), (enumerator.Current.Name, enumerator.Current.Quantity));
             Assert.False(enumerator.MoveNext());
         }
     }

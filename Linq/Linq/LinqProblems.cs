@@ -4,6 +4,12 @@ using System.Linq;
 
 namespace Linq
 {
+    public struct ProductStruct
+    {
+        public string Name;
+        public int Quantity;
+    }
+
     public static class LinqProblems
     {
         public static int VowelsNumber(this string text)
@@ -137,6 +143,17 @@ namespace Linq
         public static IEnumerable<Product> NotTheseFeatures(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
             return productList.Except(productList.AtLeastOneFeature(featureList));
+        }
+
+        public static IEnumerable<ProductStruct> TotalQuantity(this ProductStruct[] firstList, ProductStruct[] secondList)
+        {
+            return firstList.Union(secondList)
+                .GroupBy(x => x.Name)
+                .Select(productGroup => new ProductStruct
+                {
+                    Name = productGroup.Key,
+                    Quantity = productGroup.Sum(product => product.Quantity)
+                });
         }
 
         static void EnsureIsNotNull<T>(T source, string name)
