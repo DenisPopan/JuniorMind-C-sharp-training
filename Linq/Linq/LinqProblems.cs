@@ -187,27 +187,27 @@ namespace Linq
         public static bool IsSudokuValid(this int[,] sudoku)
         {
             EnsureIsNotNull(sudoku, nameof(sudoku));
-            if (sudoku.GetLength(0) != sudoku.GetLength(1))
+            var rowsNumber = sudoku.GetLength(0);
+            var columnsNumber = sudoku.GetLength(1);
+            if (rowsNumber != columnsNumber)
             {
                 return false;
             }
 
-            for (int i = 0; i < sudoku.GetLength(0); i++)
+            for (int i = 0; i < rowsNumber; i++)
             {
-                var row = sudoku.Row(i);
-                var column = sudoku.Column(i);
-                if (!(row.All(x => x > 0 && x <= 9) && row.Distinct().Count() == 9))
-                {
-                    return false;
-                }
-
-                if (!(column.All(x => x > 0 && x <= 9) && column.Distinct().Count() == 9))
+                if (!(sudoku.Row(i).FollowsSudokuRules() && sudoku.Column(i).FollowsSudokuRules()))
                 {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        static bool FollowsSudokuRules(this IEnumerable<int> array)
+        {
+            return array.All(x => x > 0 && x <= 9) && array.Distinct().Count() == 9;
         }
 
         static IEnumerable<int> Row(this int[,] array, int row)
