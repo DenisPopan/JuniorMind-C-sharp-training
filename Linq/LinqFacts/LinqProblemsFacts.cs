@@ -276,7 +276,7 @@ namespace LinqFacts
 
         [Fact]
 
-        public void ahha()
+        public void IsSudokuValidMethodShouldValidateAGivenSudoku()
         {
             var sudoku = new int[9, 9] {
                 { 9, 6, 8, 7, 1, 2, 5, 3, 4 },
@@ -315,6 +315,30 @@ namespace LinqFacts
                 { 3, 2, 6, 0, 8, 7, 1, 4, 5 }};
 
             Assert.False(sudoku3.IsSudokuValid());
+        }
+
+        [Fact]
+
+        public void PolishArithmeticResultMethodShouldReturnTheResultOfAPolishArithmeticOperation()
+        {
+            var operation1 = "234 346 55 568 + * -";
+            var operation2 = "456 33 - 6762 *";
+            var operation3 = "56 57 +";
+            var operation4 = "12 4 /";
+            var operation5 = "12 7 *";
+            var operation6 = "345 4577 -";
+            var operation7 = "234.7 567 /";
+            var operation8 = "-3466796.235 567.3 778 9.354 - * /";
+
+            Assert.Equal(-215324, operation1.PolishArithmeticResult());
+            Assert.Equal(2860326, operation2.PolishArithmeticResult());
+            Assert.Equal(113, operation3.PolishArithmeticResult());
+            Assert.Equal(3, operation4.PolishArithmeticResult());
+            Assert.Equal(84, operation5.PolishArithmeticResult());
+            Assert.Equal(-4232, operation6.PolishArithmeticResult());
+            Assert.Equal(0.4139329805996472, operation7.PolishArithmeticResult());
+            Assert.Equal(-7.950403328127759, operation8.PolishArithmeticResult());
+
         }
     }
 }

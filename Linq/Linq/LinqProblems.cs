@@ -172,6 +172,7 @@ namespace Linq
                 .GroupBy(word => word.ToLower())
                 .OrderByDescending(group => group.Count())
                 .Select(group => group.Key);
+
             int index = 0;
             foreach (var word in topWords)
             {
@@ -189,6 +190,7 @@ namespace Linq
             EnsureIsNotNull(sudoku, nameof(sudoku));
             var rowsNumber = sudoku.GetLength(0);
             var columnsNumber = sudoku.GetLength(1);
+
             if (rowsNumber != columnsNumber)
             {
                 return false;
@@ -203,6 +205,48 @@ namespace Linq
             }
 
             return true;
+        }
+
+        public static double PolishArithmeticResult(this string operation)
+        {
+            EnsureIsNotNull(operation, nameof(operation));
+
+            var splitOperation = operation.Split(' ');
+            var list = new List<double>();
+            foreach (string element in splitOperation)
+            {
+                if (double.TryParse(element, out double convertedElement))
+                {
+                    list.Add(convertedElement);
+                }
+                else
+                {
+                    var lastElement = list.Last();
+                    list.Remove(list.Last());
+                    var lastButOne = list.Last();
+                    list.Remove(list.Last());
+                    list.Add(OperationResult(element, lastButOne, lastElement));
+                }
+            }
+
+            return list.Last();
+        }
+
+        static double OperationResult(string stringOperator, double lastButOne, double lastElement)
+        {
+            switch (stringOperator)
+            {
+                case "+":
+                    return lastButOne + lastElement;
+                case "-":
+                    return lastButOne - lastElement;
+                case "*":
+                    return lastButOne * lastElement;
+                case "/":
+                    return lastButOne / lastElement;
+                default:
+                    throw new ArgumentException("The given string is not an operator!");
+            }
         }
 
         static bool FollowsSudokuRules(this IEnumerable<int> array)
