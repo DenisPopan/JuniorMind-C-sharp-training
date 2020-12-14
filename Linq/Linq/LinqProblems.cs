@@ -223,7 +223,7 @@ namespace Linq
                 {
                     var lastElement = list.Last();
                     list.Remove(list.Last());
-                    list[list.IndexOf(list.Last())] = OperationResult(element, list.Last(), lastElement);
+                    list[^1] = OperationResult(element, list.Last(), lastElement);
                 }
             }
 

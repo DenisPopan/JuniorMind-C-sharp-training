@@ -7,5 +7,7 @@ namespace Linq
         public string Name { get; set; }
 
         public ICollection<Feature> Features { get; set; }
+
+        internal int Quantity { get; set; }
     }
 }
