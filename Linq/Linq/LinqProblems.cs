@@ -223,9 +223,7 @@ namespace Linq
                 {
                     var lastElement = list.Last();
                     list.Remove(list.Last());
-                    var lastButOne = list.Last();
-                    list.Remove(list.Last());
-                    list.Add(OperationResult(element, lastButOne, lastElement));
+                    list[list.IndexOf(list.Last())] = OperationResult(element, list.Last(), lastElement);
                 }
             }
 
