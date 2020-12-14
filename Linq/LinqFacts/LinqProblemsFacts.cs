@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Linq;
 using Xunit;
 
@@ -351,6 +352,8 @@ namespace LinqFacts
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal(4, stock.Count);
+
+            Assert.Throws<ArgumentException>(() => stock.AddProduct("Laptop", 34));
         }
     }
 }
