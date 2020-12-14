@@ -338,7 +338,19 @@ namespace LinqFacts
             Assert.Equal(-4232, operation6.PolishArithmeticResult());
             Assert.Equal(0.4139329805996472, operation7.PolishArithmeticResult());
             Assert.Equal(-7.950403328127759, operation8.PolishArithmeticResult());
+        }
 
+        [Fact]
+
+        public void AddProductMethodShouldAddNewProductToCurrentStock()
+        {
+            var stock = new Stock<Product>();
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 36);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            Assert.Equal(4, stock.Count);
         }
     }
 }

@@ -230,6 +230,16 @@ namespace Linq
             return list.Last();
         }
 
+        internal static void EnsureIsNotNull<T>(T source, string name)
+        {
+            if (source != null)
+            {
+                return;
+            }
+
+            throw new ArgumentNullException(name);
+        }
+
         static double OperationResult(string stringOperator, double lastButOne, double lastElement)
         {
             switch (stringOperator)
@@ -266,16 +276,6 @@ namespace Linq
             {
                 yield return array[i, column];
             }
-        }
-
-        static void EnsureIsNotNull<T>(T source, string name)
-        {
-            if (source != null)
-            {
-                return;
-            }
-
-            throw new ArgumentNullException(name);
         }
     }
 }
