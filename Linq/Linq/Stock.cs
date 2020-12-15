@@ -75,6 +75,20 @@ namespace Linq
             return callback(list[productIndex].Quantity);
         }
 
+        public void BuyNewStock(string name, int quantity)
+        {
+            LinqProblems.EnsureIsNotNull(name, nameof(name));
+            LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
+
+            var productIndex = FindProductIndex(name);
+            if (productIndex < 0)
+            {
+                throw new ArgumentException("Product not found.");
+            }
+
+            list[productIndex].Quantity += quantity;
+        }
+
         static string StockWarning(int quantity)
         {
             switch (quantity)

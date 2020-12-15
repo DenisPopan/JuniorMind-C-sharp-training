@@ -402,5 +402,20 @@ namespace LinqFacts
             Assert.Equal("6574", stock.ProductQuantity("Camera"));
             Assert.Equal("Product stock has less than 5 items!", stock.ProductQuantity("Tablet"));
         }
+
+        [Fact]
+
+        public void BuyNewStockMethodShouldAddNewQuantityToAGivenProduct()
+        {
+            var stock = new Stock<Product>();
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 2);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            stock.BuyNewStock("Laptop", 200);
+
+            Assert.Equal("3546", stock.ProductQuantity("Laptop"));
+        }
     }
 }
