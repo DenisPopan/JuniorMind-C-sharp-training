@@ -32,5 +32,17 @@ namespace Linq
 
             list.Add(new Product { Name = name, Quantity = quantity });
         }
+
+        public string Status()
+        {
+            var status = list.Select(product => $"Product: {product.Name}, Quantity: {product.Quantity}\n");
+            var statusString = "";
+            foreach (var element in status)
+            {
+                statusString += element;
+            }
+
+            return statusString;
+        }
     }
 }
