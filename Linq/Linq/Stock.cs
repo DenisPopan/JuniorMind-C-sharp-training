@@ -35,7 +35,8 @@ namespace Linq
 
         public string Status()
         {
-            var status = list.Select(product => $"Product: {product.Name}, Quantity: {product.Quantity}\n");
+            Func<int, string> callback = StockWarning;
+            var status = list.Select(product => $"Product: {product.Name}, Quantity: {callback(product.Quantity)}\n");
             var statusString = "";
             foreach (var element in status)
             {
@@ -43,6 +44,43 @@ namespace Linq
             }
 
             return statusString;
+        }
+
+        public string ProductQuantity(string name)
+        {
+            LinqProblems.EnsureIsNotNull(name, nameof(name));
+
+            var productIndex = FindProductIndex(name);
+            if (productIndex < 0)
+            {
+                throw new ArgumentException("Product not found.");
+            }
+
+            Func<int, string> callback = StockWarning;
+
+            return callback(list[productIndex].Quantity);
+        }
+
+        static string StockWarning(int quantity)
+        {
+            switch (quantity)
+            {
+                case int n when n < 2:
+                    return "Product stock has less than 2 items!";
+
+                case int n when n < 5:
+                    return "Product stock has less than 5 items!";
+
+                case int n when n < 10:
+                    return "Product stock has less than 10 items!";
+                default:
+                    return quantity.ToString();
+            }
+        }
+
+        int FindProductIndex(string name)
+        {
+            return list.FindIndex(product => string.Equals(product.Name, name, StringComparison.OrdinalIgnoreCase));
         }
     }
 }
