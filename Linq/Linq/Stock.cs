@@ -39,10 +39,7 @@ namespace Linq
 
             var productIndex = FindProductIndex(name);
 
-            if (productIndex < 0)
-            {
-                throw new ArgumentException("Product doesn't exist!");
-            }
+            ProductExists(productIndex);
 
             list.Remove(list[productIndex]);
         }
@@ -65,10 +62,7 @@ namespace Linq
             LinqProblems.EnsureIsNotNull(name, nameof(name));
 
             var productIndex = FindProductIndex(name);
-            if (productIndex < 0)
-            {
-                throw new ArgumentException("Product not found.");
-            }
+            ProductExists(productIndex);
 
             Func<int, string> callback = StockWarning;
 
@@ -81,12 +75,24 @@ namespace Linq
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
 
             var productIndex = FindProductIndex(name);
-            if (productIndex < 0)
-            {
-                throw new ArgumentException("Product not found.");
-            }
+            ProductExists(productIndex);
 
             list[productIndex].Quantity += quantity;
+        }
+
+        public string SellProductStock(string name, int quantity)
+        {
+            LinqProblems.EnsureIsNotNull(name, nameof(name));
+            LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
+
+            var productIndex = FindProductIndex(name);
+            ProductExists(productIndex);
+
+            list[productIndex].Quantity -= quantity;
+
+            Func<int, string> callback = StockWarning;
+
+            return callback(list[productIndex].Quantity);
         }
 
         static string StockWarning(int quantity)
@@ -109,6 +115,16 @@ namespace Linq
         int FindProductIndex(string name)
         {
             return list.FindIndex(product => string.Equals(product.Name, name, StringComparison.OrdinalIgnoreCase));
+        }
+
+        void ProductExists(int productIndex)
+        {
+            if (productIndex >= 0)
+            {
+                return;
+            }
+
+            throw new ArgumentException("Product not found.");
         }
     }
 }
