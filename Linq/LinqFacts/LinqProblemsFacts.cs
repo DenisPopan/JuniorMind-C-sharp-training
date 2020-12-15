@@ -358,6 +358,21 @@ namespace LinqFacts
 
         [Fact]
 
+        public void RemoveProductMethodShouldRemoveAGivenProduct()
+        {
+            var stock = new Stock<Product>();
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 36);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            stock.RemoveProduct("Laptop");
+
+            Assert.Throws<ArgumentException>(() => stock.ProductQuantity("Laptop"));
+        }
+
+        [Fact]
+
         public void StatusMethodShouldReturnAllProductsAndTheirCurrentQuantity()
         {
             var stock = new Stock<Product>();

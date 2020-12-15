@@ -25,12 +25,26 @@ namespace Linq
             LinqProblems.EnsureIsNotNull(name, nameof(name));
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
 
-            if (list.FindIndex(product => string.Equals(product.Name, name, StringComparison.OrdinalIgnoreCase)) >= 0)
+            if (FindProductIndex(name) >= 0)
             {
                 throw new ArgumentException("Product already exists!");
             }
 
             list.Add(new Product { Name = name, Quantity = quantity });
+        }
+
+        public void RemoveProduct(string name)
+        {
+            LinqProblems.EnsureIsNotNull(name, nameof(name));
+
+            var productIndex = FindProductIndex(name);
+
+            if (productIndex < 0)
+            {
+                throw new ArgumentException("Product doesn't exist!");
+            }
+
+            list.Remove(list[productIndex]);
         }
 
         public string Status()
