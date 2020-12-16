@@ -48,7 +48,7 @@ namespace LinqFacts
             var status = stock.Status();
 
             Assert.Equal("Product: Phone, Quantity: 346\n" +
-                "Product: Tablet, Quantity: Product stock has less than 5 items!\n" +
+                "Product: Tablet, Quantity: Product stock has less than 5 items!(2)\n" +
                 "Product: Camera, Quantity: 6574\n" +
                 "Product: Laptop, Quantity: 3346\n", stock.Status());
         }
@@ -64,7 +64,7 @@ namespace LinqFacts
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal("6574", stock.ProductQuantity("Camera"));
-            Assert.Equal("Product stock has less than 5 items!", stock.ProductQuantity("Tablet"));
+            Assert.Equal("Product stock has less than 5 items!(2)", stock.ProductQuantity("Tablet"));
         }
 
         [Fact]
@@ -92,7 +92,7 @@ namespace LinqFacts
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            Assert.Equal("Product stock has less than 10 items!", stock.SellProductStock("Phone", 340));
+            Assert.Equal("Product stock has less than 10 items!(6)", stock.SellProductStock("Phone", 340));
             Assert.Equal("12", stock.SellProductStock("Tablet", 10));
         }
     }

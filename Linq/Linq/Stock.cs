@@ -100,13 +100,13 @@ namespace Linq
             switch (quantity)
             {
                 case int n when n < 2:
-                    return "Product stock has less than 2 items!";
+                    return $"Product stock has less than 2 items!({quantity})";
 
                 case int n when n < 5:
-                    return "Product stock has less than 5 items!";
+                    return $"Product stock has less than 5 items!({quantity})";
 
                 case int n when n < 10:
-                    return "Product stock has less than 10 items!";
+                    return $"Product stock has less than 10 items!({quantity})";
                 default:
                     return quantity.ToString();
             }
