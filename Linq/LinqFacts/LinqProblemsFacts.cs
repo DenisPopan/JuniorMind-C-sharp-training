@@ -113,6 +113,35 @@ namespace LinqFacts
             Assert.Equal(new int[] { 7 }, enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
+        
+        [Fact]
+
+        public void SumCombinationsMethodShouldReturnAllCombinationsWhoseSumsIsEqualToK()
+        {
+            var enumerator = LinqProblems.SumCombinations(5, 1).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("-1-2+3-4+5=1", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("+1-2+3+4-5=1", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
+
+        [Fact]
+
+        public void PythagoreanNumbersMethodShouldReturnAllPythagoreanNumbersCombinationsFromAGivenArray()
+        {
+            IEnumerable<int> array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var enumerator = array.PythagoreanNumbers().GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal("[3, 4, 5]", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("[6, 8, 10]", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
 
         [Fact]
 
@@ -341,124 +370,6 @@ namespace LinqFacts
             Assert.Equal(-7.950403328127759, operation8.PolishArithmeticResult());
         }
 
-        [Fact]
-
-        public void AddProductMethodShouldAddNewProductToCurrentStock()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 36);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            Assert.Equal(4, stock.Count);
-
-            Assert.Throws<ArgumentException>(() => stock.AddProduct("Laptop", 34));
-        }
-
-        [Fact]
-
-        public void RemoveProductMethodShouldRemoveAGivenProduct()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 36);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            stock.RemoveProduct("Laptop");
-
-            Assert.Throws<ArgumentException>(() => stock.ProductQuantity("Laptop"));
-        }
-
-        [Fact]
-
-        public void StatusMethodShouldReturnAllProductsAndTheirCurrentQuantity()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 2);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            var status = stock.Status();
-
-            Assert.Equal("Product: Phone, Quantity: 346\n" +
-                "Product: Tablet, Quantity: Product stock has less than 5 items!\n" +
-                "Product: Camera, Quantity: 6574\n" +
-                "Product: Laptop, Quantity: 3346\n", stock.Status());
-        }
-
-        [Fact]
-
-        public void ProductQuantityMethodShouldReturnAProductsQuantity()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 2);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            Assert.Equal("6574", stock.ProductQuantity("Camera"));
-            Assert.Equal("Product stock has less than 5 items!", stock.ProductQuantity("Tablet"));
-        }
-
-        [Fact]
-
-        public void BuyNewStockMethodShouldAddNewQuantityToAGivenProduct()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 2);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            stock.BuyNewStock("Laptop", 200);
-
-            Assert.Equal("3546", stock.ProductQuantity("Laptop"));
-        }
-
-        [Fact]
-
-        public void SellProductStockMethodShouldReduceAProductsQuantityAndReturnTheNewOne()
-        {
-            var stock = new Stock<Product>();
-            stock.AddProduct("Phone", 346);
-            stock.AddProduct("Tablet", 22);
-            stock.AddProduct("Camera", 6574);
-            stock.AddProduct("Laptop", 3346);
-
-            Assert.Equal("Product stock has less than 10 items!", stock.SellProductStock("Phone", 340));
-            Assert.Equal("12", stock.SellProductStock("Tablet", 10));
-        }
-
-        [Fact]
-
-        public void SumCombinationsMethodShouldReturnAllCombinationsWhoseSumsIsEqualToK()
-        {
-            var enumerator = LinqProblems.SumCombinations(5, 1).GetEnumerator();
-            enumerator.MoveNext();
-            Assert.Equal("-1-2+3-4+5=1", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("+1-2+3+4-5=1", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
-            Assert.False(enumerator.MoveNext());
-        }
-
-        [Fact]
-
-        public void PythagoreanNumbersMethodShouldReturnAllPythagoreanNumbersCombinationsFromAGivenArray()
-        {
-            IEnumerable<int> array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-            var enumerator = array.PythagoreanNumbers().GetEnumerator();
-
-            enumerator.MoveNext();
-            Assert.Equal("[3, 4, 5]", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("[6, 8, 10]", enumerator.Current);
-            Assert.False(enumerator.MoveNext());
-        }
+        
     }
 }
