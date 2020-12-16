@@ -445,5 +445,20 @@ namespace LinqFacts
             Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
+
+        [Fact]
+
+        public void PythagoreanNumbersMethodShouldReturnAllPythagoreanNumbersCombinationsFromAGivenArray()
+        {
+            IEnumerable<int> array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+
+            var enumerator = array.PythagoreanNumbers().GetEnumerator();
+
+            enumerator.MoveNext();
+            Assert.Equal("[3, 4, 5]", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("[6, 8, 10]", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
     }
 }

@@ -160,6 +160,26 @@ namespace Linq
             }
         }
 
+        public static IEnumerable<string> PythagoreanNumbers(this IEnumerable<int> array)
+        {
+            var squareNumbers = array.OrderBy(x => x).Select(x => x * x);
+            foreach (var squareNumber in squareNumbers)
+            {
+                var allOtherSquares = squareNumbers.SkipWhile(x => x <= squareNumber);
+                var allOtherSquaresButOne = allOtherSquares.Skip(1);
+
+                foreach (var combination in allOtherSquares
+                    .Join(
+                        allOtherSquaresButOne,
+                        x => x + squareNumber,
+                        y => y,
+                        (x, y) => $"[{Math.Sqrt(squareNumber)}, {Math.Sqrt(x)}, {Math.Sqrt(y)}]"))
+                {
+                    yield return combination;
+                }
+            }
+        }
+
         public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
             return productList.Where(product => product.Features.Intersect(featureList).Any());
