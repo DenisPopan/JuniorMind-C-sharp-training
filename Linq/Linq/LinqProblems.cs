@@ -130,6 +130,36 @@ namespace Linq
             }
         }
 
+        public static IEnumerable<string> SumCombinations(int n, int k)
+        {
+            var combinationsNumber = (int)Math.Pow(2, n) - 1;
+            var range = Enumerable.Range(1, n);
+
+            while (combinationsNumber >= 0)
+            {
+                var binaryNumber = Convert.ToString(combinationsNumber, 2);
+
+                while (binaryNumber.Length < n)
+                {
+                    binaryNumber = "0" + binaryNumber;
+                }
+
+                var result = range.Zip(binaryNumber.ToArray(), (rangeElement, digit) => digit switch
+                {
+                    '0' => rangeElement,
+                    '1' => rangeElement * -1,
+                    _ => rangeElement
+                });
+
+                if (result.Sum() == k)
+                {
+                    yield return result.ConvertToString() + $"={k}";
+                }
+
+                combinationsNumber--;
+            }
+        }
+
         public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
             return productList.Where(product => product.Features.Intersect(featureList).Any());
@@ -222,7 +252,7 @@ namespace Linq
                 else
                 {
                     var lastElement = list.Last();
-                    list.Remove(list.Last());
+                    list.Remove(lastElement);
                     list[^1] = OperationResult(element, list.Last(), lastElement);
                 }
             }
@@ -238,6 +268,25 @@ namespace Linq
             }
 
             throw new ArgumentNullException(name);
+        }
+
+        static string ConvertToString(this IEnumerable<int> array)
+        {
+            EnsureIsNotNull(array, nameof(array));
+            var resultString = "";
+            foreach (var element in array)
+            {
+                if (element > 0)
+                {
+                    resultString += "+" + element;
+                }
+                else
+                {
+                    resultString += element;
+                }
+            }
+
+            return resultString;
         }
 
         static double OperationResult(string stringOperator, double lastButOne, double lastElement)
@@ -259,7 +308,7 @@ namespace Linq
 
         static bool FollowsSudokuRules(this IEnumerable<int> array)
         {
-            return array.All(x => x > 0 && x <= 9) && array.Distinct().Count() == 9;
+            return array.All(x => x > 0 && x <= array.Count()) && array.Distinct().Count() == array.Count();
         }
 
         static IEnumerable<int> Row(this int[,] array, int row)

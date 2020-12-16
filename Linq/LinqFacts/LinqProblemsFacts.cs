@@ -431,5 +431,19 @@ namespace LinqFacts
             Assert.Equal("Product stock has less than 10 items!", stock.SellProductStock("Phone", 340));
             Assert.Equal("12", stock.SellProductStock("Tablet", 10));
         }
+
+        [Fact]
+
+        public void SumCombinationsMethodShouldReturnAllCombinationsWhoseSumsIsEqualToK()
+        {
+            var enumerator = LinqProblems.SumCombinations(5, 1).GetEnumerator();
+            enumerator.MoveNext();
+            Assert.Equal("-1-2+3-4+5=1", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("+1-2+3+4-5=1", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
+        }
     }
 }
