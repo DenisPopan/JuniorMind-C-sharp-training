@@ -28,7 +28,7 @@ namespace LinqFacts
         {
             Assert.Equal('b', "abcdsa".FirstUnique());
             Assert.Equal('e', "hey you hail".FirstUnique());
-            Assert.Equal('-', "aeioaeio".FirstUnique());
+            Assert.Throws<InvalidOperationException>(() => "aeioaeio".FirstUnique());
         }
 
         [Fact]

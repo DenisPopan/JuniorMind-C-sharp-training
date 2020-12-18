@@ -34,18 +34,10 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            var query = from character in text.ToCharArray()
-                        group character by character;
-
-            foreach (var group in query)
-            {
-                if (group.Count() == 1)
-                {
-                    return group.Key;
-                }
-            }
-
-            return '-';
+            return text.AsEnumerable()
+                .GroupBy(character => character)
+                .First(group => group.Count() == 1)
+                .Key;
         }
 
         public static int ToInt(this string text)
