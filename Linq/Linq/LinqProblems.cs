@@ -163,17 +163,24 @@ namespace Linq
 
         public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
-            return productList.Where(product => product.Features.Intersect(featureList).Any());
+            return productList
+                .Where(product => product.Features
+                    .Intersect(featureList)
+                        .Any());
         }
 
         public static IEnumerable<Product> AllFeatures(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
-            return productList.Where(product => product.Features.Intersect(featureList).Count() == featureList.Count());
+            return productList
+                .Where(product => product.Features
+                    .Intersect(featureList).Count() == featureList.Count());
         }
 
         public static IEnumerable<Product> NotTheseFeatures(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
         {
-            return productList.Except(productList.AtLeastOneFeature(featureList));
+            return productList
+                .Except(productList
+                    .AtLeastOneFeature(featureList));
         }
 
         public static IEnumerable<ProductStruct> TotalQuantity(this ProductStruct[] firstList, ProductStruct[] secondList)
@@ -199,21 +206,11 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            var topWords = text.Split(" .,?!".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
+            return text.Split(" .,?!".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .GroupBy(word => word.ToLower())
                 .OrderByDescending(group => group.Count())
-                .Select(group => group.Key);
-
-            int index = 0;
-            foreach (var word in topWords)
-            {
-                index++;
-                yield return word;
-                if (index == 3)
-                {
-                    break;
-                }
-            }
+                .Select(group => group.Key)
+                .Take(3);
         }
 
         public static bool IsSudokuValid(this int[,] sudoku)
