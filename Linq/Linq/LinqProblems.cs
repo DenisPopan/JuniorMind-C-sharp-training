@@ -16,14 +16,18 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.ToCharArray().Count(x => "aeiouAEIOU".Contains(x));
+            return text.AsEnumerable()
+                .Count(x => "aeiouAEIOU"
+                    .Contains(x));
         }
 
         public static int ConsonantsNumber(this string text)
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.Length - VowelsNumber(text);
+            return text.AsEnumerable()
+                .Count(x => !"aeiouAEIOU"
+                    .Contains(x));
         }
 
         public static char FirstUnique(this string text)
