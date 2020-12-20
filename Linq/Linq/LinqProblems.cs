@@ -85,28 +85,23 @@ namespace Linq
                 .Select(x => new string(x.ToArray()));
         }
 
-        public static IEnumerable<IEnumerable<int>> SubarraysSum(this IEnumerable<int> array, int k)
+        public static IEnumerable<IEnumerable<int>> SubarraysSumEquals(this IEnumerable<int> array, int k)
         {
             EnsureIsNotNull(array, nameof(array));
 
-            int index = 1;
-            int length = array.Count();
-            while (length > 0 && index <= length)
-            {
-                var subarray = array.TakeLast(length).Take(index);
-                if (subarray.Sum() <= k)
-                {
-                    yield return subarray;
-                }
+            var allSubarrays = Enumerable.Range(1, array.Count())
+                .Select(x => array
+                    .TakeLast(x));
 
-                if (index == length)
-                {
-                    length--;
-                    index = 0;
-                }
+            var allPartitions = allSubarrays
+                .Select(x => Enumerable
+                    .Range(1, x.Count())
+                    .Select(y => x.Take(y)));
 
-                index++;
-            }
+            return allPartitions
+                .SelectMany(x => x
+                    .Where(y => y
+                        .Sum() <= k));
         }
 
         public static IEnumerable<string> SumCombinations(int n, int k)
