@@ -52,25 +52,25 @@ namespace LinqFacts
         {
             var enumerator = "aabaac".PalindromicPartitions().GetEnumerator();
             enumerator.MoveNext();
+            Assert.Equal("c", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("a", enumerator.Current);
+            enumerator.MoveNext();
             Assert.Equal("a", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("aa", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("aabaa", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("a", enumerator.Current);
-            enumerator.MoveNext();
-            Assert.Equal("aba", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("b", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("a", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal("aa", enumerator.Current);
+            Assert.Equal("aba", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("a", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal("c", enumerator.Current);
+            Assert.Equal("aa", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("aabaa", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
 

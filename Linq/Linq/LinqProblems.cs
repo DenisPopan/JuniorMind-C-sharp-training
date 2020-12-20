@@ -66,25 +66,23 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            var charArray = text.ToCharArray();
-            int index = 1;
-            int length = charArray.Length;
-            while (length > 0 && index <= length)
-            {
-                var partition = charArray.TakeLast(length).Take(index);
-                if (partition.SequenceEqual(partition.Reverse()))
-                {
-                    yield return new string(partition.ToArray());
-                }
+            var allSubarrays = Enumerable.Range(1, text.Length)
+                .Select(x => text
+                    .AsEnumerable()
+                    .TakeLast(x));
 
-                if (index == length)
-                {
-                    length--;
-                    index = 0;
-                }
+            var allPartitions = allSubarrays
+                .Select(x => Enumerable
+                    .Range(1, x.Count())
+                    .Select(y => x.Take(y)));
 
-                index++;
-            }
+            var palindromicPartitions = allPartitions
+                .SelectMany(x => x
+                    .Where(y => y
+                        .SequenceEqual(y.Reverse())));
+
+            return palindromicPartitions
+                .Select(x => new string(x.ToArray()));
         }
 
         public static IEnumerable<IEnumerable<int>> SubarraysSum(this IEnumerable<int> array, int k)
