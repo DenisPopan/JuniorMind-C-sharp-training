@@ -201,23 +201,10 @@ namespace Linq
         public static bool IsSudokuValid(this int[,] sudoku)
         {
             EnsureIsNotNull(sudoku, nameof(sudoku));
-            var rowsNumber = sudoku.GetLength(0);
-            var columnsNumber = sudoku.GetLength(1);
 
-            if (rowsNumber != columnsNumber)
-            {
-                return false;
-            }
-
-            for (int i = 0; i < rowsNumber; i++)
-            {
-                if (!(sudoku.Row(i).FollowsSudokuRules() && sudoku.Column(i).FollowsSudokuRules()))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return Enumerable.Range(0, sudoku.GetLength(0))
+                .All(x => sudoku.Row(x).FollowsSudokuRules()
+                        && sudoku.Column(x).FollowsSudokuRules());
         }
 
         public static double PolishArithmeticResult(this string operation)
@@ -296,18 +283,12 @@ namespace Linq
 
         static IEnumerable<int> Row(this int[,] array, int row)
         {
-            for (var i = 0; i < array.GetLength(0); i++)
-            {
-                yield return array[row, i];
-            }
+            return Enumerable.Range(0, array.GetLength(0)).Select(x => array[row, x]);
         }
 
         static IEnumerable<int> Column(this int[,] array, int column)
         {
-            for (var i = 0; i < array.GetLength(0); i++)
-            {
-                yield return array[i, column];
-            }
+            return Enumerable.Range(0, array.GetLength(0)).Select(x => array[x, column]);
         }
     }
 }
