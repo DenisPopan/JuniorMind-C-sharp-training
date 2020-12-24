@@ -137,21 +137,13 @@ namespace Linq
         public static IEnumerable<string> PythagoreanNumbers(this IEnumerable<int> array)
         {
             var squareNumbers = array.OrderBy(x => x).Select(x => x * x);
-            foreach (var squareNumber in squareNumbers)
-            {
-                var allOtherSquares = squareNumbers.SkipWhile(x => x <= squareNumber);
-                var allOtherSquaresButOne = allOtherSquares.Skip(1);
-
-                foreach (var combination in allOtherSquares
+            return squareNumbers
+                .SelectMany(squareNumber => squareNumbers.SkipWhile(x => x <= squareNumber)
                     .Join(
-                        allOtherSquaresButOne,
-                        x => x + squareNumber,
-                        y => y,
-                        (x, y) => $"[{Math.Sqrt(squareNumber)}, {Math.Sqrt(x)}, {Math.Sqrt(y)}]"))
-                {
-                    yield return combination;
-                }
-            }
+                        squareNumbers.SkipWhile(y => y <= squareNumber).Skip(1),
+                        a => a + squareNumber,
+                        b => b,
+                        (a, b) => $"[{Math.Sqrt(squareNumber)}, {Math.Sqrt(a)}, {Math.Sqrt(b)}]"));
         }
 
         public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)
