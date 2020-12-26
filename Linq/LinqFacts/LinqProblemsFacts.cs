@@ -120,11 +120,11 @@ namespace LinqFacts
         {
             var enumerator = LinqProblems.SumCombinations(5, 1).GetEnumerator();
             enumerator.MoveNext();
-            Assert.Equal("-1-2+3-4+5=1", enumerator.Current);
+            Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("+1-2+3+4-5=1", enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal("+1+2-3-4+5=1", enumerator.Current);
+            Assert.Equal("-1-2+3-4+5=1", enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
 

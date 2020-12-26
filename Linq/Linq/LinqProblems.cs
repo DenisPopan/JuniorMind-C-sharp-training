@@ -106,32 +106,19 @@ namespace Linq
 
         public static IEnumerable<string> SumCombinations(int n, int k)
         {
-            var combinationsNumber = (int)Math.Pow(2, n) - 1;
             var range = Enumerable.Range(1, n);
+            var binaryNumbers = Enumerable.Range(0, (int)Math.Pow(2, n))
+                .Select(x => Convert.ToString(x, 2).ToArray())
+                .Select(x => Enumerable.Repeat('0', n - x.Length).Concat(x));
 
-            while (combinationsNumber >= 0)
-            {
-                var binaryNumber = Convert.ToString(combinationsNumber, 2);
-
-                while (binaryNumber.Length < n)
-                {
-                    binaryNumber = "0" + binaryNumber;
-                }
-
-                var result = range.Zip(binaryNumber.ToArray(), (rangeElement, digit) => digit switch
-                {
-                    '0' => rangeElement,
-                    '1' => rangeElement * -1,
-                    _ => rangeElement
-                });
-
-                if (result.Sum() == k)
-                {
-                    yield return result.ConvertToString() + $"={k}";
-                }
-
-                combinationsNumber--;
-            }
+            return binaryNumbers
+                .Select(binaryNumber => range
+                    .Zip(binaryNumber, (rangeElement, digit) =>
+                        digit == '0' ? rangeElement : rangeElement * -1))
+                .Where(combination => combination.Sum() == k)
+                .Select(array => array
+                    .Select(x => x < 0 ? $"{x}" : "+" + x)
+                    .Aggregate("", (x, y) => x + y) + $"={k}");
         }
 
         public static IEnumerable<string> PythagoreanNumbers(this IEnumerable<int> array)
@@ -204,6 +191,7 @@ namespace Linq
 
             return Enumerable.Range(0, sudoku.GetLength(0))
                 .All(x => sudoku.Row(x).FollowsSudokuRules()
+
                         && sudoku.Column(x).FollowsSudokuRules());
         }
 
@@ -238,25 +226,6 @@ namespace Linq
             }
 
             throw new ArgumentNullException(name);
-        }
-
-        static string ConvertToString(this IEnumerable<int> array)
-        {
-            EnsureIsNotNull(array, nameof(array));
-            var resultString = "";
-            foreach (var element in array)
-            {
-                if (element > 0)
-                {
-                    resultString += "+" + element;
-                }
-                else
-                {
-                    resultString += element;
-                }
-            }
-
-            return resultString;
         }
 
         static double OperationResult(string stringOperator, double lastButOne, double lastElement)
