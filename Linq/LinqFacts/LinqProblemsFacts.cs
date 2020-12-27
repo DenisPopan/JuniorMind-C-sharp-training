@@ -35,7 +35,7 @@ namespace LinqFacts
         public void ToIntMethodShouldConvertAStringToAnInteger()
         {
             Assert.Equal(223, "223".ToInt());
-            //Assert.Equal(-123, "-123".ToInt());
+            Assert.Equal(-3576, "-3576".ToInt());
         }
 
         [Fact]

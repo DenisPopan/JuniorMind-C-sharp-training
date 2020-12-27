@@ -47,8 +47,10 @@ namespace Linq
             var textToIntArray = text.AsEnumerable()
                 .Select(x => Convert.ToInt32(char.GetNumericValue(x)));
 
-            return textToIntArray
-                .Aggregate(0, (x, y) => x * 10 + y);
+            return textToIntArray.First() == -1 ?
+                textToIntArray.TakeLast(textToIntArray.Count() - 1)
+                    .Aggregate(0, (x, y) => x * 10 + y) * -1 :
+                textToIntArray.Aggregate(0, (x, y) => x * 10 + y);
         }
 
         public static char MaxOccurrence(this string text)
@@ -107,6 +109,7 @@ namespace Linq
         public static IEnumerable<string> SumCombinations(int n, int k)
         {
             var range = Enumerable.Range(1, n);
+
             var binaryNumbers = Enumerable.Range(0, (int)Math.Pow(2, n))
                 .Select(x => Convert.ToString(x, 2).ToArray())
                 .Select(x => Enumerable.Repeat('0', n - x.Length).Concat(x));
@@ -124,6 +127,7 @@ namespace Linq
         public static IEnumerable<string> PythagoreanNumbers(this IEnumerable<int> array)
         {
             var squareNumbers = array.OrderBy(x => x).Select(x => x * x);
+
             return squareNumbers
                 .SelectMany(squareNumber => squareNumbers.SkipWhile(x => x <= squareNumber)
                     .Join(
