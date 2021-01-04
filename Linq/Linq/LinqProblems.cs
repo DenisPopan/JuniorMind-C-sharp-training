@@ -195,7 +195,6 @@ namespace Linq
 
             return Enumerable.Range(0, sudoku.GetLength(0))
                 .All(x => sudoku.Row(x).FollowsSudokuRules()
-
                         && sudoku.Column(x).FollowsSudokuRules());
         }
 
@@ -245,7 +244,7 @@ namespace Linq
                 case "/":
                     return lastButOne / lastElement;
                 default:
-                    throw new ArgumentException("The given string is not an operator!");
+                    throw new ArgumentException("The given string is not an operator!", stringOperator);
             }
         }
 

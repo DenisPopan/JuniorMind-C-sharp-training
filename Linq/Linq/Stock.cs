@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Linq
 {
-    public class Stock<TProduct>
+    public class Stock
     {
         readonly List<Product> list;
 
@@ -33,28 +33,10 @@ namespace Linq
             list.Add(new Product { Name = name, Quantity = quantity });
         }
 
-        public void RemoveProduct(string name)
-        {
-            LinqProblems.EnsureIsNotNull(name, nameof(name));
-
-            var productIndex = FindProductIndex(name);
-
-            ProductExists(productIndex);
-
-            list.Remove(list[productIndex]);
-        }
-
         public string Status()
         {
-            Func<int, string> callback = StockWarning;
-            var status = list.Select(product => $"Product: {product.Name}, Quantity: {callback(product.Quantity)}\n");
-            var statusString = "";
-            foreach (var element in status)
-            {
-                statusString += element;
-            }
-
-            return statusString;
+            return list.Select(product => $"Product: {product.Name}, Quantity: {product.Quantity}\n")
+                .Aggregate("", (x, y) => x + y);
         }
 
         public string ProductQuantity(string name)
@@ -67,17 +49,6 @@ namespace Linq
             Func<int, string> callback = StockWarning;
 
             return callback(list[productIndex].Quantity);
-        }
-
-        public void BuyNewStock(string name, int quantity)
-        {
-            LinqProblems.EnsureIsNotNull(name, nameof(name));
-            LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
-
-            var productIndex = FindProductIndex(name);
-            ProductExists(productIndex);
-
-            list[productIndex].Quantity += quantity;
         }
 
         public string SellProductStock(string name, int quantity)
