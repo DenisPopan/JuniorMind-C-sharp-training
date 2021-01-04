@@ -55,7 +55,7 @@ namespace Linq
             LinqProblems.EnsureIsNotNull(name, nameof(name));
 
             var productIndex = FindProductIndex(name);
-            ProductExists(productIndex);
+            ProductExists(name);
 
             return $"There are {list[productIndex].Quantity} items of type {name} in stock";
         }
@@ -66,7 +66,7 @@ namespace Linq
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
 
             var productIndex = FindProductIndex(name);
-            ProductExists(productIndex);
+            ProductExists(name);
 
             list[productIndex].Quantity -= quantity;
 
@@ -97,9 +97,9 @@ namespace Linq
             return list.FindIndex(product => string.Equals(product.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
-        void ProductExists(int productIndex)
+        void ProductExists(string name)
         {
-            if (productIndex >= 0)
+            if (list.Any(product => product.Name.Equals(name)))
             {
                 return;
             }
