@@ -57,9 +57,7 @@ namespace Linq
             var productIndex = FindProductIndex(name);
             ProductExists(productIndex);
 
-            Func<int, string> callback = StockWarning;
-
-            return callback(list[productIndex].Quantity);
+            return $"There are {list[productIndex].Quantity} items of type {name} in stock";
         }
 
         public string SellProductStock(string name, int quantity)
