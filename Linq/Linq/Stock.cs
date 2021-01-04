@@ -70,25 +70,25 @@ namespace Linq
 
             list[productIndex].Quantity -= quantity;
 
-            Func<int, string> callback = StockWarning;
+            Func<string, int, string> callback = StockWarning;
 
-            return callback(list[productIndex].Quantity);
+            return callback(name, list[productIndex].Quantity);
         }
 
-        static string StockWarning(int quantity)
+        string StockWarning(string name, int quantity)
         {
             switch (quantity)
             {
                 case int n when n < 2:
-                    return $"Product stock has less than 2 items!({quantity})";
+                    return $"Hurry! There are only {quantity} {name}s left!";
 
                 case int n when n < 5:
-                    return $"Product stock has less than 5 items!({quantity})";
+                    return $"Tik-Tok! Only {quantity} {name}s left!";
 
                 case int n when n < 10:
-                    return $"Product stock has less than 10 items!({quantity})";
+                    return $"Stock reaches its end! There are {quantity} {name}s left!";
                 default:
-                    return quantity.ToString();
+                    return "Success!";
             }
         }
 
