@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("StockFacts.cs")]
 
 namespace Linq
 {
     public class Stock
     {
         readonly List<Product> list;
+        readonly List<StockUser> stockUsers;
 
         public Stock()
         {
             list = new List<Product>();
+            stockUsers = new List<StockUser>();
         }
 
         public int Count
@@ -18,6 +23,12 @@ namespace Linq
             {
                 return list.Count;
             }
+        }
+
+        public void AddUser(StockUser user)
+        {
+            LinqProblems.EnsureIsNotNull(user, nameof(user));
+            stockUsers.Add(user);
         }
 
         public void AddProduct(string name, int quantity)
