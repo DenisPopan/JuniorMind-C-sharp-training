@@ -16,8 +16,8 @@ namespace LinqFacts
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            var user = new StockUser(stock);
-            stock.SellProductStock("Phone", 3);
+            new StockUser(stock);
+            new StockUser(stock);
             stock.SellProductStock("Camera", 6573);
             stock.SellProductStock("Tablet", 13);
             stock.SellProductStock("Laptop", 3342);

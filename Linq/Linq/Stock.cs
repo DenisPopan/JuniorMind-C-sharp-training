@@ -9,12 +9,12 @@ namespace Linq
     public class Stock
     {
         readonly List<Product> list;
-        readonly List<StockUser> stockUsers;
+        readonly List<AbstractUser> users;
 
         public Stock()
         {
             list = new List<Product>();
-            stockUsers = new List<StockUser>();
+            users = new List<AbstractUser>();
         }
 
         public int Count
@@ -25,10 +25,10 @@ namespace Linq
             }
         }
 
-        public void AddUser(StockUser user)
+        public void AddUser(AbstractUser user)
         {
             LinqProblems.EnsureIsNotNull(user, nameof(user));
-            stockUsers.Add(user);
+            users.Add(user);
         }
 
         public void AddProduct(string name, int quantity)
@@ -89,9 +89,11 @@ namespace Linq
         {
             LinqProblems.EnsureIsNotNull(product, nameof(product));
             LinqProblems.EnsureIsNotNull(callback, nameof(callback));
-            foreach (var user in stockUsers)
+
+            var warning = callback(product.Name, product.Quantity);
+            foreach (var user in users)
             {
-                user.ReceiveNotification(callback(product.Name, product.Quantity));
+                user.ReceiveNotification(warning);
             }
         }
 

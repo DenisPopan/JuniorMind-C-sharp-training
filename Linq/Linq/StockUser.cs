@@ -1,16 +1,14 @@
 ﻿namespace Linq
 {
-    public class StockUser
+    public class StockUser : AbstractUser
     {
-        readonly Stock stock;
-
         public StockUser(Stock stock)
         {
             this.stock = stock;
             this.stock.AddUser(this);
         }
 
-        public string ReceiveNotification(string notification)
+        public override string ReceiveNotification(string notification)
         {
             LinqProblems.EnsureIsNotNull(notification, nameof(notification));
             return notification;
