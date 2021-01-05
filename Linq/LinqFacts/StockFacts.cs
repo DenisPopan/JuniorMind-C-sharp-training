@@ -61,8 +61,9 @@ namespace LinqFacts
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            Assert.Equal("Stock reaches its end! There are 6 Phones left!", stock.SellProductStock("Phone", 340));
-            Assert.Equal("Success!", stock.SellProductStock("Tablet", 10));
+            stock.SellProductStock("Phone", 340);
+            Assert.Equal("There are 6 items of type Phone in stock", stock.ProductQuantity("Phone"));
+            Assert.Throws<ArgumentException>(() => stock.SellProductStock("Phone", 34));
         }
     }
 }

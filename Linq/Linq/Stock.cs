@@ -60,7 +60,7 @@ namespace Linq
             return $"There are {list[productIndex].Quantity} items of type {name} in stock";
         }
 
-        public string SellProductStock(string name, int quantity)
+        public void SellProductStock(string name, int quantity)
         {
             LinqProblems.EnsureIsNotNull(name, nameof(name));
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
@@ -68,11 +68,31 @@ namespace Linq
             var productIndex = FindProductIndex(name);
             ProductExists(name);
 
+            var productQuantity = list[productIndex].Quantity;
+
+            if (productQuantity < quantity)
+            {
+                throw new ArgumentException($"You can only sell {productQuantity} items!");
+            }
+
             list[productIndex].Quantity -= quantity;
 
-            Func<string, int, string> callback = StockWarning;
+            if (list[productIndex].Quantity >= 10)
+            {
+                return;
+            }
 
-            return callback(name, list[productIndex].Quantity);
+            SendNotification(list[productIndex], StockWarning);
+        }
+
+        void SendNotification(Product product, Func<string, int, string> callback)
+        {
+            LinqProblems.EnsureIsNotNull(product, nameof(product));
+            LinqProblems.EnsureIsNotNull(callback, nameof(callback));
+            foreach (var user in stockUsers)
+            {
+                user.ReceiveNotification(callback(product.Name, product.Quantity));
+            }
         }
 
         string StockWarning(string name, int quantity)
