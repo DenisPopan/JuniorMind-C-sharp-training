@@ -101,7 +101,7 @@ namespace Linq
                     .Aggregate("", (x, y) => x + y) + $"={k}");
         }
 
-        public static IEnumerable<string> PythagoreanNumbers(this IEnumerable<int> array)
+        public static IEnumerable<(double, double, double)> PythagoreanNumbers(this IEnumerable<int> array)
         {
             var squareNumbers = array.OrderBy(x => x).Select(x => x * x);
 
@@ -111,7 +111,7 @@ namespace Linq
                         squareNumbers.SkipWhile(y => y <= squareNumber).Skip(1),
                         a => a + squareNumber,
                         b => b,
-                        (a, b) => $"[{Math.Sqrt(squareNumber)}, {Math.Sqrt(a)}, {Math.Sqrt(b)}]"));
+                        (a, b) => (Math.Sqrt(squareNumber), Math.Sqrt(a), Math.Sqrt(b))));
         }
 
         public static IEnumerable<Product> AtLeastOneFeature(this IEnumerable<Product> productList, IEnumerable<Feature> featureList)

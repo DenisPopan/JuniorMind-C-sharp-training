@@ -128,9 +128,9 @@ namespace LinqFacts
             var enumerator = array.PythagoreanNumbers().GetEnumerator();
 
             enumerator.MoveNext();
-            Assert.Equal("[3, 4, 5]", enumerator.Current);
+            Assert.Equal((3, 4, 5), enumerator.Current);
             enumerator.MoveNext();
-            Assert.Equal("[6, 8, 10]", enumerator.Current);
+            Assert.Equal((6, 8, 10), enumerator.Current);
             Assert.False(enumerator.MoveNext());
         }
 
