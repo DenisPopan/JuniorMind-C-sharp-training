@@ -55,8 +55,7 @@ namespace Linq
 
             return text.AsEnumerable()
                 .GroupBy(x => x)
-                .OrderByDescending(group => group.Count())
-                .First()
+                .Aggregate((x, y) => x.Count() > y.Count() ? x : y)
                 .Key;
         }
 

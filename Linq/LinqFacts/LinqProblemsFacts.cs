@@ -34,7 +34,7 @@ namespace LinqFacts
         public void MaxOccurenceMethodShouldReturnTheCharThatOccurrsTheMost()
         {
             Assert.Equal('a', "abcdsa".MaxOccurrence());
-            Assert.Equal('h', "hey you hail".MaxOccurrence());
+            Assert.Equal(' ', "hey you hail".MaxOccurrence());
             Assert.Equal('a', "aeaoaaio".MaxOccurrence());
             Assert.Throws<InvalidOperationException>(() => "".MaxOccurrence());
         }
