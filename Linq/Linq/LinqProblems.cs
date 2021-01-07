@@ -16,18 +16,16 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.AsEnumerable()
-                .Count(x => "aeiouAEIOU"
-                    .Contains(x));
+            return text.Count(x => "aeiouAEIOU"
+            .Contains(x));
         }
 
         public static int ConsonantsNumber(this string text)
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.AsEnumerable()
-                .Count(x => !"aeiouAEIOU"
-                    .Contains(x));
+            return text.Count(x => !"aeiouAEIOU"
+            .Contains(x));
         }
 
         public static char FirstUnique(this string text)
@@ -202,23 +200,12 @@ namespace Linq
         {
             EnsureIsNotNull(operation, nameof(operation));
 
-            var splitOperation = operation.Split(' ');
-            var list = new List<double>();
-            foreach (string element in splitOperation)
-            {
-                if (double.TryParse(element, out double convertedElement))
-                {
-                    list.Add(convertedElement);
-                }
-                else
-                {
-                    var lastElement = list.Last();
-                    list.Remove(lastElement);
-                    list[^1] = OperationResult(element, list.Last(), lastElement);
-                }
-            }
-
-            return list.Last();
+            return operation.Split(' ').Aggregate(Enumerable.Empty<double>(), (y, z) =>
+                double.TryParse(z, out double element) ?
+                y.Append(element) :
+                y.SkipLast(2)
+                    .Append(OperationResult(z, y.TakeLast(2).First(), y.TakeLast(2).Last())))
+                .Last();
         }
 
         internal static void EnsureIsNotNull<T>(T source, string name)
