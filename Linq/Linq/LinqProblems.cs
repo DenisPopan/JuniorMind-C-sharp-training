@@ -75,19 +75,12 @@ namespace Linq
         {
             EnsureIsNotNull(array, nameof(array));
 
-            var allSubarrays = Enumerable.Range(1, array.Count())
-                .Select(x => array
-                    .TakeLast(x));
-
-            var allPartitions = allSubarrays
-                .Select(x => Enumerable
-                    .Range(1, x.Count())
-                    .Select(y => x.Take(y)));
-
-            return allPartitions
-                .SelectMany(x => x
-                    .Where(y => y
-                        .Sum() <= k));
+            return Enumerable.Range(0, array.Count())
+                .SelectMany(x =>
+                    Enumerable.Range(1, array.Count() - x)
+                        .Select(y => (x, y)))
+                .Select(x => array.Skip(x.x).Take(x.y))
+                .Where(x => x.Sum() <= k);
         }
 
         public static IEnumerable<string> SumCombinations(int n, int k)
