@@ -10,17 +10,9 @@ namespace LinqFacts
         [Fact]
         public void VowelsNumberMethodShouldReturnVowelsNumberOfAString()
         {
-            Assert.Equal(2, "abcdsa".VowelsNumber());
-            Assert.Equal(0, "bcds".VowelsNumber());
-            Assert.Equal(4, "aeio".VowelsNumber());
-        }
-
-        [Fact]
-        public void ConsonantsNumberMethodShouldReturnConsonantsNumberOfAString()
-        {
-            Assert.Equal(4, "abcdsa".ConsonantsNumber());
-            Assert.Equal(4, "bcds".ConsonantsNumber());
-            Assert.Equal(0, "aeio".ConsonantsNumber());
+            Assert.Equal((2, 4), "abcdsa".VowelsAndConsonantsNumber());
+            Assert.Equal((0, 4), "bcds".VowelsAndConsonantsNumber());
+            Assert.Equal((4, 0), "aeio".VowelsAndConsonantsNumber());
         }
 
         [Fact]

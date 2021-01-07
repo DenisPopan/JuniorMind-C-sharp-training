@@ -12,20 +12,13 @@ namespace Linq
 
     public static class LinqProblems
     {
-        public static int VowelsNumber(this string text)
+        public static (int, int) VowelsAndConsonantsNumber(this string text)
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.Count(x => "aeiouAEIOU"
-            .Contains(x));
-        }
+            var vowelsNumber = text.Count(x => "aeiouAEIOU".Contains(x));
 
-        public static int ConsonantsNumber(this string text)
-        {
-            EnsureIsNotNull(text, nameof(text));
-
-            return text.Count(x => !"aeiouAEIOU"
-            .Contains(x));
+            return (vowelsNumber, text.Length - vowelsNumber);
         }
 
         public static char FirstUnique(this string text)
