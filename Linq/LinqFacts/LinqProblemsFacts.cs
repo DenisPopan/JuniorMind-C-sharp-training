@@ -286,13 +286,16 @@ namespace LinqFacts
         {
             string text = "hey Hey, how are you doing? I'm Daniel and this is Jhonny Silverhand, we're pleased to see you." +
                 "we're also thrilled to work with You";
-            var enumerator = text.TopWords().GetEnumerator();
+            var enumerator = text.TopWords(4).GetEnumerator();
             enumerator.MoveNext();
             Assert.Equal("you", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("hey", enumerator.Current);
             enumerator.MoveNext();
             Assert.Equal("we're", enumerator.Current);
+            enumerator.MoveNext();
+            Assert.Equal("to", enumerator.Current);
+            Assert.False(enumerator.MoveNext());
         }
 
         [Fact]

@@ -154,7 +154,7 @@ namespace Linq
                     .Aggregate((x, y) => x.Score > y.Score ? x : y));
         }
 
-        public static IEnumerable<string> TopWords(this string text)
+        public static IEnumerable<string> TopWords(this string text, int topNumber = 3)
         {
             EnsureIsNotNull(text, nameof(text));
 
@@ -162,7 +162,7 @@ namespace Linq
                 .GroupBy(word => word.ToLower())
                 .OrderByDescending(group => group.Count())
                 .Select(group => group.Key)
-                .Take(3);
+                .Take(topNumber);
         }
 
         public static bool IsSudokuValid(this int[,] sudoku)
