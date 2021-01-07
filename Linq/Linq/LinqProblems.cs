@@ -151,8 +151,7 @@ namespace Linq
         {
             return list.GroupBy(x => x.FamilyId)
                 .Select(group => group
-                    .OrderByDescending(testResult => testResult.Score)
-                        .First());
+                    .Aggregate((x, y) => x.Score > y.Score ? x : y));
         }
 
         public static IEnumerable<string> TopWords(this string text)
