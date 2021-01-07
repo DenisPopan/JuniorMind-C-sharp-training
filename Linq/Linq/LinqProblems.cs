@@ -38,10 +38,15 @@ namespace Linq
             var textToIntArray = text.AsEnumerable()
                 .Select(x => Convert.ToInt32(char.GetNumericValue(x)));
 
-            return textToIntArray.First() == -1 ?
-                textToIntArray.TakeLast(textToIntArray.Count() - 1)
-                    .Aggregate(0, (x, y) => x * 10 + y) * -1 :
-                textToIntArray.Aggregate(0, (x, y) => x * 10 + y);
+            var sign = 1;
+
+            if (textToIntArray.First() == -1)
+            {
+                sign = -1;
+                textToIntArray = textToIntArray.Skip(1);
+            }
+
+            return textToIntArray.Aggregate(0, (x, y) => x * 10 + y) * sign;
         }
 
         public static char MaxOccurrence(this string text)
