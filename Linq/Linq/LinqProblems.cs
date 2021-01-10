@@ -25,7 +25,7 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.AsEnumerable()
+            return text
                 .GroupBy(character => character)
                 .First(group => group.Count() == 1)
                 .Key;
@@ -35,7 +35,7 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            var textToIntArray = text.AsEnumerable()
+            var textToIntArray = text
                 .Select(x => Convert.ToInt32(char.GetNumericValue(x)));
 
             var sign = 1;
@@ -53,7 +53,7 @@ namespace Linq
         {
             EnsureIsNotNull(text, nameof(text));
 
-            return text.AsEnumerable()
+            return text
                 .GroupBy(x => x)
                 .Aggregate((x, y) => x.Count() > y.Count() ? x : y)
                 .Key;
@@ -169,9 +169,21 @@ namespace Linq
         {
             EnsureIsNotNull(sudoku, nameof(sudoku));
 
+            var subMatricesStartIndex = Enumerable.Range(0, (int)Math.Sqrt(sudoku.GetLength(0)))
+                .Select(x => x * (int)Math.Sqrt(sudoku.GetLength(0)));
+
+            var subMatricesEndIndex = subMatricesStartIndex.Select(x => x + (int)Math.Sqrt(sudoku.GetLength(0)) - 1);
+
+            var allSubMatrices = subMatricesStartIndex.SelectMany(x => subMatricesStartIndex
+                    .Select(y => (x, y)))
+                .Zip(
+                    subMatricesEndIndex.SelectMany(x => subMatricesEndIndex.Select(y => (x, y))),
+                    (a, b) => SubMatrix(sudoku, a, b));
+
             return Enumerable.Range(0, sudoku.GetLength(0))
-                .All(x => sudoku.Row(x).FollowsSudokuRules()
-                        && sudoku.Column(x).FollowsSudokuRules());
+                .All(x => sudoku.Row(x).FollowsSudokuRules(sudoku.GetLength(0))
+                        && sudoku.Column(x).FollowsSudokuRules(sudoku.GetLength(0)))
+                && allSubMatrices.All(x => x.FollowsSudokuRules(sudoku.GetLength(0)));
         }
 
         public static double PolishArithmeticResult(this string operation)
@@ -213,19 +225,27 @@ namespace Linq
             }
         }
 
-        static bool FollowsSudokuRules(this IEnumerable<int> array)
+        static bool FollowsSudokuRules(this IEnumerable<int> array, int sudokuSize)
         {
-            return array.All(x => x > 0 && x <= array.Count()) && array.Distinct().Count() == array.Count();
+            return array.All(x => x > 0 && x <= sudokuSize) && array.Distinct().Count() == sudokuSize;
         }
 
-        static IEnumerable<int> Row(this int[,] array, int row)
+        static IEnumerable<int> Row(this int[,] sudoku, int row)
         {
-            return Enumerable.Range(0, array.GetLength(0)).Select(x => array[row, x]);
+            return Enumerable.Range(0, sudoku.GetLength(0)).Select(x => sudoku[row, x]);
         }
 
-        static IEnumerable<int> Column(this int[,] array, int column)
+        static IEnumerable<int> Column(this int[,] sudoku, int column)
         {
-            return Enumerable.Range(0, array.GetLength(0)).Select(x => array[x, column]);
+            return Enumerable.Range(0, sudoku.GetLength(0)).Select(x => sudoku[x, column]);
+        }
+
+        static IEnumerable<int> SubMatrix(this int[,] sudoku, (int, int) start, (int, int) stop)
+        {
+            return Enumerable.Range(start.Item1, stop.Item1 - start.Item1 + 1)
+                .SelectMany(x => Enumerable.Range(start.Item2, stop.Item2 - start.Item2 + 1)
+                    .Select(y => (x, y)))
+                .Aggregate(Enumerable.Empty<int>(), (y, z) => y.Append(sudoku[z.x, z.y]));
         }
     }
 }

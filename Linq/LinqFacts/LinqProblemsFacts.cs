@@ -339,6 +339,26 @@ namespace LinqFacts
                 { 3, 2, 6, 0, 8, 7, 1, 4, 5 }};
 
             Assert.False(sudoku3.IsSudokuValid());
+
+            var sudoku4x4 = new int[4, 4]
+            {
+               { 4, 3, 1, 2 },
+               { 1, 2, 3, 4 },
+               { 2, 1, 4, 3 },
+               { 3, 4, 2, 1 }
+            };
+
+            Assert.True(sudoku4x4.IsSudokuValid());
+
+            var sudoku4x41 = new int[4, 4]
+            {
+               { 4, 3, 1, 2 },
+               { 1, 3, 3, 4 },
+               { 2, 1, 4, 3 },
+               { 3, 4, 2, 1 }
+            };
+
+            Assert.False(sudoku4x41.IsSudokuValid());
         }
 
         [Fact]
