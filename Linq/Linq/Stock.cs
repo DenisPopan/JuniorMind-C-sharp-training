@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("StockFacts.cs")]
 
 namespace Linq
 {
     public class Stock
     {
         readonly List<Product> list;
-        readonly List<AbstractUser> users;
+        readonly Action<Product> callback;
 
-        public Stock()
+        public Stock(Action<Product> callback)
         {
             list = new List<Product>();
-            users = new List<AbstractUser>();
+            this.callback = callback;
         }
 
         public int Count
@@ -23,12 +20,6 @@ namespace Linq
             {
                 return list.Count;
             }
-        }
-
-        public void AddUser(AbstractUser user)
-        {
-            LinqProblems.EnsureIsNotNull(user, nameof(user));
-            users.Add(user);
         }
 
         public void AddProduct(string name, int quantity)
@@ -50,14 +41,14 @@ namespace Linq
                 .Aggregate("", (x, y) => x + y);
         }
 
-        public string ProductQuantity(string name)
+        public int ProductQuantity(string name)
         {
             LinqProblems.EnsureIsNotNull(name, nameof(name));
 
-            var productIndex = FindProductIndex(name);
             ProductExists(name);
+            var productIndex = FindProductIndex(name);
 
-            return $"There are {list[productIndex].Quantity} items of type {name} in stock";
+            return list[productIndex].Quantity;
         }
 
         public void SellProductStock(string name, int quantity)
@@ -82,36 +73,15 @@ namespace Linq
                 return;
             }
 
-            SendNotification(list[productIndex], StockWarning);
+            SendNotification(list[productIndex]);
         }
 
-        void SendNotification(Product product, Func<string, int, string> callback)
+        void SendNotification(Product product)
         {
             LinqProblems.EnsureIsNotNull(product, nameof(product));
             LinqProblems.EnsureIsNotNull(callback, nameof(callback));
 
-            var warning = callback(product.Name, product.Quantity);
-            foreach (var user in users)
-            {
-                user.ReceiveNotification(warning);
-            }
-        }
-
-        string StockWarning(string name, int quantity)
-        {
-            switch (quantity)
-            {
-                case int n when n < 2:
-                    return $"Hurry! There are only {quantity} {name}s left!";
-
-                case int n when n < 5:
-                    return $"Tik-Tok! Only {quantity} {name}s left!";
-
-                case int n when n < 10:
-                    return $"Stock reaches its end! There are {quantity} {name}s left!";
-                default:
-                    return "Success!";
-            }
+            callback(product);
         }
 
         int FindProductIndex(string name)

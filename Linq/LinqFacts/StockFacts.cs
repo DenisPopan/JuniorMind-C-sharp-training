@@ -9,13 +9,21 @@ namespace LinqFacts
 
         public void AddProductMethodShouldAddNewProductToCurrentStock()
         {
-            var stock = new Stock();
+            Product returnedProduct = null;
+            void callback(Product product)
+            {
+                returnedProduct = product; 
+            }
+
+            var stock = new Stock(callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 36);
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal(4, stock.Count);
+
+            Assert.Null(returnedProduct);
 
             Assert.Throws<ArgumentException>(() => stock.AddProduct("Laptop", 34));
         }
@@ -24,7 +32,13 @@ namespace LinqFacts
 
         public void StatusMethodShouldReturnAllProductsAndTheirCurrentQuantity()
         {
-            var stock = new Stock();
+            Product returnedProduct = null;
+            void callback(Product product)
+            {
+                returnedProduct = product;
+            }
+
+            var stock = new Stock(callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 2);
             stock.AddProduct("Camera", 6574);
@@ -42,27 +56,39 @@ namespace LinqFacts
 
         public void ProductQuantityMethodShouldReturnAProductsQuantity()
         {
-            var stock = new Stock();
+            Product returnedProduct = null;
+            void callback(Product product)
+            {
+                returnedProduct = product;
+            }
+
+            var stock = new Stock(callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 2);
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            Assert.Equal("There are 6574 items of type Camera in stock", stock.ProductQuantity("Camera"));
+            Assert.Equal(6574, stock.ProductQuantity("Camera"));
         }
 
         [Fact]
 
         public void SellProductStockMethodShouldReduceAProductsQuantityAndReturnTheNewOne()
         {
-            var stock = new Stock();
+            Product returnedProduct = null;
+            void callback(Product product)
+            {
+                returnedProduct = product;
+            }
+
+            var stock = new Stock(callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
             stock.SellProductStock("Phone", 340);
-            Assert.Equal("There are 6 items of type Phone in stock", stock.ProductQuantity("Phone"));
+            Assert.Equal(6, stock.ProductQuantity("Phone"));
             Assert.Throws<ArgumentException>(() => stock.SellProductStock("Phone", 34));
         }
     }
