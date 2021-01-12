@@ -10,12 +10,12 @@ namespace LinqFacts
         public void AddProductMethodShouldAddNewProductToCurrentStock()
         {
             Product returnedProduct = null;
-            void callback(Product product)
+            void Callback(Product product)
             {
                 returnedProduct = product; 
             }
 
-            var stock = new Stock(callback);
+            var stock = new Stock(Callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 36);
             stock.AddProduct("Camera", 6574);
@@ -33,12 +33,12 @@ namespace LinqFacts
         public void StatusMethodShouldReturnAllProductsAndTheirCurrentQuantity()
         {
             Product returnedProduct = null;
-            void callback(Product product)
+            void Callback(Product product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(callback);
+            var stock = new Stock(Callback);
 
             Assert.Equal("", stock.Status());
 
@@ -62,12 +62,12 @@ namespace LinqFacts
         public void ProductQuantityMethodShouldReturnAProductsQuantity()
         {
             Product returnedProduct = null;
-            void callback(Product product)
+            void Callback(Product product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(callback);
+            var stock = new Stock(Callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 2);
             stock.AddProduct("Camera", 6574);
@@ -83,12 +83,12 @@ namespace LinqFacts
         public void SellMethodShouldReduceAProductsQuantity()
         {
             Product returnedProduct = null;
-            void callback(Product product)
+            void Callback(Product product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(callback);
+            var stock = new Stock(Callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -103,12 +103,12 @@ namespace LinqFacts
         public void SellMethodShouldReturnAProductThroughCallbackOnlyWhenQuantityIsBelowACertainLevel()
         {
             Product returnedProduct = null;
-            void callback(Product product)
+            void Callback(Product product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(callback);
+            var stock = new Stock(Callback);
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -122,6 +122,41 @@ namespace LinqFacts
             Assert.Equal("Phone", returnedProduct.Name);
 
             Assert.Throws<ArgumentException>(() => stock.Sell("Phone", 34));
+        }
+
+        [Fact]
+
+        public void ANotificationShouldNotBeSentMultipleTimesIfAProductsQuantityIsStillBelowTheSameLevel()
+        {
+            Product returnedProduct = null;
+            void Callback(Product product)
+            {
+                returnedProduct = product;
+            }
+
+            var stock = new Stock(Callback);
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 22);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            stock.Sell("Phone", 337);
+            Assert.Equal(9, stock.ProductQuantity("Phone"));
+            Assert.Equal("Phone", returnedProduct.Name);
+
+            returnedProduct = null;
+            stock.Sell("Phone", 1);
+            Assert.Null(returnedProduct);
+
+            stock.Sell("Phone", 4);
+            Assert.Equal("Phone", returnedProduct.Name);
+
+            returnedProduct = null;
+            stock.Sell("Phone", 1);
+            Assert.Null(returnedProduct);
+
+            stock.Sell("Phone", 2);
+            Assert.Equal("Phone", returnedProduct.Name);
         }
     }
 }
