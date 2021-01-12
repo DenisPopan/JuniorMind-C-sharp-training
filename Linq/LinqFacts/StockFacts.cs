@@ -39,6 +39,9 @@ namespace LinqFacts
             }
 
             var stock = new Stock(callback);
+
+            Assert.Equal("", stock.Status());
+
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 2);
             stock.AddProduct("Camera", 6574);
@@ -50,6 +53,8 @@ namespace LinqFacts
                 "Product: Tablet, Quantity: 2\n" +
                 "Product: Camera, Quantity: 6574\n" +
                 "Product: Laptop, Quantity: 3346\n", stock.Status());
+
+            Assert.Null(returnedProduct);
         }
 
         [Fact]
@@ -69,11 +74,13 @@ namespace LinqFacts
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal(6574, stock.ProductQuantity("Camera"));
+
+            Assert.Null(returnedProduct);
         }
 
         [Fact]
 
-        public void SellProductStockMethodShouldReduceAProductsQuantityAndReturnTheNewOne()
+        public void SellMethodShouldReduceAProductsQuantity()
         {
             Product returnedProduct = null;
             void callback(Product product)
@@ -87,9 +94,9 @@ namespace LinqFacts
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            stock.SellProductStock("Phone", 340);
+            stock.Sell("Phone", 340);
             Assert.Equal(6, stock.ProductQuantity("Phone"));
-            Assert.Throws<ArgumentException>(() => stock.SellProductStock("Phone", 34));
+            Assert.Throws<ArgumentException>(() => stock.Sell("Phone", 34));
         }
     }
 }

@@ -51,37 +51,50 @@ namespace Linq
             return list[productIndex].Quantity;
         }
 
-        public void SellProductStock(string name, int quantity)
+        public void Sell(string name, int quantity)
         {
             LinqProblems.EnsureIsNotNull(name, nameof(name));
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
 
-            var productIndex = FindProductIndex(name);
             ProductExists(name);
+            var productIndex = FindProductIndex(name);
 
-            var productQuantity = list[productIndex].Quantity;
+            var previousProductQuantity = list[productIndex].Quantity;
 
-            if (productQuantity < quantity)
-            {
-                throw new ArgumentException($"You can only sell {productQuantity} items!");
-            }
+            IsCurrentQuantityNotEnough(previousProductQuantity, quantity);
 
             list[productIndex].Quantity -= quantity;
 
-            if (list[productIndex].Quantity >= 10)
-            {
-                return;
-            }
-
-            SendNotification(list[productIndex]);
+            SendNotification(list[productIndex], previousProductQuantity);
         }
 
-        void SendNotification(Product product)
+        void SendNotification(Product product, int previousProductQuantity)
         {
             LinqProblems.EnsureIsNotNull(product, nameof(product));
             LinqProblems.EnsureIsNotNull(callback, nameof(callback));
 
+            var levels = new[] { 2, 5, 10 };
+
+            var level = -1;
+
+            level = levels.First(x => product.Quantity < x);
+
+            if (level == -1 || previousProductQuantity < level)
+            {
+                return;
+            }
+
             callback(product);
+        }
+
+        private void IsCurrentQuantityNotEnough(int previousProductQuantity, int quantityToSell)
+        {
+            if (previousProductQuantity >= quantityToSell)
+            {
+                return;
+            }
+
+            throw new ArgumentException($"You can only sell {previousProductQuantity} items!");
         }
 
         int FindProductIndex(string name)
@@ -91,7 +104,7 @@ namespace Linq
 
         void ProductExists(string name)
         {
-            if (list.Any(product => product.Name.Equals(name)))
+            if (list.Any(product => product.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }
