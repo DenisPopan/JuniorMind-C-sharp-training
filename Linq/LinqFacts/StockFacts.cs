@@ -96,6 +96,31 @@ namespace LinqFacts
 
             stock.Sell("Phone", 340);
             Assert.Equal(6, stock.ProductQuantity("Phone"));
+        }
+
+        [Fact]
+
+        public void SellMethodShouldReturnAProductThroughCallbackOnlyWhenQuantityIsBelowACertainLevel()
+        {
+            Product returnedProduct = null;
+            void callback(Product product)
+            {
+                returnedProduct = product;
+            }
+
+            var stock = new Stock(callback);
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 22);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            stock.Sell("Phone", 300);
+            Assert.Null(returnedProduct);
+
+            stock.Sell("Phone", 40);
+            Assert.Equal(6, stock.ProductQuantity("Phone"));
+            Assert.Equal("Phone", returnedProduct.Name);
+
             Assert.Throws<ArgumentException>(() => stock.Sell("Phone", 34));
         }
     }

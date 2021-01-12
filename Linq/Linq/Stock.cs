@@ -77,7 +77,14 @@ namespace Linq
 
             var level = -1;
 
-            level = levels.First(x => product.Quantity < x);
+            try
+            {
+                level = levels.First(x => product.Quantity < x);
+            }
+            catch (InvalidOperationException)
+            {
+                level = -1;
+            }
 
             if (level == -1 || previousProductQuantity < level)
             {
