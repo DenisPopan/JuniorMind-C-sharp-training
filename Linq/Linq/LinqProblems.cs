@@ -83,7 +83,7 @@ namespace Linq
                 .Where(x => x.Sum() <= k);
         }
 
-        public static IEnumerable<string> SumCombinations(int n, int k)
+        public static IEnumerable<IEnumerable<int>> SumCombinations(int n, int k)
         {
             var range = Enumerable.Range(1, n);
 
@@ -96,9 +96,7 @@ namespace Linq
                     .Zip(binaryNumber, (rangeElement, digit) =>
                         digit == '0' ? rangeElement : rangeElement * -1))
                 .Where(combination => combination.Sum() == k)
-                .Select(array => array
-                    .Select(x => x < 0 ? $"{x}" : "+" + x)
-                    .Aggregate("", (x, y) => x + y) + $"={k}");
+                .Select(x => x.ToArray());
         }
 
         public static IEnumerable<(double, double, double)> PythagoreanNumbers(this IEnumerable<int> array)
@@ -169,21 +167,21 @@ namespace Linq
         {
             EnsureIsNotNull(sudoku, nameof(sudoku));
 
-            var subMatricesStartIndex = Enumerable.Range(0, (int)Math.Sqrt(sudoku.GetLength(0)))
+            if (sudoku.GetLength(0) != sudoku.GetLength(1))
+            {
+                return false;
+            }
+
+            var submatricesStartIndex = Enumerable.Range(0, (int)Math.Sqrt(sudoku.GetLength(0)))
                 .Select(x => x * (int)Math.Sqrt(sudoku.GetLength(0)));
 
-            var subMatricesEndIndex = subMatricesStartIndex.Select(x => x + (int)Math.Sqrt(sudoku.GetLength(0)) - 1);
-
-            var allSubMatrices = subMatricesStartIndex.SelectMany(x => subMatricesStartIndex
-                    .Select(y => (x, y)))
-                .Zip(
-                    subMatricesEndIndex.SelectMany(x => subMatricesEndIndex.Select(y => (x, y))),
-                    (a, b) => SubMatrix(sudoku, a, b));
+            var submatricesEndIndex = submatricesStartIndex.Select(x => x + (int)Math.Sqrt(sudoku.GetLength(0)) - 1);
 
             return Enumerable.Range(0, sudoku.GetLength(0))
                 .All(x => sudoku.Row(x).FollowsSudokuRules(sudoku.GetLength(0))
                         && sudoku.Column(x).FollowsSudokuRules(sudoku.GetLength(0)))
-                && allSubMatrices.All(x => x.FollowsSudokuRules(sudoku.GetLength(0)));
+                && sudoku.Submatrices(submatricesStartIndex, submatricesEndIndex)
+                            .All(x => x.FollowsSudokuRules(sudoku.GetLength(0)));
         }
 
         public static double PolishArithmeticResult(this string operation)
@@ -240,12 +238,20 @@ namespace Linq
             return Enumerable.Range(0, sudoku.GetLength(0)).Select(x => sudoku[x, column]);
         }
 
+        static IEnumerable<IEnumerable<int>> Submatrices(this int[,] sudoku, IEnumerable<int> submatricesStartIndex, IEnumerable<int> submatricesEndIndex)
+        {
+            return submatricesStartIndex.SelectMany(x => submatricesStartIndex
+                    .Select(y => (x, y)))
+                .Zip(
+                    submatricesEndIndex.SelectMany(x => submatricesEndIndex.Select(y => (x, y))),
+                    (a, b) => SubMatrix(sudoku, a, b));
+        }
+
         static IEnumerable<int> SubMatrix(this int[,] sudoku, (int, int) start, (int, int) stop)
         {
             return Enumerable.Range(start.Item1, stop.Item1 - start.Item1 + 1)
                 .SelectMany(x => Enumerable.Range(start.Item2, stop.Item2 - start.Item2 + 1)
-                    .Select(y => (x, y)))
-                .Aggregate(Enumerable.Empty<int>(), (y, z) => y.Append(sudoku[z.x, z.y]));
+                    .Select(y => sudoku[x, y]));
         }
     }
 }
