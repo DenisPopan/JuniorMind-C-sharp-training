@@ -5,14 +5,14 @@ namespace Linq
 {
     public class Stock
     {
-        readonly List<Product> list;
-        readonly Action<Product> callback;
+        readonly List<ProductEventArgs> list;
 
-        public Stock(Action<Product> callback)
+        public Stock()
         {
-            list = new List<Product>();
-            this.callback = callback;
+            list = new List<ProductEventArgs>();
         }
+
+        public event EventHandler<ProductEventArgs> ItemsSold;
 
         public int Count
         {
@@ -32,7 +32,7 @@ namespace Linq
                 throw new ArgumentException("Product already exists!");
             }
 
-            list.Add(new Product { Name = name, Quantity = quantity });
+            list.Add(new ProductEventArgs { Name = name, Quantity = quantity });
         }
 
         public string Status()
@@ -55,6 +55,7 @@ namespace Linq
         {
             LinqProblems.EnsureIsNotNull(name, nameof(name));
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
+            LinqProblems.EnsureIsNotNull(ItemsSold, nameof(ItemsSold));
 
             ProductExists(name);
             var productIndex = FindProductIndex(name);
@@ -65,33 +66,28 @@ namespace Linq
 
             list[productIndex].Quantity -= quantity;
 
-            SendNotification(list[productIndex], previousProductQuantity);
+            OnItemsSold(list[productIndex], previousProductQuantity);
         }
 
-        void SendNotification(Product product, int previousProductQuantity)
+        protected virtual void OnItemsSold(ProductEventArgs product, int previousProductQuantity)
         {
             LinqProblems.EnsureIsNotNull(product, nameof(product));
-            LinqProblems.EnsureIsNotNull(callback, nameof(callback));
 
-            var levels = new[] { 2, 5, 10 };
-
-            var level = -1;
-
-            try
-            {
-                level = levels.First(x => product.Quantity < x);
-            }
-            catch (InvalidOperationException)
-            {
-                level = -1;
-            }
-
-            if (level == -1 || previousProductQuantity < level)
+            if (product.Quantity > 9)
             {
                 return;
             }
 
-            callback(product);
+            var levels = new[] { 2, 5, 10 };
+
+            var level = levels.First(x => product.Quantity < x);
+
+            if (previousProductQuantity < level)
+            {
+                return;
+            }
+
+            ItemsSold.Invoke(this, product);
         }
 
         private void IsCurrentQuantityNotEnough(int previousProductQuantity, int quantityToSell)

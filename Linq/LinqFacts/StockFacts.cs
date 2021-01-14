@@ -9,21 +9,13 @@ namespace LinqFacts
 
         public void AddProductMethodShouldAddNewProductToCurrentStock()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
-            {
-                returnedProduct = product; 
-            }
-
-            var stock = new Stock(Callback);
+            var stock = new Stock();
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 36);
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal(4, stock.Count);
-
-            Assert.Null(returnedProduct);
 
             Assert.Throws<ArgumentException>(() => stock.AddProduct("Laptop", 34));
         }
@@ -32,14 +24,7 @@ namespace LinqFacts
 
         public void StatusMethodShouldReturnAllProductsAndTheirCurrentQuantity()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
-            {
-                returnedProduct = product;
-            }
-
-            var stock = new Stock(Callback);
-
+            var stock = new Stock();
             Assert.Equal("", stock.Status());
 
             stock.AddProduct("Phone", 346);
@@ -53,42 +38,34 @@ namespace LinqFacts
                 "Product: Tablet, Quantity: 2\n" +
                 "Product: Camera, Quantity: 6574\n" +
                 "Product: Laptop, Quantity: 3346\n", stock.Status());
-
-            Assert.Null(returnedProduct);
         }
 
         [Fact]
 
         public void ProductQuantityMethodShouldReturnAProductsQuantity()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
-            {
-                returnedProduct = product;
-            }
-
-            var stock = new Stock(Callback);
+            var stock = new Stock();
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 2);
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
             Assert.Equal(6574, stock.ProductQuantity("Camera"));
-
-            Assert.Null(returnedProduct);
         }
 
         [Fact]
 
         public void SellMethodShouldReduceAProductsQuantity()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
+            ProductEventArgs returnedProduct = null;
+            void Callback(object sender, ProductEventArgs product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(Callback);
+            var stock = new Stock();
+            stock.ItemsSold += Callback;
+            //stock.Callback = Callback;
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -102,13 +79,15 @@ namespace LinqFacts
 
         public void SellMethodShouldReturnAProductThroughCallbackOnlyWhenQuantityIsBelowACertainLevel()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
+            ProductEventArgs returnedProduct = null;
+            void Callback(object sender, ProductEventArgs product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(Callback);
+            var stock = new Stock();
+            stock.ItemsSold += Callback;
+            //stock.Callback = Callback;
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -126,15 +105,30 @@ namespace LinqFacts
 
         [Fact]
 
+        public void ANotificationShouldNotBeSentIfTheUserIsNotRegistered()
+        {
+            var stock = new Stock();
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 22);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            Assert.Throws<ArgumentNullException>(() => stock.Sell("Phone", 340));
+        }
+
+        [Fact]
+
         public void ANotificationShouldNotBeSentMultipleTimesIfAProductsQuantityIsStillBelowTheSameLevel()
         {
-            Product returnedProduct = null;
-            void Callback(Product product)
+            ProductEventArgs returnedProduct = null;
+            void Callback(object sender, ProductEventArgs product)
             {
                 returnedProduct = product;
             }
 
-            var stock = new Stock(Callback);
+            var stock = new Stock();
+            stock.ItemsSold += Callback;
+            //stock.Callback = Callback;
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
