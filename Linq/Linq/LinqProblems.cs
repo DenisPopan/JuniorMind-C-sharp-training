@@ -55,7 +55,8 @@ namespace Linq
 
             return text
                 .GroupBy(x => x)
-                .Aggregate((x, y) => x.Count() > y.Count() ? x : y)
+                .Select(x => (x.Key, x.Count()))
+                .Aggregate((x, y) => x.Item2 > y.Item2 ? x : y)
                 .Key;
         }
 
