@@ -5,14 +5,14 @@ namespace Linq
 {
     public class Stock
     {
-        readonly List<ProductEventArgs> list;
+        readonly List<Product> list;
 
         public Stock()
         {
-            list = new List<ProductEventArgs>();
+            list = new List<Product>();
         }
 
-        public event EventHandler<ProductEventArgs> ItemsSold;
+        public event Action<Product> ItemsSold;
 
         public int Count
         {
@@ -32,7 +32,7 @@ namespace Linq
                 throw new ArgumentException("Product already exists!");
             }
 
-            list.Add(new ProductEventArgs { Name = name, Quantity = quantity });
+            list.Add(new Product { Name = name, Quantity = quantity });
         }
 
         public string Status()
@@ -66,17 +66,17 @@ namespace Linq
 
             list[productIndex].Quantity -= quantity;
 
-            OnItemsSold(list[productIndex], previousProductQuantity);
-        }
-
-        protected virtual void OnItemsSold(ProductEventArgs product, int previousProductQuantity)
-        {
-            LinqProblems.EnsureIsNotNull(product, nameof(product));
-
-            if (product.Quantity > 9)
+            if (list[productIndex].Quantity > 9)
             {
                 return;
             }
+
+            OnItemsSold(list[productIndex], previousProductQuantity);
+        }
+
+        protected virtual void OnItemsSold(Product product, int previousProductQuantity)
+        {
+            LinqProblems.EnsureIsNotNull(product, nameof(product));
 
             var levels = new[] { 2, 5, 10 };
 
@@ -87,7 +87,7 @@ namespace Linq
                 return;
             }
 
-            ItemsSold.Invoke(this, product);
+            ItemsSold?.Invoke(product);
         }
 
         private void IsCurrentQuantityNotEnough(int previousProductQuantity, int quantityToSell)

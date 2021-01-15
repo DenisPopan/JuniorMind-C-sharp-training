@@ -6,3 +6,4 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Usage", "CA2227:Collection properties should be read only", Justification = "Needed for given info", Scope = "member", Target = "~P:Linq.Product.Features")]
+[assembly: SuppressMessage("Design", "CA1003:Use generic event handler instances", Justification = "As requested", Scope = "member", Target = "~E:Linq.Stock.ItemsSold")]

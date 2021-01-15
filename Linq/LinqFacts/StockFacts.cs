@@ -57,15 +57,10 @@ namespace LinqFacts
 
         public void SellMethodShouldReduceAProductsQuantity()
         {
-            ProductEventArgs returnedProduct = null;
-            void Callback(object sender, ProductEventArgs product)
-            {
-                returnedProduct = product;
-            }
+            Product returnedProduct = null;
 
             var stock = new Stock();
-            stock.ItemsSold += Callback;
-            //stock.Callback = Callback;
+            stock.ItemsSold += x => returnedProduct = x;
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -79,15 +74,10 @@ namespace LinqFacts
 
         public void SellMethodShouldReturnAProductThroughCallbackOnlyWhenQuantityIsBelowACertainLevel()
         {
-            ProductEventArgs returnedProduct = null;
-            void Callback(object sender, ProductEventArgs product)
-            {
-                returnedProduct = product;
-            }
+            Product returnedProduct = null;
 
             var stock = new Stock();
-            stock.ItemsSold += Callback;
-            //stock.Callback = Callback;
+            stock.ItemsSold += x => returnedProduct = x;
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -120,15 +110,11 @@ namespace LinqFacts
 
         public void ANotificationShouldNotBeSentMultipleTimesIfAProductsQuantityIsStillBelowTheSameLevel()
         {
-            ProductEventArgs returnedProduct = null;
-            void Callback(object sender, ProductEventArgs product)
-            {
-                returnedProduct = product;
-            }
+            Product returnedProduct = null;
 
             var stock = new Stock();
-            stock.ItemsSold += Callback;
-            //stock.Callback = Callback;
+            stock.ItemsSold += x => returnedProduct = x;
+
             stock.AddProduct("Phone", 346);
             stock.AddProduct("Tablet", 22);
             stock.AddProduct("Camera", 6574);
@@ -151,6 +137,44 @@ namespace LinqFacts
 
             stock.Sell("Phone", 2);
             Assert.Equal("Phone", returnedProduct.Name);
+        }
+
+        [Fact]
+
+        public void EventShouldAcceptMoreSubscribers()
+        {
+            Product returnedProduct = null;
+            Product returnedProduct2 = null;
+
+            var stock = new Stock();
+            stock.ItemsSold += x => returnedProduct = x;
+            stock.ItemsSold += x => returnedProduct2 = x;
+
+            stock.AddProduct("Phone", 346);
+            stock.AddProduct("Tablet", 22);
+            stock.AddProduct("Camera", 6574);
+            stock.AddProduct("Laptop", 3346);
+
+            stock.Sell("Phone", 337);
+            Assert.Equal(9, stock.ProductQuantity("Phone"));
+            Assert.Equal("Phone", returnedProduct.Name);
+            Assert.Equal("Phone", returnedProduct2.Name);
+
+            returnedProduct = null;
+            stock.Sell("Phone", 1);
+            Assert.Null(returnedProduct);
+
+            stock.Sell("Phone", 4);
+            Assert.Equal("Phone", returnedProduct.Name);
+            Assert.Equal("Phone", returnedProduct2.Name);
+
+            returnedProduct = null;
+            stock.Sell("Phone", 1);
+            Assert.Null(returnedProduct);
+
+            stock.Sell("Phone", 2);
+            Assert.Equal("Phone", returnedProduct.Name);
+            Assert.Equal("Phone", returnedProduct2.Name);
         }
     }
 }
