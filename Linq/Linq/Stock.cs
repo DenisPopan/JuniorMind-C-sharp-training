@@ -55,7 +55,6 @@ namespace Linq
         {
             LinqProblems.EnsureIsNotNull(name, nameof(name));
             LinqProblems.EnsureIsNotNull(quantity, nameof(quantity));
-            LinqProblems.EnsureIsNotNull(ItemsSold, nameof(ItemsSold));
 
             ProductExists(name);
             var productIndex = FindProductIndex(name);

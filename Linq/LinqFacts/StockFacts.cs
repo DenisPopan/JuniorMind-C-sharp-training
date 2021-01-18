@@ -103,7 +103,7 @@ namespace LinqFacts
             stock.AddProduct("Camera", 6574);
             stock.AddProduct("Laptop", 3346);
 
-            Assert.Throws<ArgumentNullException>(() => stock.Sell("Phone", 340));
+            stock.Sell("Phone", 340);
         }
 
         [Fact]
