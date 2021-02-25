@@ -12,8 +12,10 @@ namespace DiagramsProject
             using Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
 
-            string drawString = Console.ReadLine();
-            drawString += "asdas\nasdas";
+            string drawString1 = Console.ReadLine();
+            drawString1 += "asdas\nasdas";
+
+            string drawString2 = Console.ReadLine();
 
             using StringFormat drawFormat = new StringFormat();
             drawFormat.Alignment = StringAlignment.Center;
@@ -21,7 +23,7 @@ namespace DiagramsProject
 
             using Font drawFont = new Font("Times New Roman", 20);
             using SolidBrush drawBrush = new SolidBrush(Color.Black);
-            SizeF stringSize = g.MeasureString(drawString, drawFont);
+            SizeF stringSize = g.MeasureString(drawString1, drawFont);
 
             const int x = 40;
             const int y = 30;
@@ -29,11 +31,17 @@ namespace DiagramsProject
 
             using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
             using Pen blackPen = new Pen(Color.Black);
-            Rectangle drawRect = new Rectangle(x, y, (int)stringSize.Width + adjustments, (int)stringSize.Height + adjustments);
+            Rectangle drawRect1 = new Rectangle(x, y, (int)stringSize.Width + adjustments, (int)stringSize.Height + adjustments);
+            Rectangle drawRect2 = new Rectangle(x, y + 300, (int)stringSize.Width + adjustments, (int)stringSize.Height + adjustments);
 
-            g.FillRectangle(blueBrush, drawRect);
-            g.DrawRectangle(blackPen, drawRect);
-            g.DrawString(drawString, drawFont, drawBrush, drawRect, drawFormat);
+            g.FillRectangle(blueBrush, drawRect1);
+            g.DrawRectangle(blackPen, drawRect1);
+            g.DrawString(drawString1, drawFont, drawBrush, drawRect1, drawFormat);
+
+            g.FillRectangle(blueBrush, drawRect2);
+            g.DrawRectangle(blackPen, drawRect2);
+            g.DrawString(drawString2, drawFont, drawBrush, drawRect2, drawFormat);
+            g.DrawLine(blackPen, drawRect1.Left + drawRect1.Width / 2, drawRect1.Bottom, drawRect2.Left + drawRect2.Width / 2, drawRect2.Top);
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
