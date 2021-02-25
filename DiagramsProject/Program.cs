@@ -8,41 +8,33 @@ namespace DiagramsProject
         static void Main()
         {
             Console.WriteLine("Input text: ");
-            Bitmap bmp = new Bitmap(920, 780);
-            Graphics g = Graphics.FromImage(bmp);
-            g.FillRectangle(Brushes.White, 0, 0, bmp.Width, bmp.Height);
+            using Bitmap bmp = new Bitmap(1920, 1080);
+            using Graphics g = Graphics.FromImage(bmp);
+            g.Clear(Color.White);
+
             string drawString = Console.ReadLine();
+            drawString += "asdas\nasdas";
 
-            Font drawFont = new Font("Arial", 16);
-            SolidBrush drawBrush = new SolidBrush(Color.Black);
-
-            const int x = 100;
-            const int y = 80;
-            const int width = 100;
-            const int height = 50;
-            RectangleF drawRect = new RectangleF(x, y, width, height);
-            SolidBrush abrush = new SolidBrush(Color.FromArgb(161, 177, 247));
-
-            Pen blackPen = new Pen(Color.Black);
-
-            g.FillRectangle(abrush, x, y, width, height);
-            g.DrawRectangle(blackPen, x, y, width, height);
-
-            StringFormat drawFormat = new StringFormat();
+            using StringFormat drawFormat = new StringFormat();
             drawFormat.Alignment = StringAlignment.Center;
             drawFormat.LineAlignment = StringAlignment.Center;
 
+            using Font drawFont = new Font("Times New Roman", 20);
+            using SolidBrush drawBrush = new SolidBrush(Color.Black);
+            SizeF stringSize = g.MeasureString(drawString, drawFont);
+
+            const int x = 40;
+            const int y = 30;
+            const int adjustments = 5;
+
+            using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
+            using Pen blackPen = new Pen(Color.Black);
+            Rectangle drawRect = new Rectangle(x, y, (int)stringSize.Width + adjustments, (int)stringSize.Height + adjustments);
+
+            g.FillRectangle(blueBrush, drawRect);
+            g.DrawRectangle(blackPen, drawRect);
             g.DrawString(drawString, drawFont, drawBrush, drawRect, drawFormat);
-
-            abrush.Dispose();
-            blackPen.Dispose();
-            drawFormat.Dispose();
-            drawFont.Dispose();
-            drawBrush.Dispose();
-
-            g.Dispose();
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
-            bmp.Dispose();
         }
     }
 }
