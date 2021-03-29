@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# S109: Magic numbers should not be used
+dotnet_diagnostic.S109.severity = none

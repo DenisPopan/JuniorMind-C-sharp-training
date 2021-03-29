@@ -5,7 +5,12 @@ VisualStudioVersion = 16.0.30309.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramsProject", "DiagramsProject.csproj", "{DE19FDF7-920B-4CCB-9AF7-978729BC5648}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiagramsProject.Test", "DiagramsProject.Test\DiagramsProject.Test.csproj", "{416957C0-5BCD-4667-A984-815852479DEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagramsProject.Test", "DiagramsProject.Test\DiagramsProject.Test.csproj", "{416957C0-5BCD-4667-A984-815852479DEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{11240A92-7E31-4EC6-B3FA-89A029CD3CAF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
