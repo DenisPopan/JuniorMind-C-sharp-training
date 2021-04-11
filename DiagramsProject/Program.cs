@@ -9,18 +9,24 @@ namespace DiagramsProject
         static void Main()
         {
             // Initialising bitmap and Graphics
-            Console.WriteLine("Input text: ");
             using Bitmap bmp = new Bitmap(1920, 1080);
             using Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
 
             // Input and string format and Font
+            Console.WriteLine("Input text: ");
             string drawString1 = Console.ReadLine();
-
-            using StringFormat drawFormat = new StringFormat();
-            drawFormat.Alignment = StringAlignment.Center;
-            drawFormat.LineAlignment = StringAlignment.Center;
+            using Draw draw = new Draw(g);
+            using FontFamily fontFamily = new FontFamily("Arial");
+            using Styling basicStyling = new Styling();
+            using Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 25));
+            using StringFormat drawFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
             using Font drawFont = new Font("Arial", 25);
+            SizeF stringSize = g.MeasureString(drawString1, drawFont);
 
             // Pens and brushes
             using SolidBrush drawBrush = new SolidBrush(Color.Black);
@@ -31,8 +37,6 @@ namespace DiagramsProject
 
             // Sizes, coordinates and shapes
             const int adjustments = 5;
-            const int x = 40;
-            const int y = 30;
             const int centerX = 400;
             const int centerY = 300;
             int dif = Math.Abs((int)stringSize1.Width - (int)stringSize1.Height);
@@ -43,13 +47,6 @@ namespace DiagramsProject
             {
                 maxLength++;
             }
-
-            Rectangle drawRect1 = new Rectangle(x, y, (int)Math.Ceiling(stringSize1.Width) + 20, (int)Math.Ceiling(stringSize1.Height) + 10);
-            Rectangle drawRect2 = new Rectangle(
-                x + drawRect1.Width / 2 - (int)Math.Ceiling(stringSize1.Width) / 2,
-                y + 300,
-                (int)Math.Ceiling(stringSize1.Width) + 20,
-                (int)Math.Ceiling(stringSize1.Height) + 10);
 
             // Rhombus
             using GraphicsPath rhombusPath = new GraphicsPath();
@@ -64,16 +61,7 @@ namespace DiagramsProject
 
             // Drawing
             // simple rectangle
-            g.FillRectangle(blueBrush, drawRect1);
-            g.DrawRectangle(blackPen, drawRect1);
-            g.DrawString(drawString1, drawFont, drawBrush, drawRect1, drawFormat);
-
-            g.FillRectangle(blueBrush, drawRect2);
-            g.DrawRectangle(blackPen, drawRect2);
-            g.DrawString(drawString1, drawFont, drawBrush, drawRect2, drawFormat);
-
-            // line between rectangles
-            g.DrawLine(blackPen, drawRect1.Left + drawRect1.Width / 2, drawRect1.Bottom, drawRect2.Left + drawRect2.Width / 2, drawRect2.Top);
+            draw.Rectangle(40, 30, drawString1, fancyStyling);
 
             // circle
             g.FillEllipse(blueBrush, centerX - radius, centerY - radius, radius * 2, radius * 2);
