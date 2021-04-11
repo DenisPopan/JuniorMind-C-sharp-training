@@ -90,6 +90,13 @@ namespace DiagramsProject
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
         }
 
+        public void RoundedRectangle(float px, float py, string text, Styling styling)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            RectangleWithRoundedCorners(px, py, text, styling, (textSize.Height + HeightAdjustment) / 2);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

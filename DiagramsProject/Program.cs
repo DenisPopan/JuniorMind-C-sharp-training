@@ -73,8 +73,7 @@ namespace DiagramsProject
             draw.RectangleWithRoundedCorners(centerX, 100, drawString, basicStyling);
 
             // rounded rectangle - jumatate din inaltime sa fie radius la ambele
-            DrawAndFillRoundedRectangle(g, 900, 100, stringSize1.Width + 20, stringSize1.Height + 10, (stringSize1.Height + 10) / 2, (stringSize1.Height + 10) / 2);
-            g.DrawString(drawString, drawFont, drawBrush, 900 + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
+            draw.RoundedRectangle(900, 100, drawString, basicStyling);
 
             // subroutine shape
             Rectangle drawRect3 = new Rectangle(1200, 100, (int)Math.Ceiling(stringSize1.Width) + 20, (int)Math.Ceiling(stringSize1.Height) + 10);
