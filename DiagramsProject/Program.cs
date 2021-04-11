@@ -70,8 +70,7 @@ namespace DiagramsProject
             draw.Rhombus(700 + radius, 300 - radius, drawString, fancyStyling, radius);
 
             // rectangle with rounded corners
-            DrawAndFillRoundedRectangle(g, centerX, 100, stringSize1.Width + 20, stringSize1.Height + 10, 8, 8);
-            g.DrawString(drawString, drawFont, drawBrush, centerX + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
+            draw.RectangleWithRoundedCorners(centerX, 100, drawString, basicStyling);
 
             // rounded rectangle - jumatate din inaltime sa fie radius la ambele
             DrawAndFillRoundedRectangle(g, 900, 100, stringSize1.Width + 20, stringSize1.Height + 10, (stringSize1.Height + 10) / 2, (stringSize1.Height + 10) / 2);

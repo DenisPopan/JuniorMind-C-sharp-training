@@ -64,6 +64,32 @@ namespace DiagramsProject
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px, py + radius, textFormat);
         }
 
+        public void RectangleWithRoundedCorners(float px, float py, string text, Styling styling, float radius = 8)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            float diameter = radius * 2;
+            const int ninetyDegrees = 90;
+            const int oneEightyDegrees = 180;
+            const int twoSeventyDegrees = 270;
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            float fixedWidth = textSize.Width + WidthAdjustment;
+            float fixedHeight = textSize.Height + HeightAdjustment;
+
+            using GraphicsPath path = new GraphicsPath();
+            path.AddArc(px, py, diameter, diameter, oneEightyDegrees, ninetyDegrees);
+            path.AddLine(px + radius, py, px + fixedWidth - radius, py);
+            path.AddArc(px + fixedWidth - diameter, py, diameter, diameter, twoSeventyDegrees, ninetyDegrees);
+            path.AddLine(px + fixedWidth, py + radius, px + fixedWidth, py + fixedHeight - radius);
+            path.AddArc(px + fixedWidth - diameter, py + fixedHeight - diameter, diameter, diameter, 0, ninetyDegrees);
+            path.AddLine(px + radius, py + fixedHeight, px + fixedWidth - radius, py + fixedHeight);
+            path.AddArc(px, py + fixedHeight - diameter, diameter, diameter, ninetyDegrees, ninetyDegrees);
+            path.CloseFigure();
+
+            graphics.FillPath(styling.ShapeBrush, path);
+            graphics.DrawPath(styling.DrawPen, path);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
