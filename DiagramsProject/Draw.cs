@@ -37,6 +37,15 @@ namespace DiagramsProject
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, rectangle, textFormat);
         }
 
+        public void Circle(float centerX, float centerY, string text, Styling styling, float radius)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            float diameter = radius * 2;
+            graphics.FillEllipse(styling.ShapeBrush, centerX, centerY, diameter, diameter);
+            graphics.DrawEllipse(styling.DrawPen, centerX, centerY, diameter, diameter);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, centerX + radius, centerY + radius, textFormat);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

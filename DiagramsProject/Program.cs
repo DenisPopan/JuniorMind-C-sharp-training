@@ -15,7 +15,7 @@ namespace DiagramsProject
 
             // Input and string format and Font
             Console.WriteLine("Input text: ");
-            string drawString1 = Console.ReadLine();
+            string drawString = Console.ReadLine();
             using Draw draw = new Draw(g);
             using FontFamily fontFamily = new FontFamily("Arial");
             using Styling basicStyling = new Styling();
@@ -26,13 +26,13 @@ namespace DiagramsProject
                 LineAlignment = StringAlignment.Center
             };
             using Font drawFont = new Font("Arial", 25);
-            SizeF stringSize = g.MeasureString(drawString1, drawFont);
+            SizeF stringSize = g.MeasureString(drawString, drawFont);
 
             // Pens and brushes
             using SolidBrush drawBrush = new SolidBrush(Color.Black);
             using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
             using Pen blackPen = new Pen(Color.Black);
-            SizeF stringSize1 = g.MeasureString(drawString1, drawFont);
+            SizeF stringSize1 = g.MeasureString(drawString, drawFont);
             Console.WriteLine(stringSize1);
 
             // Sizes, coordinates and shapes
@@ -61,25 +61,23 @@ namespace DiagramsProject
 
             // Drawing
             // simple rectangle
-            draw.Rectangle(40, 30, drawString1, fancyStyling);
+            draw.Rectangle(40, 30, drawString, fancyStyling);
 
-            // circle
-            g.FillEllipse(blueBrush, centerX - radius, centerY - radius, radius * 2, radius * 2);
-            g.DrawEllipse(blackPen, centerX - radius, centerY - radius, radius * 2, radius * 2);
-            g.DrawString(drawString1, drawFont, drawBrush, centerX, centerY, drawFormat);
+            // circle - (x,y) + distance(default) + radius = circle center
+            draw.Circle(centerX - radius, centerY - radius, drawString, basicStyling, radius);
 
             // rhombus
             g.FillPath(blueBrush, rhombusPath);
             g.DrawPath(blackPen, rhombusPath);
-            g.DrawString(drawString1, drawFont, drawBrush, 700 + maxLength / 2, 300, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, 700 + maxLength / 2, 300, drawFormat);
 
             // rectangle with rounded corners
             DrawAndFillRoundedRectangle(g, centerX, 100, stringSize1.Width + 20, stringSize1.Height + 10, 8, 8);
-            g.DrawString(drawString1, drawFont, drawBrush, centerX + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, centerX + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
 
             // rounded rectangle - jumatate din inaltime sa fie radius la ambele
             DrawAndFillRoundedRectangle(g, 900, 100, stringSize1.Width + 20, stringSize1.Height + 10, (stringSize1.Height + 10) / 2, (stringSize1.Height + 10) / 2);
-            g.DrawString(drawString1, drawFont, drawBrush, 900 + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, 900 + (stringSize1.Width + 20) / 2, 100 + (stringSize1.Height + 10) / 2, drawFormat);
 
             // subroutine shape
             Rectangle drawRect3 = new Rectangle(1200, 100, (int)Math.Ceiling(stringSize1.Width) + 20, (int)Math.Ceiling(stringSize1.Height) + 10);
@@ -87,7 +85,7 @@ namespace DiagramsProject
             g.DrawRectangle(blackPen, drawRect3);
             g.DrawLine(blackPen, drawRect3.X + 10, drawRect3.Y, drawRect3.X + 10, drawRect3.Bottom);
             g.DrawLine(blackPen, drawRect3.Right - 10, drawRect3.Y, drawRect3.Right - 10, drawRect3.Bottom);
-            g.DrawString(drawString1, drawFont, drawBrush, drawRect3, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, drawRect3, drawFormat);
 
             // Asymmetric shape
             int tenPercentOfHeight = (int)Math.Ceiling(0.6 * stringSize1.Height);
@@ -99,13 +97,13 @@ namespace DiagramsProject
             asymmetricPath.CloseFigure();
 
             g.FillPath(blueBrush, asymmetricPath);
-            g.DrawString(drawString1, drawFont, drawBrush, 950 + tenPercentOfHeight + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, 950 + tenPercentOfHeight + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
             g.DrawPath(blackPen, asymmetricPath);
 
             // Asymmetric shape reversed
             using GraphicsPath asymmetricPathReversed = AsymmetricPathReversed(stringSize1);
             g.FillPath(blueBrush, asymmetricPathReversed);
-            g.DrawString(drawString1, drawFont, drawBrush, 1200 + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
+            g.DrawString(drawString, drawFont, drawBrush, 1200 + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
             g.DrawPath(blackPen, asymmetricPathReversed);
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
