@@ -76,12 +76,7 @@ namespace DiagramsProject
             draw.RoundedRectangle(900, 100, drawString, basicStyling);
 
             // subroutine shape
-            Rectangle drawRect3 = new Rectangle(1200, 100, (int)Math.Ceiling(stringSize1.Width) + 20, (int)Math.Ceiling(stringSize1.Height) + 10);
-            g.FillRectangle(blueBrush, drawRect3);
-            g.DrawRectangle(blackPen, drawRect3);
-            g.DrawLine(blackPen, drawRect3.X + 10, drawRect3.Y, drawRect3.X + 10, drawRect3.Bottom);
-            g.DrawLine(blackPen, drawRect3.Right - 10, drawRect3.Y, drawRect3.Right - 10, drawRect3.Bottom);
-            g.DrawString(drawString, drawFont, drawBrush, drawRect3, drawFormat);
+            draw.SubroutineShape(1200, 100, drawString, fancyStyling);
 
             // Asymmetric shape
             int tenPercentOfHeight = (int)Math.Ceiling(0.6 * stringSize1.Height);

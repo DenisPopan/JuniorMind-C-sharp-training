@@ -97,6 +97,17 @@ namespace DiagramsProject
             RectangleWithRoundedCorners(px, py, text, styling, (textSize.Height + HeightAdjustment) / 2);
         }
 
+        public void SubroutineShape(float px, float py, string text, Styling styling)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            const int lineDistance = 12;
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
+            Rectangle(px, py, text, styling);
+            graphics.DrawLine(styling.DrawPen, rectangle.X + lineDistance, rectangle.Y, rectangle.X + lineDistance, rectangle.Bottom);
+            graphics.DrawLine(styling.DrawPen, rectangle.Right - lineDistance, rectangle.Y, rectangle.Right - lineDistance, rectangle.Bottom);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
