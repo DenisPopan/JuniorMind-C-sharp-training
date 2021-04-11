@@ -137,19 +137,19 @@ namespace DiagramsProject
 
         static void DrawAndFillRoundedRectangle(Graphics g, float x, float y, float w, float h, float rx, float ry)
         {
-           using Pen blackPen = new Pen(Color.Black);
-           using GraphicsPath path = new GraphicsPath();
-           path.AddArc(x, y, rx + rx, ry + ry, 180, 90);
-           path.AddLine(x + rx, y, x + w - rx, y);
-           path.AddArc(x + w - 2 * rx, y, 2 * rx, 2 * ry, 270, 90);
-           path.AddLine(x + w, y + ry, x + w, y + h - ry);
-           path.AddArc(x + w - 2 * rx, y + h - 2 * ry, rx + rx, ry + ry, 0, 90);
-           path.AddLine(x + rx, y + h, x + w - rx, y + h);
-           path.AddArc(x, y + h - 2 * ry, 2 * rx, 2 * ry, 90, 90);
-           path.CloseFigure();
-           using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
-           g.FillPath(blueBrush, path);
-           g.DrawPath(blackPen, path);
+            using Pen blackPen = new Pen(Color.Black);
+            using GraphicsPath path = new GraphicsPath();
+            path.AddArc(x, y, rx + rx, ry + ry, 180, 90);
+            path.AddLine(x + rx, y, x + w - rx, y);
+            path.AddArc(x + w - 2 * rx, y, 2 * rx, 2 * ry, 270, 90);
+            path.AddLine(x + w, y + ry, x + w, y + h - ry);
+            path.AddArc(x + w - 2 * rx, y + h - 2 * ry, rx + rx, ry + ry, 0, 90);
+            path.AddLine(x + rx, y + h, x + w - rx, y + h);
+            path.AddArc(x, y + h - 2 * ry, 2 * rx, 2 * ry, 90, 90);
+            path.CloseFigure();
+            using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
+            g.FillPath(blueBrush, path);
+            g.DrawPath(blackPen, path);
         }
     }
 }
