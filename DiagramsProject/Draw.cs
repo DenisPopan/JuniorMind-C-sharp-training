@@ -108,6 +108,37 @@ namespace DiagramsProject
             graphics.DrawLine(styling.DrawPen, rectangle.Right - lineDistance, rectangle.Y, rectangle.Right - lineDistance, rectangle.Bottom);
         }
 
+        public void AsymmetricShape(float px, float py, string text, Styling styling, bool isReversed)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            float tenPercentOfHeight = 0.6f * textSize.Height;
+            using GraphicsPath asymmetricPath = new GraphicsPath();
+            float fixedWidth = textSize.Width + WidthAdjustment;
+            float fixedHeight = textSize.Height + HeightAdjustment;
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + tenPercentOfHeight, textSize.Height + HeightAdjustment);
+            if (!isReversed)
+            {
+                asymmetricPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
+                asymmetricPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right, rectangle.Bottom);
+                asymmetricPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+                asymmetricPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left + tenPercentOfHeight, rectangle.Bottom - rectangle.Height / 2);
+                asymmetricPath.CloseFigure();
+            }
+            else
+            {
+                asymmetricPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Left, rectangle.Top);
+                asymmetricPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Left, rectangle.Bottom);
+                asymmetricPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Right, rectangle.Bottom);
+                asymmetricPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Right - tenPercentOfHeight, rectangle.Bottom - rectangle.Height / 2);
+                asymmetricPath.CloseFigure();
+            }
+
+            graphics.FillPath(styling.ShapeBrush, asymmetricPath);
+            graphics.DrawPath(styling.DrawPen, asymmetricPath);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + tenPercentOfHeight + fixedWidth / 2 : px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

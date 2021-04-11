@@ -79,54 +79,12 @@ namespace DiagramsProject
             draw.SubroutineShape(1200, 100, drawString, fancyStyling);
 
             // Asymmetric shape
-            int tenPercentOfHeight = (int)Math.Ceiling(0.6 * stringSize1.Height);
-            using GraphicsPath asymmetricPath = new GraphicsPath();
-            asymmetricPath.AddLine(950, 300, 950 + stringSize1.Width + 20 + tenPercentOfHeight, 300);
-            asymmetricPath.AddLine(950 + stringSize1.Width + 20 + tenPercentOfHeight, 300, 950 + stringSize1.Width + 20 + tenPercentOfHeight, 300 + stringSize1.Height + 10);
-            asymmetricPath.AddLine(950 + stringSize1.Width + 20 + tenPercentOfHeight, 300 + stringSize1.Height + 10, 950, 300 + stringSize1.Height + 10);
-            asymmetricPath.AddLine(950, 300 + stringSize1.Height + 10, 950 + tenPercentOfHeight, 300 + (stringSize1.Height + 10) / 2);
-            asymmetricPath.CloseFigure();
-
-            g.FillPath(blueBrush, asymmetricPath);
-            g.DrawString(drawString, drawFont, drawBrush, 950 + tenPercentOfHeight + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
-            g.DrawPath(blackPen, asymmetricPath);
+            draw.AsymmetricShape(950, 300, drawString, basicStyling, false);
 
             // Asymmetric shape reversed
-            using GraphicsPath asymmetricPathReversed = AsymmetricPathReversed(stringSize1);
-            g.FillPath(blueBrush, asymmetricPathReversed);
-            g.DrawString(drawString, drawFont, drawBrush, 1200 + (stringSize1.Width + 20) / 2, 300 + (stringSize1.Height + 10) / 2, drawFormat);
-            g.DrawPath(blackPen, asymmetricPathReversed);
+            draw.AsymmetricShape(1200, 300, drawString, basicStyling, true);
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        static GraphicsPath AsymmetricPathReversed(SizeF stringSize1)
-        {
-            int tenPercentOfHeight = (int)Math.Ceiling(0.6 * stringSize1.Height);
-            GraphicsPath asymmetricPathReversed = new GraphicsPath();
-            asymmetricPathReversed.AddLine(1200 + stringSize1.Width + 20 + tenPercentOfHeight, 300, 1200, 300);
-            asymmetricPathReversed.AddLine(1200, 300, 1200, 300 + stringSize1.Height + 10);
-            asymmetricPathReversed.AddLine(1200, 300 + stringSize1.Height + 10, 1200 + stringSize1.Width + 20 + tenPercentOfHeight, 300 + stringSize1.Height + 10);
-            asymmetricPathReversed.AddLine(1200 + stringSize1.Width + 20 + tenPercentOfHeight, 300 + stringSize1.Height + 10, 1200 + stringSize1.Width + 20, 300 + (stringSize1.Height + 10) / 2);
-            asymmetricPathReversed.CloseFigure();
-            return asymmetricPathReversed;
-        }
-
-        static void DrawAndFillRoundedRectangle(Graphics g, float x, float y, float w, float h, float rx, float ry)
-        {
-            using Pen blackPen = new Pen(Color.Black);
-            using GraphicsPath path = new GraphicsPath();
-            path.AddArc(x, y, rx + rx, ry + ry, 180, 90);
-            path.AddLine(x + rx, y, x + w - rx, y);
-            path.AddArc(x + w - 2 * rx, y, 2 * rx, 2 * ry, 270, 90);
-            path.AddLine(x + w, y + ry, x + w, y + h - ry);
-            path.AddArc(x + w - 2 * rx, y + h - 2 * ry, rx + rx, ry + ry, 0, 90);
-            path.AddLine(x + rx, y + h, x + w - rx, y + h);
-            path.AddArc(x, y + h - 2 * ry, 2 * rx, 2 * ry, 90, 90);
-            path.CloseFigure();
-            using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
-            g.FillPath(blueBrush, path);
-            g.DrawPath(blackPen, path);
         }
     }
 }
