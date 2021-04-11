@@ -46,6 +46,24 @@ namespace DiagramsProject
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, centerX + radius, centerY + radius, textFormat);
         }
 
+        public void Rhombus(float px, float py, string text, Styling styling, float radius)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            float diameter = radius * 2;
+            using GraphicsPath rhombusPath = new GraphicsPath();
+            rhombusPath.AddLines(new[]
+            {
+                new PointF(px, py),
+                new PointF(px + radius, py + radius),
+                new PointF(px, py + diameter),
+                new PointF(px - radius, py + radius)
+            });
+            rhombusPath.CloseFigure();
+            graphics.FillPath(styling.ShapeBrush, rhombusPath);
+            graphics.DrawPath(styling.DrawPen, rhombusPath);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px, py + radius, textFormat);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)

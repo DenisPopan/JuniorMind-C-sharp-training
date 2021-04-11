@@ -67,9 +67,7 @@ namespace DiagramsProject
             draw.Circle(centerX - radius, centerY - radius, drawString, basicStyling, radius);
 
             // rhombus
-            g.FillPath(blueBrush, rhombusPath);
-            g.DrawPath(blackPen, rhombusPath);
-            g.DrawString(drawString, drawFont, drawBrush, 700 + maxLength / 2, 300, drawFormat);
+            draw.Rhombus(700 + radius, 300 - radius, drawString, fancyStyling, radius);
 
             // rectangle with rounded corners
             DrawAndFillRoundedRectangle(g, centerX, 100, stringSize1.Width + 20, stringSize1.Height + 10, 8, 8);
