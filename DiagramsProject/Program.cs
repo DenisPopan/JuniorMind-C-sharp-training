@@ -25,39 +25,14 @@ namespace DiagramsProject
                 Alignment = StringAlignment.Center,
                 LineAlignment = StringAlignment.Center
             };
-            using Font drawFont = new Font("Arial", 25);
-            SizeF stringSize = g.MeasureString(drawString, drawFont);
-
-            // Pens and brushes
-            using SolidBrush drawBrush = new SolidBrush(Color.Black);
-            using SolidBrush blueBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
-            using Pen blackPen = new Pen(Color.Black);
-            SizeF stringSize1 = g.MeasureString(drawString, drawFont);
-            Console.WriteLine(stringSize1);
+            SizeF stringSize = g.MeasureString(drawString, basicStyling.DrawFont);
 
             // Sizes, coordinates and shapes
-            const int adjustments = 5;
             const int centerX = 400;
             const int centerY = 300;
-            int dif = Math.Abs((int)stringSize1.Width - (int)stringSize1.Height);
-            int maxLength = Math.Max((int)Math.Ceiling(stringSize1.Width), (int)Math.Ceiling(stringSize1.Height));
-            int radius = maxLength / 2 + adjustments;
-            maxLength += (int)(0.2 * maxLength);
-            if (maxLength % 2 != 0)
-            {
-                maxLength++;
-            }
-
-            // Rhombus
-            using GraphicsPath rhombusPath = new GraphicsPath();
-            rhombusPath.AddLines(new[]
-            {
-                new Point(700, 300),
-                new Point(700 + maxLength / 2, 300 - maxLength / 2),
-                new Point(700 + maxLength, 300),
-                new Point(700 + maxLength / 2, 300 + maxLength / 2),
-                new Point(700, 300)
-            });
+            float maxLength = Math.Max(stringSize.Width, stringSize.Height) + 20;
+            float radius = maxLength / 2;
+            Console.WriteLine(radius);
 
             // Drawing
             // simple rectangle
@@ -83,6 +58,11 @@ namespace DiagramsProject
 
             // Asymmetric shape reversed
             draw.AsymmetricShape(1200, 300, drawString, basicStyling, true);
+
+            // Hexagon
+            draw.Hexagon(200, 500, drawString, basicStyling);
+
+            draw.Dispose();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }

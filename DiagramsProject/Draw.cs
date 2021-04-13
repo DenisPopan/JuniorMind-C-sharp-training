@@ -112,17 +112,18 @@ namespace DiagramsProject
         {
             EnsureIsNotNull(styling, nameof(styling));
             SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            float tenPercentOfHeight = 0.6f * textSize.Height;
+            float specialEndWidth = 0.6f * textSize.Height;
             using GraphicsPath asymmetricPath = new GraphicsPath();
             float fixedWidth = textSize.Width + WidthAdjustment;
             float fixedHeight = textSize.Height + HeightAdjustment;
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + tenPercentOfHeight, textSize.Height + HeightAdjustment);
+            RectangleF rectangle = new RectangleF(px, py, fixedWidth + specialEndWidth, fixedHeight);
+
             if (!isReversed)
             {
                 asymmetricPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
                 asymmetricPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right, rectangle.Bottom);
                 asymmetricPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
-                asymmetricPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left + tenPercentOfHeight, rectangle.Bottom - rectangle.Height / 2);
+                asymmetricPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left + specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
                 asymmetricPath.CloseFigure();
             }
             else
@@ -130,13 +131,35 @@ namespace DiagramsProject
                 asymmetricPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Left, rectangle.Top);
                 asymmetricPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Left, rectangle.Bottom);
                 asymmetricPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Right, rectangle.Bottom);
-                asymmetricPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Right - tenPercentOfHeight, rectangle.Bottom - rectangle.Height / 2);
+                asymmetricPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Right - specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
                 asymmetricPath.CloseFigure();
             }
 
             graphics.FillPath(styling.ShapeBrush, asymmetricPath);
             graphics.DrawPath(styling.DrawPen, asymmetricPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + tenPercentOfHeight + fixedWidth / 2 : px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + fixedWidth / 2 : px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+        }
+
+        public void Hexagon(float px, float py, string text, Styling styling)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            const float specialEndWidth = 12;
+            float fixedWidth = textSize.Width + WidthAdjustment;
+            float fixedHeight = textSize.Height + HeightAdjustment;
+
+            using GraphicsPath hexagonPath = new GraphicsPath();
+            RectangleF rectangle = new RectangleF(px, py, fixedWidth, fixedHeight);
+            hexagonPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
+            hexagonPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2);
+            hexagonPath.AddLine(rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2, rectangle.Right, rectangle.Bottom);
+            hexagonPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+            hexagonPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left - specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
+            hexagonPath.CloseFigure();
+
+            graphics.FillPath(styling.ShapeBrush, hexagonPath);
+            graphics.DrawPath(styling.DrawPen, hexagonPath);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
         }
 
         internal static void EnsureIsNotNull<T>(T source, string name)
