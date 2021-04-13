@@ -60,8 +60,13 @@ namespace DiagramsProject
             draw.AsymmetricShape(1200, 300, drawString, basicStyling, true);
 
             // Hexagon
-            draw.Hexagon(200, 500, drawString, basicStyling);
+            draw.Hexagon(100, 500, drawString, basicStyling);
 
+            // Normal paralelogram
+            draw.Parallelogram(300, 500, drawString, fancyStyling, false);
+
+            // Reversed paralelogram
+            draw.Parallelogram(600, 500, drawString, basicStyling, true);
             draw.Dispose();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);

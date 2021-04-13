@@ -114,9 +114,7 @@ namespace DiagramsProject
             SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
             float specialEndWidth = 0.6f * textSize.Height;
             using GraphicsPath asymmetricPath = new GraphicsPath();
-            float fixedWidth = textSize.Width + WidthAdjustment;
-            float fixedHeight = textSize.Height + HeightAdjustment;
-            RectangleF rectangle = new RectangleF(px, py, fixedWidth + specialEndWidth, fixedHeight);
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + specialEndWidth, textSize.Height + HeightAdjustment);
 
             if (!isReversed)
             {
@@ -137,7 +135,7 @@ namespace DiagramsProject
 
             graphics.FillPath(styling.ShapeBrush, asymmetricPath);
             graphics.DrawPath(styling.DrawPen, asymmetricPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + fixedWidth / 2 : px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + rectangle.Width / 2 : px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
         }
 
         public void Hexagon(float px, float py, string text, Styling styling)
@@ -145,11 +143,9 @@ namespace DiagramsProject
             EnsureIsNotNull(styling, nameof(styling));
             SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
             const float specialEndWidth = 12;
-            float fixedWidth = textSize.Width + WidthAdjustment;
-            float fixedHeight = textSize.Height + HeightAdjustment;
 
             using GraphicsPath hexagonPath = new GraphicsPath();
-            RectangleF rectangle = new RectangleF(px, py, fixedWidth, fixedHeight);
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
             hexagonPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
             hexagonPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2);
             hexagonPath.AddLine(rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2, rectangle.Right, rectangle.Bottom);
@@ -159,7 +155,35 @@ namespace DiagramsProject
 
             graphics.FillPath(styling.ShapeBrush, hexagonPath);
             graphics.DrawPath(styling.DrawPen, hexagonPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+        }
+
+        public void Parallelogram(float px, float py, string text, Styling styling, bool isReversed)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            const float shapeEndWidth = 20;
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + 2 * shapeEndWidth, textSize.Height + HeightAdjustment);
+            using GraphicsPath paralelogramPath = new GraphicsPath();
+
+            if (!isReversed)
+            {
+                paralelogramPath.AddLine(rectangle.Left + shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Top);
+                paralelogramPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Bottom);
+                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+                paralelogramPath.CloseFigure();
+            }
+            else
+            {
+                paralelogramPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Top);
+                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
+                paralelogramPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left + shapeEndWidth, rectangle.Bottom);
+                paralelogramPath.CloseFigure();
+            }
+
+            graphics.FillPath(styling.ShapeBrush, paralelogramPath);
+            graphics.DrawPath(styling.DrawPen, paralelogramPath);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
         }
 
         internal static void EnsureIsNotNull<T>(T source, string name)
