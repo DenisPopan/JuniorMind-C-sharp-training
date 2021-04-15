@@ -67,6 +67,12 @@ namespace DiagramsProject
 
             // Reversed paralelogram
             draw.Parallelogram(600, 500, drawString, basicStyling, true);
+
+            // Basic Trapezoid
+            draw.Trapezoid(900, 500, drawString, basicStyling, false);
+
+            // Reversed Trapezoid
+            draw.Trapezoid(1100, 500, drawString, fancyStyling, true);
             draw.Dispose();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);

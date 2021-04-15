@@ -135,7 +135,7 @@ namespace DiagramsProject
 
             graphics.FillPath(styling.ShapeBrush, asymmetricPath);
             graphics.DrawPath(styling.DrawPen, asymmetricPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + rectangle.Width / 2 : px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + (rectangle.Width - specialEndWidth) / 2 : px + (rectangle.Width - specialEndWidth) / 2, py + rectangle.Height / 2, textFormat);
         }
 
         public void Hexagon(float px, float py, string text, Styling styling)
@@ -178,6 +178,34 @@ namespace DiagramsProject
                 paralelogramPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Top);
                 paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
                 paralelogramPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left + shapeEndWidth, rectangle.Bottom);
+                paralelogramPath.CloseFigure();
+            }
+
+            graphics.FillPath(styling.ShapeBrush, paralelogramPath);
+            graphics.DrawPath(styling.DrawPen, paralelogramPath);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+        }
+
+        public void Trapezoid(float px, float py, string text, Styling styling, bool isReversed)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            const float shapeEndWidth = 23;
+            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + 2 * shapeEndWidth, textSize.Height + HeightAdjustment);
+            using GraphicsPath paralelogramPath = new GraphicsPath();
+
+            if (!isReversed)
+            {
+                paralelogramPath.AddLine(rectangle.Left + shapeEndWidth, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Top);
+                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
+                paralelogramPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+                paralelogramPath.CloseFigure();
+            }
+            else
+            {
+                paralelogramPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
+                paralelogramPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Bottom);
+                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Bottom, rectangle.Left + shapeEndWidth, rectangle.Bottom);
                 paralelogramPath.CloseFigure();
             }
 
