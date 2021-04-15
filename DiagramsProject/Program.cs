@@ -28,7 +28,7 @@ namespace DiagramsProject
             SizeF stringSize = g.MeasureString(drawString, basicStyling.DrawFont);
 
             // Sizes, coordinates and shapes
-            const int centerX = 400;
+            const int centerX = 430;
             const int centerY = 300;
             float maxLength = Math.Max(stringSize.Width, stringSize.Height) + 20;
             float radius = maxLength / 2;
@@ -36,7 +36,7 @@ namespace DiagramsProject
 
             // Drawing
             // simple rectangle
-            draw.Rectangle(40, 30, drawString, fancyStyling);
+            draw.Rectangle(60, 100, drawString, fancyStyling);
 
             // circle - (x,y) + distance(default) + radius = circle center
             draw.Circle(centerX - radius, centerY - radius, drawString, basicStyling, radius);
@@ -73,6 +73,9 @@ namespace DiagramsProject
 
             // Reversed Trapezoid
             draw.Trapezoid(1100, 500, drawString, fancyStyling, true);
+
+            // Cylinder
+            draw.Cylinder(80, 250, drawString, basicStyling);
             draw.Dispose();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);

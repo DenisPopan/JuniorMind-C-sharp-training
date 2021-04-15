@@ -214,6 +214,28 @@ namespace DiagramsProject
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
         }
 
+        public void Cylinder(float px, float py, string text, Styling styling)
+        {
+            EnsureIsNotNull(styling, nameof(styling));
+            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            float textWidth = textSize.Width + WidthAdjustment;
+            float textHeight = textSize.Height + HeightAdjustment;
+            float ellipseHeight = 10 + 0.15f * textWidth;
+            RectangleF ellipseRectangle = new RectangleF(px, py, textWidth, ellipseHeight);
+            RectangleF middleRectangle = new RectangleF(px, py + ellipseRectangle.Height / 2, textWidth, ellipseRectangle.Height / 2 + textHeight);
+            RectangleF arcRectangle = new RectangleF(px, middleRectangle.Bottom - ellipseHeight / 2, textWidth, ellipseHeight);
+
+            graphics.FillEllipse(styling.ShapeBrush, ellipseRectangle);
+            graphics.FillRectangle(styling.ShapeBrush, middleRectangle);
+            graphics.FillEllipse(styling.ShapeBrush, arcRectangle);
+
+            graphics.DrawEllipse(styling.DrawPen, ellipseRectangle);
+            graphics.DrawArc(styling.DrawPen, arcRectangle, 0, 180);
+            graphics.DrawLine(styling.DrawPen, px, middleRectangle.Top, px, middleRectangle.Bottom);
+            graphics.DrawLine(styling.DrawPen, middleRectangle.Right, middleRectangle.Top, middleRectangle.Right, middleRectangle.Bottom);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + textWidth / 2, middleRectangle.Top + ellipseRectangle.Height / 2 + textHeight / 2, textFormat);
+        }
+
         internal static void EnsureIsNotNull<T>(T source, string name)
         {
             if (source != null)
