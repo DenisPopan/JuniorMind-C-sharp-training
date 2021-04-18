@@ -14,8 +14,7 @@ namespace DiagramsProject
             g.Clear(Color.White);
 
             // Input and string format and Font
-            Console.WriteLine("Input text: ");
-            string drawString = Console.ReadLine();
+            const string drawString = "element";
             using Draw draw = new Draw(g);
             using FontFamily fontFamily = new FontFamily("Arial");
             using Styling basicStyling = new Styling();
@@ -29,20 +28,18 @@ namespace DiagramsProject
 
             // Sizes, coordinates and shapes
             const int centerX = 430;
-            const int centerY = 300;
             float maxLength = Math.Max(stringSize.Width, stringSize.Height) + 20;
             float radius = maxLength / 2;
-            Console.WriteLine(radius);
 
             // Drawing
             // simple rectangle
             draw.Rectangle(60, 100, drawString, fancyStyling);
 
             // circle - (x,y) + distance(default) + radius = circle center
-            draw.Circle(centerX - radius, centerY - radius, drawString, basicStyling, radius);
+            draw.Circle(380, 150, drawString, basicStyling);
 
             // rhombus
-            draw.Rhombus(700 + radius, 300 - radius, drawString, fancyStyling, radius);
+            draw.Rhombus(700, 200, drawString, fancyStyling);
 
             // rectangle with rounded corners
             draw.RectangleWithRoundedCorners(centerX, 100, drawString, basicStyling);

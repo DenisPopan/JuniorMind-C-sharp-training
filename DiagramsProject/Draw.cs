@@ -6,8 +6,6 @@ namespace DiagramsProject
 {
     public class Draw : IDisposable
     {
-        const float WidthAdjustment = 20;
-        const float HeightAdjustment = 10;
         readonly StringFormat textFormat;
         readonly Graphics graphics;
 
@@ -30,26 +28,36 @@ namespace DiagramsProject
         public void Rectangle(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
-            graphics.FillRectangle(styling.ShapeBrush, px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
-            graphics.DrawRectangle(styling.DrawPen, px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, rectangle, textFormat);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+
+            graphics.FillRectangle(styling.ShapeBrush, px, py, shapeSize.Width, shapeSize.Height);
+            graphics.DrawRectangle(styling.DrawPen, px, py, shapeSize.Width, shapeSize.Height);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + shapeSize.Width / 2, py + shapeSize.Height / 2, textFormat);
         }
 
-        public void Circle(float centerX, float centerY, string text, Styling styling, float radius)
+        public void Circle(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            float diameter = radius * 2;
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+            float diameter = Math.Max(shapeSize.Width, shapeSize.Height);
+            float radius = diameter / 2;
+            float centerX = px + radius;
+            float centerY = py + radius;
             graphics.FillEllipse(styling.ShapeBrush, centerX, centerY, diameter, diameter);
             graphics.DrawEllipse(styling.DrawPen, centerX, centerY, diameter, diameter);
             graphics.DrawString(text, styling.DrawFont, styling.TextBrush, centerX + radius, centerY + radius, textFormat);
         }
 
-        public void Rhombus(float px, float py, string text, Styling styling, float radius)
+        public void Rhombus(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            float diameter = radius * 2;
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+            float diameter = Math.Max(shapeSize.Width, shapeSize.Height);
+            float radius = diameter / 2;
+            px += radius;
             using GraphicsPath rhombusPath = new GraphicsPath();
             rhombusPath.AddLines(new[]
             {
@@ -59,9 +67,8 @@ namespace DiagramsProject
                 new PointF(px - radius, py + radius)
             });
             rhombusPath.CloseFigure();
-            graphics.FillPath(styling.ShapeBrush, rhombusPath);
-            graphics.DrawPath(styling.DrawPen, rhombusPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px, py + radius, textFormat);
+
+            DrawAndFillPathAndString(rhombusPath, text, styling, px, py + radius);
         }
 
         public void RectangleWithRoundedCorners(float px, float py, string text, Styling styling, float radius = 8)
@@ -71,38 +78,50 @@ namespace DiagramsProject
             const int ninetyDegrees = 90;
             const int oneEightyDegrees = 180;
             const int twoSeventyDegrees = 270;
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            float fixedWidth = textSize.Width + WidthAdjustment;
-            float fixedHeight = textSize.Height + HeightAdjustment;
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
 
             using GraphicsPath path = new GraphicsPath();
             path.AddArc(px, py, diameter, diameter, oneEightyDegrees, ninetyDegrees);
-            path.AddLine(px + radius, py, px + fixedWidth - radius, py);
-            path.AddArc(px + fixedWidth - diameter, py, diameter, diameter, twoSeventyDegrees, ninetyDegrees);
-            path.AddLine(px + fixedWidth, py + radius, px + fixedWidth, py + fixedHeight - radius);
-            path.AddArc(px + fixedWidth - diameter, py + fixedHeight - diameter, diameter, diameter, 0, ninetyDegrees);
-            path.AddLine(px + radius, py + fixedHeight, px + fixedWidth - radius, py + fixedHeight);
-            path.AddArc(px, py + fixedHeight - diameter, diameter, diameter, ninetyDegrees, ninetyDegrees);
+            path.AddLine(px + radius, py, px + shapeSize.Width - radius, py);
+            path.AddArc(px + shapeSize.Width - diameter, py, diameter, diameter, twoSeventyDegrees, ninetyDegrees);
+            path.AddLine(px + shapeSize.Width, py + radius, px + shapeSize.Width, py + shapeSize.Height - radius);
+            path.AddArc(px + shapeSize.Width - diameter, py + shapeSize.Height - diameter, diameter, diameter, 0, ninetyDegrees);
+            path.AddLine(px + radius, py + shapeSize.Height, px + shapeSize.Height - radius, py + shapeSize.Height);
+            path.AddArc(px, py + shapeSize.Height - diameter, diameter, diameter, ninetyDegrees, ninetyDegrees);
             path.CloseFigure();
 
-            graphics.FillPath(styling.ShapeBrush, path);
-            graphics.DrawPath(styling.DrawPen, path);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + fixedWidth / 2, py + fixedHeight / 2, textFormat);
+            DrawAndFillPathAndString(path, text, styling, px + shapeSize.Width / 2, py + shapeSize.Height / 2);
         }
 
         public void RoundedRectangle(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            RectangleWithRoundedCorners(px, py, text, styling, (textSize.Height + HeightAdjustment) / 2);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+            float diameter = shapeSize.Height;
+            float radius = diameter / 2;
+            const int ninetyDegrees = 90;
+            const int oneEightyDegrees = 180;
+            const int twoSeventyDegrees = 270;
+
+            using GraphicsPath path = new GraphicsPath();
+            path.AddArc(px, py, diameter, diameter, ninetyDegrees, oneEightyDegrees);
+            path.AddLine(px + radius, py, px + shapeSize.Width - radius, py);
+            path.AddArc(px + shapeSize.Width - diameter, py, diameter, diameter, twoSeventyDegrees, oneEightyDegrees);
+            path.AddLine(px + radius, py + diameter, px + shapeSize.Width - radius, py + diameter);
+            path.CloseFigure();
+
+            DrawAndFillPathAndString(path, text, styling, px + shapeSize.Width / 2, py + shapeSize.Height / 2);
         }
 
         public void SubroutineShape(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
             const int lineDistance = 12;
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+            RectangleF rectangle = new RectangleF(px, py, shapeSize.Width, shapeSize.Height);
             Rectangle(px, py, text, styling);
             graphics.DrawLine(styling.DrawPen, rectangle.X + lineDistance, rectangle.Y, rectangle.X + lineDistance, rectangle.Bottom);
             graphics.DrawLine(styling.DrawPen, rectangle.Right - lineDistance, rectangle.Y, rectangle.Right - lineDistance, rectangle.Bottom);
@@ -111,10 +130,11 @@ namespace DiagramsProject
         public void AsymmetricShape(float px, float py, string text, Styling styling, bool isReversed)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            float specialEndWidth = 0.6f * textSize.Height;
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            float specialEndWidth = 0.6f * shapeSize.Height;
+            FixShapeSize(ref shapeSize);
             using GraphicsPath asymmetricPath = new GraphicsPath();
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + specialEndWidth, textSize.Height + HeightAdjustment);
+            RectangleF rectangle = new RectangleF(px, py, shapeSize.Width + specialEndWidth, shapeSize.Height);
 
             if (!isReversed)
             {
@@ -133,19 +153,18 @@ namespace DiagramsProject
                 asymmetricPath.CloseFigure();
             }
 
-            graphics.FillPath(styling.ShapeBrush, asymmetricPath);
-            graphics.DrawPath(styling.DrawPen, asymmetricPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, !isReversed ? px + specialEndWidth + (rectangle.Width - specialEndWidth) / 2 : px + (rectangle.Width - specialEndWidth) / 2, py + rectangle.Height / 2, textFormat);
+            DrawAndFillPathAndString(asymmetricPath, text, styling, !isReversed ? px + specialEndWidth + (rectangle.Width - specialEndWidth) / 2 : px + (rectangle.Width - specialEndWidth) / 2, py + rectangle.Height / 2);
         }
 
         public void Hexagon(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
             const float specialEndWidth = 12;
+            RectangleF rectangle = new RectangleF(px, py, shapeSize.Width, shapeSize.Height);
 
             using GraphicsPath hexagonPath = new GraphicsPath();
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment, textSize.Height + HeightAdjustment);
             hexagonPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
             hexagonPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2);
             hexagonPath.AddLine(rectangle.Right + specialEndWidth, rectangle.Top + rectangle.Height / 2, rectangle.Right, rectangle.Bottom);
@@ -153,17 +172,16 @@ namespace DiagramsProject
             hexagonPath.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left - specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
             hexagonPath.CloseFigure();
 
-            graphics.FillPath(styling.ShapeBrush, hexagonPath);
-            graphics.DrawPath(styling.DrawPen, hexagonPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+            DrawAndFillPathAndString(hexagonPath, text, styling, px + rectangle.Width / 2, py + rectangle.Height / 2);
         }
 
         public void Parallelogram(float px, float py, string text, Styling styling, bool isReversed)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
             const float shapeEndWidth = 20;
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + 2 * shapeEndWidth, textSize.Height + HeightAdjustment);
+            RectangleF rectangle = new RectangleF(px, py, shapeSize.Width + 2 * shapeEndWidth, shapeSize.Height);
             using GraphicsPath paralelogramPath = new GraphicsPath();
 
             if (!isReversed)
@@ -181,49 +199,45 @@ namespace DiagramsProject
                 paralelogramPath.CloseFigure();
             }
 
-            graphics.FillPath(styling.ShapeBrush, paralelogramPath);
-            graphics.DrawPath(styling.DrawPen, paralelogramPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+            DrawAndFillPathAndString(paralelogramPath, text, styling, px + rectangle.Width / 2, py + rectangle.Height / 2);
         }
 
         public void Trapezoid(float px, float py, string text, Styling styling, bool isReversed)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
             const float shapeEndWidth = 23;
-            RectangleF rectangle = new RectangleF(px, py, textSize.Width + WidthAdjustment + 2 * shapeEndWidth, textSize.Height + HeightAdjustment);
-            using GraphicsPath paralelogramPath = new GraphicsPath();
+            RectangleF rectangle = new RectangleF(px, py, shapeSize.Width + 2 * shapeEndWidth, shapeSize.Height);
+            using GraphicsPath trapezoidPath = new GraphicsPath();
 
             if (!isReversed)
             {
-                paralelogramPath.AddLine(rectangle.Left + shapeEndWidth, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Top);
-                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
-                paralelogramPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
-                paralelogramPath.CloseFigure();
+                trapezoidPath.AddLine(rectangle.Left + shapeEndWidth, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Top);
+                trapezoidPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
+                trapezoidPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+                trapezoidPath.CloseFigure();
             }
             else
             {
-                paralelogramPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
-                paralelogramPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Bottom);
-                paralelogramPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Bottom, rectangle.Left + shapeEndWidth, rectangle.Bottom);
-                paralelogramPath.CloseFigure();
+                trapezoidPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
+                trapezoidPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right - shapeEndWidth, rectangle.Bottom);
+                trapezoidPath.AddLine(rectangle.Right - shapeEndWidth, rectangle.Bottom, rectangle.Left + shapeEndWidth, rectangle.Bottom);
+                trapezoidPath.CloseFigure();
             }
 
-            graphics.FillPath(styling.ShapeBrush, paralelogramPath);
-            graphics.DrawPath(styling.DrawPen, paralelogramPath);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + rectangle.Width / 2, py + rectangle.Height / 2, textFormat);
+            DrawAndFillPathAndString(trapezoidPath, text, styling, px + rectangle.Width / 2, py + rectangle.Height / 2);
         }
 
         public void Cylinder(float px, float py, string text, Styling styling)
         {
             EnsureIsNotNull(styling, nameof(styling));
-            SizeF textSize = graphics.MeasureString(text, styling.DrawFont);
-            float textWidth = textSize.Width + WidthAdjustment;
-            float textHeight = textSize.Height + HeightAdjustment;
-            float ellipseHeight = 10 + 0.15f * textWidth;
-            RectangleF ellipseRectangle = new RectangleF(px, py, textWidth, ellipseHeight);
-            RectangleF middleRectangle = new RectangleF(px, py + ellipseRectangle.Height / 2, textWidth, ellipseRectangle.Height / 2 + textHeight);
-            RectangleF arcRectangle = new RectangleF(px, middleRectangle.Bottom - ellipseHeight / 2, textWidth, ellipseHeight);
+            SizeF shapeSize = graphics.MeasureString(text, styling.DrawFont);
+            FixShapeSize(ref shapeSize);
+            float ellipseHeight = 10 + 0.15f * shapeSize.Width;
+            RectangleF ellipseRectangle = new RectangleF(px, py, shapeSize.Width, ellipseHeight);
+            RectangleF middleRectangle = new RectangleF(px, py + ellipseRectangle.Height / 2, shapeSize.Width, ellipseRectangle.Height / 2 + shapeSize.Height);
+            RectangleF arcRectangle = new RectangleF(px, middleRectangle.Bottom - ellipseHeight / 2, shapeSize.Width, ellipseHeight);
 
             graphics.FillEllipse(styling.ShapeBrush, ellipseRectangle);
             graphics.FillRectangle(styling.ShapeBrush, middleRectangle);
@@ -233,7 +247,7 @@ namespace DiagramsProject
             graphics.DrawArc(styling.DrawPen, arcRectangle, 0, 180);
             graphics.DrawLine(styling.DrawPen, px, middleRectangle.Top, px, middleRectangle.Bottom);
             graphics.DrawLine(styling.DrawPen, middleRectangle.Right, middleRectangle.Top, middleRectangle.Right, middleRectangle.Bottom);
-            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + textWidth / 2, middleRectangle.Top + ellipseRectangle.Height / 2 + textHeight / 2, textFormat);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px + shapeSize.Width / 2, middleRectangle.Top + ellipseRectangle.Height / 2 + shapeSize.Height / 2, textFormat);
         }
 
         internal static void EnsureIsNotNull<T>(T source, string name)
@@ -250,6 +264,21 @@ namespace DiagramsProject
         {
             textFormat.Dispose();
             graphics.Dispose();
+        }
+
+        void DrawAndFillPathAndString(GraphicsPath path, string text, Styling styling, float px, float py)
+        {
+            graphics.FillPath(styling.ShapeBrush, path);
+            graphics.DrawPath(styling.DrawPen, path);
+            graphics.DrawString(text, styling.DrawFont, styling.TextBrush, px, py, textFormat);
+        }
+
+        void FixShapeSize(ref SizeF shapeSize)
+        {
+            const float widthAdjustment = 20;
+            const float heightAdjustment = 10;
+            shapeSize.Width += widthAdjustment;
+            shapeSize.Height += heightAdjustment;
         }
     }
 }
