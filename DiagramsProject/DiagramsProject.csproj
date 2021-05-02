@@ -1,22 +1,20 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="Current">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <FileUpgradeFlags>40</FileUpgradeFlags>
+    <UpgradeBackupLocation>C:\Users\popan\Documents\GitHub\PopanDenis-JuniorMind-repository\DiagramsProject\Backup6\</UpgradeBackupLocation>
+    <OldToolsVersion>Current</OldToolsVersion>
   </PropertyGroup>
-
-	<PropertyGroup>
-		<CodeAnalysisRuleSet>juniormind.ruleset</CodeAnalysisRuleSet>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="DiagramsProject.Test\**" />
-	  <EmbeddedResource Remove="DiagramsProject.Test\**" />
-	  <None Remove="DiagramsProject.Test\**" />
-	</ItemGroup>
-
-
-	<ItemGroup>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>juniormind.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="DiagramsProject.Test\**" />
+    <EmbeddedResource Remove="DiagramsProject.Test\**" />
+    <None Remove="DiagramsProject.Test\**" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -35,5 +33,4 @@
     </PackageReference>
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
   </ItemGroup>
-
 </Project>
