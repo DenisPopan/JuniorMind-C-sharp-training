@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 
 namespace DiagramsProject
 {
@@ -32,6 +31,9 @@ namespace DiagramsProject
             // Drawing
             // simple rectangle
             new Rectangle(g, drawString, fancyStyling, new PointF(60, 100)).DrawShape();
+
+            // circle - (x,y) + distance(default) + radius = circle center
+            new Circle(g, drawString, basicStyling, new PointF(380, 200)).DrawShape();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
