@@ -13,6 +13,7 @@ namespace DiagramsProject
             Draw.EnsureIsNotNull(styling, nameof(styling));
             Draw.EnsureIsNotNull(graphics, nameof(graphics));
             Text = text;
+            Graphics = graphics;
             Styling = styling;
             Position = position;
             var textMeasurements = graphics.MeasureString(text, styling.DrawFont);
@@ -20,9 +21,18 @@ namespace DiagramsProject
             const float heightAdjustment = 10;
             TextWidth = textMeasurements.Width + widthAdjustment;
             TextHeight = textMeasurements.Height + heightAdjustment;
+            TextFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
         }
 
         public string Text { get; }
+
+        public StringFormat TextFormat { get; }
+
+        public Graphics Graphics { get; }
 
         public float TextWidth { get; }
 
