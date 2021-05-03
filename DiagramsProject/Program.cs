@@ -35,6 +35,9 @@ namespace DiagramsProject
             // circle - (x,y) + distance(default) + radius = circle center
             new Circle(g, drawString, basicStyling, new PointF(380, 200)).DrawShape();
 
+            // rhombus
+            new Rhombus(g, drawString, fancyStyling, new PointF(700, 200)).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
