@@ -38,6 +38,9 @@ namespace DiagramsProject
             // rhombus
             new Rhombus(g, drawString, fancyStyling, new PointF(700, 200)).DrawShape();
 
+            // rectangle with rounded corners
+            new RectangleWithRoundedCorners(g, drawString, basicStyling, new PointF(430, 100)).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
