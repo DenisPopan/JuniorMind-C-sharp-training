@@ -4,13 +4,8 @@ using System.Drawing.Drawing2D;
 
 namespace DiagramsProject
 {
-    public class Styling : IDisposable
+    public class Styling
     {
-        public readonly SolidBrush ShapeBrush;
-        public readonly SolidBrush TextBrush;
-        public readonly Pen DrawPen;
-        public readonly Font DrawFont;
-
         public Styling()
         {
             ShapeBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
@@ -18,6 +13,11 @@ namespace DiagramsProject
             DrawPen = new Pen(Color.Black);
             using FontFamily fontFamily = new FontFamily("Arial");
             DrawFont = new Font(fontFamily, 25);
+            TextFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
         }
 
         public Styling(Color shapeBrushColor, Color textBrushColor, Color penColor, Font drawFont)
@@ -26,20 +26,21 @@ namespace DiagramsProject
             TextBrush = new SolidBrush(textBrushColor);
             DrawPen = new Pen(penColor);
             this.DrawFont = drawFont;
+            TextFormat = new StringFormat
+            {
+                Alignment = StringAlignment.Center,
+                LineAlignment = StringAlignment.Center
+            };
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        public SolidBrush ShapeBrush { get; }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            ShapeBrush.Dispose();
-            TextBrush.Dispose();
-            DrawPen.Dispose();
-            DrawFont.Dispose();
-        }
+        public SolidBrush TextBrush { get; }
+
+        public Pen DrawPen { get; }
+
+        public Font DrawFont { get; }
+
+        public StringFormat TextFormat { get; }
     }
 }

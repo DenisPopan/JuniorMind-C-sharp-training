@@ -21,16 +21,9 @@ namespace DiagramsProject
             const float heightAdjustment = 10;
             TextWidth = textMeasurements.Width + widthAdjustment;
             TextHeight = textMeasurements.Height + heightAdjustment;
-            TextFormat = new StringFormat
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
-            };
         }
 
         public string Text { get; }
-
-        public StringFormat TextFormat { get; }
 
         public Graphics Graphics { get; }
 

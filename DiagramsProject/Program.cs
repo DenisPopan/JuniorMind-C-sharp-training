@@ -16,8 +16,8 @@ namespace DiagramsProject
             // Input and string format and Font
             const string drawString = "element";
             using FontFamily fontFamily = new FontFamily("Arial");
-            using Styling basicStyling = new Styling();
-            using Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 25));
+            Styling basicStyling = new Styling();
+            Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 25));
             using StringFormat drawFormat = new StringFormat
             {
                 Alignment = StringAlignment.Center,

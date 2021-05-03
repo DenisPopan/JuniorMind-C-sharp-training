@@ -11,7 +11,7 @@ namespace DiagramsProject
             EnsureIsNotNull(rectangle, nameof(rectangle));
             rectangle.Graphics.FillRectangle(rectangle.Styling.ShapeBrush, rectangle.Position.X, rectangle.Position.Y, rectangle.Width, rectangle.Height);
             rectangle.Graphics.DrawRectangle(rectangle.Styling.DrawPen, rectangle.Position.X, rectangle.Position.Y, rectangle.Width, rectangle.Height);
-            rectangle.Graphics.DrawString(rectangle.Text, rectangle.Styling.DrawFont, rectangle.Styling.TextBrush, rectangle.Position.X + rectangle.Width / 2, rectangle.Position.Y + rectangle.Height / 2, rectangle.TextFormat);
+            rectangle.Graphics.DrawString(rectangle.Text, rectangle.Styling.DrawFont, rectangle.Styling.TextBrush, rectangle.Position.X + rectangle.Width / 2, rectangle.Position.Y + rectangle.Height / 2, rectangle.Styling.TextFormat);
         }
 
         internal static void EnsureIsNotNull<T>(T source, string name)
