@@ -12,24 +12,15 @@ namespace DiagramsProject
         {
             Draw.EnsureIsNotNull(styling, nameof(styling));
             Draw.EnsureIsNotNull(graphics, nameof(graphics));
-            Text = text;
+            Text = new DrawnText(text, graphics.MeasureString(text, styling.DrawFont));
             Graphics = graphics;
             Styling = styling;
             Position = position;
-            var textMeasurements = graphics.MeasureString(text, styling.DrawFont);
-            const float widthAdjustment = 20;
-            const float heightAdjustment = 10;
-            TextWidth = textMeasurements.Width + widthAdjustment;
-            TextHeight = textMeasurements.Height + heightAdjustment;
         }
 
-        public string Text { get; }
+        public DrawnText Text { get; }
 
         public Graphics Graphics { get; }
-
-        public float TextWidth { get; }
-
-        public float TextHeight { get; }
 
         public Styling Styling { get; }
 
