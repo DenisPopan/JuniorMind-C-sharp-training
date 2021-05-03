@@ -44,6 +44,9 @@ namespace DiagramsProject
             // rounded rectangle - jumatate din inaltime sa fie radius la ambele
             new RoundedRectangle(g, drawString, basicStyling, new PointF(900, 100)).DrawShape();
 
+            // subroutine shape
+            new SubroutineShape(g, drawString, fancyStyling, new PointF(1200, 100)).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }

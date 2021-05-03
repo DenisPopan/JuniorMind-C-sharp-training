@@ -27,6 +27,7 @@ namespace DiagramsProject
                 new PointF(px, py + diagonal),
                 new PointF(px - halfDiagonal, py + halfDiagonal)
             });
+            path.CloseFigure();
             Draw.DrawAndFillShapePathAndText(this, path);
         }
     }
