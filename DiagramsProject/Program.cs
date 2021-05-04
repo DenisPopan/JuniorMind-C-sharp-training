@@ -68,6 +68,9 @@ namespace DiagramsProject
             // Reversed Trapezoid
             new Trapezoid(g, drawString, fancyStyling, new PointF(1100, 500), true).DrawShape();
 
+            // Cylinder
+            new Cylinder(g, drawString, basicStyling, new PointF(80, 250)).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
