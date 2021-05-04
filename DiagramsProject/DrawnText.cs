@@ -7,7 +7,7 @@ namespace DiagramsProject
         public DrawnText(string text, SizeF measurements)
         {
             ActualText = text;
-            const float widthAdjustment = 20;
+            const float widthAdjustment = 30;
             const float heightAdjustment = 10;
             Width = measurements.Width + widthAdjustment;
             Height = measurements.Height + heightAdjustment;

@@ -53,6 +53,9 @@ namespace DiagramsProject
             // Asymmetric shape reversed
             new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), true).DrawShape();
 
+            // Hexagon
+            new Hexagon(g, drawString, basicStyling, new PointF(100, 500)).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
