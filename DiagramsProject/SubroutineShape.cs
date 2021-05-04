@@ -1,6 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System.Drawing;
 
 namespace DiagramsProject
 {
@@ -15,7 +13,7 @@ namespace DiagramsProject
 
         public override void DrawShape()
         {
-            const int lineDistance = 12;
+            const float lineDistance = 12;
             RectangleF rectangle = new RectangleF(Position.X, Position.Y, Text.Width, Text.Height);
             new Rectangle(Graphics, Text.ActualText, Styling, new PointF(Position.X, Position.Y)).DrawShape();
             Graphics.DrawLine(Styling.DrawPen, rectangle.X + lineDistance, rectangle.Y, rectangle.X + lineDistance, rectangle.Bottom);

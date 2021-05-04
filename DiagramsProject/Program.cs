@@ -47,6 +47,12 @@ namespace DiagramsProject
             // subroutine shape
             new SubroutineShape(g, drawString, fancyStyling, new PointF(1200, 100)).DrawShape();
 
+            // Asymmetric shape
+            new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), false).DrawShape();
+
+            // Asymmetric shape reversed
+            new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), true).DrawShape();
+
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }
