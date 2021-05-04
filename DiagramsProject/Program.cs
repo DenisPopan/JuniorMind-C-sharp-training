@@ -48,13 +48,19 @@ namespace DiagramsProject
             new SubroutineShape(g, drawString, fancyStyling, new PointF(1200, 100)).DrawShape();
 
             // Asymmetric shape
-            new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), false).DrawShape();
+            new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), true).DrawShape();
 
             // Asymmetric shape reversed
-            new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), true).DrawShape();
+            new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), false).DrawShape();
 
             // Hexagon
             new Hexagon(g, drawString, basicStyling, new PointF(100, 500)).DrawShape();
+
+            // Normal paralelogram
+            new Parallelogram(g, drawString, fancyStyling, new PointF(350, 500), true).DrawShape();
+
+            // Reversed paralelogram
+            new Parallelogram(g, drawString, basicStyling, new PointF(600, 500), false).DrawShape();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }

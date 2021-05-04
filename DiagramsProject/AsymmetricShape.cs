@@ -5,23 +5,23 @@ namespace DiagramsProject
 {
     public class AsymmetricShape : Shape
     {
-        readonly bool isReversed;
+        readonly bool isLeftOriented;
         readonly float specialEndWidth;
 
-        public AsymmetricShape(Graphics graphics, string text, Styling styling, PointF position, bool isReversed) : base(graphics, text, styling, position)
+        public AsymmetricShape(Graphics graphics, string text, Styling styling, PointF position, bool isLeftOriented) : base(graphics, text, styling, position)
         {
-            this.isReversed = isReversed;
+            this.isLeftOriented = isLeftOriented;
             specialEndWidth = 0.6f * (Text.Height - 10);
             Width = Text.Width + specialEndWidth;
             Height = Text.Height;
-            Text.Position = new PointF(!isReversed ? Position.X + specialEndWidth + (Width - specialEndWidth) / 2 : Position.X + (Width - specialEndWidth) / 2, Position.Y + Height / 2);
+            Text.Position = new PointF(isLeftOriented ? Position.X + specialEndWidth + (Width - specialEndWidth) / 2 : Position.X + (Width - specialEndWidth) / 2, Position.Y + Height / 2);
         }
 
         public override void DrawShape()
         {
             RectangleF rectangle = new RectangleF(Position.X, Position.Y, Width, Height);
             using GraphicsPath path = new GraphicsPath();
-            if (!isReversed)
+            if (isLeftOriented)
             {
                 path.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
                 path.AddLine(rectangle.Right, rectangle.Top, rectangle.Right, rectangle.Bottom);
