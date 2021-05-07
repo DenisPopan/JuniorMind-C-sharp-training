@@ -10,7 +10,8 @@ namespace DiagramsProject
             float diameter = Math.Max(Text.Width, Text.Height);
             Width = diameter;
             Height = diameter;
-            Center = new PointF(Position.X + diameter / 2, Position.Y + diameter / 2);
+            float radius = diameter / 2;
+            Center = new PointF(Position.X + radius, Position.Y + radius);
             Text.Position = Center;
         }
 

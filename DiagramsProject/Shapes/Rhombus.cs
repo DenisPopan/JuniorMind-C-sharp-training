@@ -10,7 +10,9 @@ namespace DiagramsProject
         {
             Width = Math.Max(Text.Width, Text.Height);
             Height = Width;
-            Text.Position = new PointF(Position.X + Width / 2, Position.Y + Width / 2);
+            float halfWidth = Width / 2;
+            float halfHeight = Height / 2;
+            Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
         }
 
         public override void DrawShape()
