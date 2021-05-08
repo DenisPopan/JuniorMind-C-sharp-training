@@ -8,34 +8,33 @@ namespace DiagramsProject
         readonly bool isLeftOriented;
         readonly float specialEndWidth;
 
-        public AsymmetricShape(Graphics graphics, string text, Styling styling, PointF position, bool isLeftOriented) : base(graphics, text, styling, position)
+        public AsymmetricShape(Graphics graphics, string text, Styling styling, PointF position, bool isLeftOriented) : base(graphics, text, styling)
         {
             this.isLeftOriented = isLeftOriented;
             specialEndWidth = 0.6f * (Text.Height - 10);
-            Width = Text.Width + specialEndWidth;
-            Height = Text.Height;
-            Text.Position = new PointF(isLeftOriented ? Position.X + specialEndWidth + (Width - specialEndWidth) / 2 : Position.X + (Width - specialEndWidth) / 2, Position.Y + Height / 2);
-            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
+            Bounds = new RectangleF(position.X, position.Y, Text.Width + specialEndWidth, Text.Height);
+            Text.Position = new PointF(
+                isLeftOriented ? position.X + specialEndWidth + (Bounds.Width - specialEndWidth) / 2 : position.X + (Bounds.Width - specialEndWidth) / 2,
+                position.Y + Bounds.Height / 2);
         }
 
         public override void DrawShape()
         {
-            RectangleF rectangle = new RectangleF(Position.X, Position.Y, Width, Height);
             using GraphicsPath path = new GraphicsPath();
             if (isLeftOriented)
             {
-                path.AddLine(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Top);
-                path.AddLine(rectangle.Right, rectangle.Top, rectangle.Right, rectangle.Bottom);
-                path.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
-                path.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Left + specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
+                path.AddLine(Bounds.Left, Bounds.Top, Bounds.Right, Bounds.Top);
+                path.AddLine(Bounds.Right, Bounds.Top, Bounds.Right, Bounds.Bottom);
+                path.AddLine(Bounds.Right, Bounds.Bottom, Bounds.Left, Bounds.Bottom);
+                path.AddLine(Bounds.Left, Bounds.Bottom, Bounds.Left + specialEndWidth, Bounds.Bottom - Bounds.Height / 2);
                 path.CloseFigure();
             }
             else
             {
-                path.AddLine(rectangle.Right, rectangle.Top, rectangle.Left, rectangle.Top);
-                path.AddLine(rectangle.Left, rectangle.Top, rectangle.Left, rectangle.Bottom);
-                path.AddLine(rectangle.Left, rectangle.Bottom, rectangle.Right, rectangle.Bottom);
-                path.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Right - specialEndWidth, rectangle.Bottom - rectangle.Height / 2);
+                path.AddLine(Bounds.Right, Bounds.Top, Bounds.Left, Bounds.Top);
+                path.AddLine(Bounds.Left, Bounds.Top, Bounds.Left, Bounds.Bottom);
+                path.AddLine(Bounds.Left, Bounds.Bottom, Bounds.Right, Bounds.Bottom);
+                path.AddLine(Bounds.Right, Bounds.Bottom, Bounds.Right - specialEndWidth, Bounds.Bottom - Bounds.Height / 2);
                 path.CloseFigure();
             }
 

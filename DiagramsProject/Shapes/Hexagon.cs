@@ -8,15 +8,13 @@ namespace DiagramsProject
         const float SpecialEndWidth = 12;
         readonly float halfHeight;
 
-        public Hexagon(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling, position)
+        public Hexagon(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
         {
-            Width = Text.Width + SpecialEndWidth + SpecialEndWidth;
-            Height = Text.Height;
+            Bounds = new RectangleF(position.X, position.Y, Text.Width + SpecialEndWidth + SpecialEndWidth, Text.Height);
             const float divider = 2;
-            float halfWidth = Width / divider;
-            halfHeight = Height / divider;
-            Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
-            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
+            float halfWidth = Bounds.Width / divider;
+            halfHeight = Bounds.Height / divider;
+            Text.Position = new PointF(position.X + halfWidth, position.Y + halfHeight);
         }
 
         public override void DrawShape()

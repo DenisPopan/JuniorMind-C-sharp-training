@@ -8,15 +8,13 @@ namespace DiagramsProject
         const float ShapeEndWidth = 23;
         readonly bool isUpsideDown;
 
-        public Trapezoid(Graphics graphics, string text, Styling styling, PointF position, bool isUpsideDown) : base(graphics, text, styling, position)
+        public Trapezoid(Graphics graphics, string text, Styling styling, PointF position, bool isUpsideDown) : base(graphics, text, styling)
         {
             this.isUpsideDown = isUpsideDown;
-            Width = Text.Width + ShapeEndWidth + ShapeEndWidth;
-            Height = Text.Height;
-            float halfWidth = Width / 2;
-            float halfHeight = Height / 2;
-            Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
-            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
+            Bounds = new RectangleF(position.X, position.Y, Text.Width + ShapeEndWidth + ShapeEndWidth, Text.Height);
+            float halfWidth = Bounds.Width / 2;
+            float halfHeight = Bounds.Height / 2;
+            Text.Position = new PointF(position.X + halfWidth, position.Y + halfHeight);
         }
 
         public override void DrawShape()

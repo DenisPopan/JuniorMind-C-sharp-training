@@ -1,25 +1,22 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace DiagramsProject
 {
     public class RectangleWithRoundedCorners : Shape
     {
-        public RectangleWithRoundedCorners(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling, position)
+        public RectangleWithRoundedCorners(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
         {
-            Width = Text.Width;
-            Height = Text.Height;
-            float halfWidth = Width / 2;
-            float halfHeight = Height / 2;
-            Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
-            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
+            Bounds = new RectangleF(position.X, position.Y, Text.Width, Text.Height);
+            float halfWidth = Bounds.Width / 2;
+            float halfHeight = Bounds.Height / 2;
+            Text.Position = new PointF(position.X + halfWidth, position.Y + halfHeight);
         }
 
         public override void DrawShape()
         {
-            var px = Position.X;
-            var py = Position.Y;
+            var px = Bounds.X;
+            var py = Bounds.Y;
             const float radius = 8;
             const float diameter = 16;
             const int ninetyDegrees = 90;

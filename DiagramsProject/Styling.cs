@@ -10,7 +10,7 @@ namespace DiagramsProject
             TextBrush = new SolidBrush(Color.Black);
             DrawPen = new Pen(Color.Black);
             using FontFamily fontFamily = new FontFamily("Arial");
-            DrawFont = new Font(fontFamily, 25);
+            DrawFont = new Font(fontFamily, 23);
         }
 
         public Styling(Color shapeBrushColor, Color textBrushColor, Color penColor, Font drawFont)

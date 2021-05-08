@@ -5,14 +5,12 @@ namespace DiagramsProject
 {
     public class RoundedRectangle : Shape
     {
-        public RoundedRectangle(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling, position)
+        public RoundedRectangle(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
         {
-            Width = Text.Width;
-            Height = Text.Height;
-            float halfWidth = Width / 2;
-            float halfHeight = Height / 2;
-            Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
-            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
+            Bounds = new RectangleF(position.X, position.Y, Text.Width, Text.Height);
+            float halfWidth = Bounds.Width / 2;
+            float halfHeight = Bounds.Height / 2;
+            Text.Position = new PointF(position.X + halfWidth, position.Y + halfHeight);
         }
 
         public override void DrawShape()
@@ -22,8 +20,8 @@ namespace DiagramsProject
             const int ninetyDegrees = 90;
             const int oneEightyDegrees = 180;
             const int twoSeventyDegrees = 270;
-            var px = Position.X;
-            var py = Position.Y;
+            var px = Bounds.X;
+            var py = Bounds.Y;
 
             using GraphicsPath path = new GraphicsPath();
             path.AddArc(px, py, diameter, diameter, ninetyDegrees, oneEightyDegrees);
