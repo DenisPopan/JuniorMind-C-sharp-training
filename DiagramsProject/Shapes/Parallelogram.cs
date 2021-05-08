@@ -16,25 +16,25 @@ namespace DiagramsProject
             float halfWidth = Width / 2;
             float halfHeight = Height / 2;
             Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()
         {
-            RectangleF rectangle = new RectangleF(Position.X, Position.Y, Width, Height);
             using GraphicsPath parallelogramPath = new GraphicsPath();
 
             if (isLeftOriented)
             {
-                parallelogramPath.AddLine(rectangle.Left, rectangle.Top, rectangle.Right - ShapeEndWidth, rectangle.Top);
-                parallelogramPath.AddLine(rectangle.Right - ShapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Bottom);
-                parallelogramPath.AddLine(rectangle.Right, rectangle.Bottom, rectangle.Left + ShapeEndWidth, rectangle.Bottom);
+                parallelogramPath.AddLine(Bounds.Left, Bounds.Top, Bounds.Right - ShapeEndWidth, Bounds.Top);
+                parallelogramPath.AddLine(Bounds.Right - ShapeEndWidth, Bounds.Top, Bounds.Right, Bounds.Bottom);
+                parallelogramPath.AddLine(Bounds.Right, Bounds.Bottom, Bounds.Left + ShapeEndWidth, Bounds.Bottom);
                 parallelogramPath.CloseFigure();
             }
             else
             {
-                parallelogramPath.AddLine(rectangle.Left + ShapeEndWidth, rectangle.Top, rectangle.Right, rectangle.Top);
-                parallelogramPath.AddLine(rectangle.Right, rectangle.Top, rectangle.Right - ShapeEndWidth, rectangle.Bottom);
-                parallelogramPath.AddLine(rectangle.Right - ShapeEndWidth, rectangle.Bottom, rectangle.Left, rectangle.Bottom);
+                parallelogramPath.AddLine(Bounds.Left + ShapeEndWidth, Bounds.Top, Bounds.Right, Bounds.Top);
+                parallelogramPath.AddLine(Bounds.Right, Bounds.Top, Bounds.Right - ShapeEndWidth, Bounds.Bottom);
+                parallelogramPath.AddLine(Bounds.Right - ShapeEndWidth, Bounds.Bottom, Bounds.Left, Bounds.Bottom);
                 parallelogramPath.CloseFigure();
             }
 

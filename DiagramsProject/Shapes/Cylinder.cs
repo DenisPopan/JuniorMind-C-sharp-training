@@ -16,8 +16,9 @@ namespace DiagramsProject
             middleRectangle = new RectangleF(Position.X, Position.Y + ellipseRectangle.Height / divider, Text.Width, ellipseRectangle.Height / divider + Text.Height);
             arcRectangle = new RectangleF(Position.X, middleRectangle.Bottom - ellipseHeight / divider, Text.Width, ellipseHeight);
             Width = Text.Width;
-            Height = ellipseRectangle.Height + middleRectangle.Height + arcRectangle.Height;
+            Height = ellipseRectangle.Height / divider + middleRectangle.Height + arcRectangle.Height / divider;
             Text.Position = new PointF(Position.X + Text.Width / divider, middleRectangle.Top + ellipseRectangle.Height / divider + Text.Height / divider);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()

@@ -13,6 +13,7 @@ namespace DiagramsProject
             float radius = diameter / 2;
             Center = new PointF(Position.X + radius, Position.Y + radius);
             Text.Position = Center;
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public PointF Center { get; }

@@ -11,6 +11,7 @@ namespace DiagramsProject
             float halfWidth = Width / 2;
             float halfHeight = Height / 2;
             Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()

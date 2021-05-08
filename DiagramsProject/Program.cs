@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DiagramsProject.Shapes;
+using System;
 using System.Drawing;
 
 namespace DiagramsProject
@@ -16,7 +17,8 @@ namespace DiagramsProject
             const string drawString = "element";
             using FontFamily fontFamily = new FontFamily("Arial");
             Styling basicStyling = new Styling();
-            Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 25));
+            Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 23));
+            Styling subgraphStyling = new Styling(Color.FromArgb(252, 251, 179), Color.Black, Color.Black, new Font(fontFamily, 23));
             using StringFormat drawFormat = new StringFormat
             {
                 Alignment = StringAlignment.Center,
@@ -24,13 +26,10 @@ namespace DiagramsProject
             };
             SizeF stringSize = g.MeasureString(drawString, basicStyling.DrawFont);
 
-            // Sizes, coordinates and shapes
-            float maxLength = Math.Max(stringSize.Width, stringSize.Height) + 20;
-            float radius = maxLength / 2;
-
             // Drawing
             // simple rectangle
-            new Rectangle(g, drawString, fancyStyling, new PointF(60, 100)).DrawShape();
+            var rectangle = new Rectangle(g, drawString, fancyStyling, new PointF(60, 100));
+            rectangle.DrawShape();
 
             // circle - (x,y) + distance(default) + radius = circle center
             new Circle(g, drawString, basicStyling, new PointF(380, 200)).DrawShape();
@@ -48,10 +47,12 @@ namespace DiagramsProject
             new SubroutineShape(g, drawString, fancyStyling, new PointF(1200, 100)).DrawShape();
 
             // Asymmetric shape
-            new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), true).DrawShape();
+            var asim = new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), true);
+            asim.DrawShape();
 
             // Asymmetric shape reversed
-            new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), false).DrawShape();
+            var asimrev = new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), false);
+            asimrev.DrawShape();
 
             // Hexagon
             new Hexagon(g, drawString, basicStyling, new PointF(100, 500)).DrawShape();
@@ -66,10 +67,15 @@ namespace DiagramsProject
             new Trapezoid(g, drawString, basicStyling, new PointF(900, 500), false).DrawShape();
 
             // Reversed Trapezoid
-            new Trapezoid(g, drawString, fancyStyling, new PointF(1100, 500), true).DrawShape();
+            var trapezoid = new Trapezoid(g, drawString, fancyStyling, new PointF(1100, 500), true);
+            trapezoid.DrawShape();
 
             // Cylinder
-            new Cylinder(g, drawString, basicStyling, new PointF(80, 250)).DrawShape();
+            var cylinder = new Cylinder(g, drawString, basicStyling, new PointF(80, 250));
+            cylinder.DrawShape();
+
+            var subgraph = new Subgraph(g, "Subgraph Title", subgraphStyling, new Shape[] { asim, asimrev });
+            subgraph.DrawShape();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }

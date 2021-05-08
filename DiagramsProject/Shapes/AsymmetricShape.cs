@@ -15,6 +15,7 @@ namespace DiagramsProject
             Width = Text.Width + specialEndWidth;
             Height = Text.Height;
             Text.Position = new PointF(isLeftOriented ? Position.X + specialEndWidth + (Width - specialEndWidth) / 2 : Position.X + (Width - specialEndWidth) / 2, Position.Y + Height / 2);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()

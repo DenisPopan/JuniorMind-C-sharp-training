@@ -16,18 +16,17 @@ namespace DiagramsProject
             float halfWidth = Width / divider;
             halfHeight = Height / divider;
             Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()
         {
-            RectangleF rectangle = new RectangleF(Position.X, Position.Y, Width, Height);
-
             using GraphicsPath hexagonPath = new GraphicsPath();
-            hexagonPath.AddLine(rectangle.Left, rectangle.Top + halfHeight, rectangle.Left + SpecialEndWidth, rectangle.Top);
-            hexagonPath.AddLine(rectangle.Left + SpecialEndWidth, rectangle.Top, rectangle.Right - SpecialEndWidth, rectangle.Top);
-            hexagonPath.AddLine(rectangle.Right - SpecialEndWidth, rectangle.Top, rectangle.Right, rectangle.Top + halfHeight);
-            hexagonPath.AddLine(rectangle.Right, rectangle.Top + halfHeight, rectangle.Right - SpecialEndWidth, rectangle.Bottom);
-            hexagonPath.AddLine(rectangle.Right - SpecialEndWidth, rectangle.Bottom, rectangle.Left + SpecialEndWidth, rectangle.Bottom);
+            hexagonPath.AddLine(Bounds.Left, Bounds.Top + halfHeight, Bounds.Left + SpecialEndWidth, Bounds.Top);
+            hexagonPath.AddLine(Bounds.Left + SpecialEndWidth, Bounds.Top, Bounds.Right - SpecialEndWidth, Bounds.Top);
+            hexagonPath.AddLine(Bounds.Right - SpecialEndWidth, Bounds.Top, Bounds.Right, Bounds.Top + halfHeight);
+            hexagonPath.AddLine(Bounds.Right, Bounds.Top + halfHeight, Bounds.Right - SpecialEndWidth, Bounds.Bottom);
+            hexagonPath.AddLine(Bounds.Right - SpecialEndWidth, Bounds.Bottom, Bounds.Left + SpecialEndWidth, Bounds.Bottom);
             hexagonPath.CloseFigure();
 
             Draw.DrawAndFillShapePathAndText(this, hexagonPath);

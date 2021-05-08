@@ -11,15 +11,15 @@ namespace DiagramsProject
             float halfWidth = Width / 2;
             float halfHeight = Height / 2;
             Text.Position = new PointF(Position.X + halfWidth, Position.Y + halfHeight);
+            Bounds = new RectangleF(Position.X, Position.Y, Width, Height);
         }
 
         public override void DrawShape()
         {
             const float lineDistance = 12;
-            RectangleF rectangle = new RectangleF(Position.X, Position.Y, Text.Width, Text.Height);
             new Rectangle(Graphics, Text.ActualText, Styling, new PointF(Position.X, Position.Y)).DrawShape();
-            Graphics.DrawLine(Styling.DrawPen, rectangle.X + lineDistance, rectangle.Y, rectangle.X + lineDistance, rectangle.Bottom);
-            Graphics.DrawLine(Styling.DrawPen, rectangle.Right - lineDistance, rectangle.Y, rectangle.Right - lineDistance, rectangle.Bottom);
+            Graphics.DrawLine(Styling.DrawPen, Bounds.X + lineDistance, Bounds.Y, Bounds.X + lineDistance, Bounds.Bottom);
+            Graphics.DrawLine(Styling.DrawPen, Bounds.Right - lineDistance, Bounds.Y, Bounds.Right - lineDistance, Bounds.Bottom);
         }
     }
 }
