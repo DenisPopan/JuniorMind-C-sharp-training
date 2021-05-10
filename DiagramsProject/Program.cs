@@ -1,6 +1,6 @@
 ﻿using DiagramsProject.Shapes;
-using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace DiagramsProject
 {
@@ -18,7 +18,7 @@ namespace DiagramsProject
             using FontFamily fontFamily = new FontFamily("Arial");
             Styling basicStyling = new Styling();
             Styling fancyStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 23));
-            Styling subgraphStyling = new Styling(Color.FromArgb(252, 251, 179), Color.Black, Color.Black, new Font(fontFamily, 23));
+            Styling subgraphStyling = new Styling(Color.FromArgb(252, 251, 179), Color.Black, Color.Black, new Font(fontFamily, 18));
             using StringFormat drawFormat = new StringFormat
             {
                 Alignment = StringAlignment.Center,
@@ -74,8 +74,10 @@ namespace DiagramsProject
             var cylinder = new Cylinder(g, drawString, basicStyling, new PointF(80, 250));
             cylinder.DrawShape();
 
-            var subgraph = new Subgraph(g, "Subgraph Title", subgraphStyling, new Shape[] { asim, asimrev });
+            var subgraph = new Subgraph(g, "Subgraph Title", subgraphStyling, new Shape[] { asimrev });
             subgraph.DrawShape();
+
+            new Link(g, rectangle, trapezoid, 2, new Pen(Color.Black, 3), "text").DrawLink();
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
