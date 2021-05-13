@@ -12,7 +12,7 @@ namespace DiagramsProject.Shapes
 
         public Subgraph(Graphics graphics, string text, Styling styling, Shape[] containedShapes) : base(graphics, text, styling)
         {
-            Draw.EnsureIsNotNull(graphics, nameof(graphics));
+            Utils.EnsureIsNotNull(graphics, nameof(graphics));
             this.containedShapes = containedShapes;
             left = graphics.VisibleClipBounds.Right;
             top = graphics.VisibleClipBounds.Bottom;
@@ -25,7 +25,7 @@ namespace DiagramsProject.Shapes
         public override void DrawShape()
         {
             Graphics.FillRectangle(Styling.ShapeBrush, Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height);
-            Graphics.DrawRectangle(Styling.DrawPen, Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height);
+            Graphics.DrawRectangle(Styling.ShapePen, Bounds.X, Bounds.Y, Bounds.Width, Bounds.Height);
             Graphics.DrawString(Text.ActualText, Styling.DrawFont, Styling.TextBrush, Text.Position, Text.Format);
             DrawContainedShapes();
         }

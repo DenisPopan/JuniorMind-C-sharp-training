@@ -76,8 +76,9 @@ namespace DiagramsProject
 
             var subgraph = new Subgraph(g, "Subgraph Title", subgraphStyling, new Shape[] { asimrev });
             subgraph.DrawShape();
-
-            new Link(g, rectangle, trapezoid, 2, new Pen(Color.Black, 3), "text").DrawLink();
+            Styling linkStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 23));
+            linkStyling.ShapePen.Width = 3;
+            Draw.DrawLink(g, rectangle, trapezoid, 2, linkStyling, "text");
 
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }

@@ -6,8 +6,8 @@ namespace DiagramsProject
     {
         protected Shape(Graphics graphics, string text, Styling styling)
         {
-            Draw.EnsureIsNotNull(styling, nameof(styling));
-            Draw.EnsureIsNotNull(graphics, nameof(graphics));
+            Utils.EnsureIsNotNull(styling, nameof(styling));
+            Utils.EnsureIsNotNull(graphics, nameof(graphics));
             Text = new DrawnText(text, graphics.MeasureString(text, styling.DrawFont));
             Graphics = graphics;
             Styling = styling;

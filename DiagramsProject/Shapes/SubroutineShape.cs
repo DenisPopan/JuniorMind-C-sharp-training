@@ -16,8 +16,8 @@ namespace DiagramsProject
         {
             const float lineDistance = 12;
             new Rectangle(Graphics, Text.ActualText, Styling, new PointF(Bounds.X, Bounds.Y)).DrawShape();
-            Graphics.DrawLine(Styling.DrawPen, Bounds.X + lineDistance, Bounds.Y, Bounds.X + lineDistance, Bounds.Bottom);
-            Graphics.DrawLine(Styling.DrawPen, Bounds.Right - lineDistance, Bounds.Y, Bounds.Right - lineDistance, Bounds.Bottom);
+            Graphics.DrawLine(Styling.ShapePen, Bounds.X + lineDistance, Bounds.Y, Bounds.X + lineDistance, Bounds.Bottom);
+            Graphics.DrawLine(Styling.ShapePen, Bounds.Right - lineDistance, Bounds.Y, Bounds.Right - lineDistance, Bounds.Bottom);
         }
     }
 }

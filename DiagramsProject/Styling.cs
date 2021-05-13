@@ -7,8 +7,8 @@ namespace DiagramsProject
         public Styling()
         {
             ShapeBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
+            ShapePen = new Pen(Color.Black);
             TextBrush = new SolidBrush(Color.Black);
-            DrawPen = new Pen(Color.Black);
             using FontFamily fontFamily = new FontFamily("Arial");
             DrawFont = new Font(fontFamily, 23);
         }
@@ -16,16 +16,16 @@ namespace DiagramsProject
         public Styling(Color shapeBrushColor, Color textBrushColor, Color penColor, Font drawFont)
         {
             ShapeBrush = new SolidBrush(shapeBrushColor);
+            ShapePen = new Pen(penColor);
             TextBrush = new SolidBrush(textBrushColor);
-            DrawPen = new Pen(penColor);
             this.DrawFont = drawFont;
         }
 
         public SolidBrush ShapeBrush { get; }
 
-        public SolidBrush TextBrush { get; }
+        public Pen ShapePen { get; }
 
-        public Pen DrawPen { get; }
+        public SolidBrush TextBrush { get; }
 
         public Font DrawFont { get; }
     }
