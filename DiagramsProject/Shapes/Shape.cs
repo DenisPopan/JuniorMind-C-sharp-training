@@ -6,8 +6,8 @@ namespace DiagramsProject
     {
         protected Shape(Graphics graphics, string text, Styling styling)
         {
-            Utils.EnsureIsNotNull(styling, nameof(styling));
-            Utils.EnsureIsNotNull(graphics, nameof(graphics));
+            ProjectUtils.EnsureIsNotNull(styling, nameof(styling));
+            ProjectUtils.EnsureIsNotNull(graphics, nameof(graphics));
             Text = new DrawnText(text, graphics.MeasureString(text, styling.DrawFont));
             Graphics = graphics;
             Styling = styling;
@@ -22,5 +22,7 @@ namespace DiagramsProject
         public Styling Styling { get; }
 
         public abstract void DrawShape();
+
+        public abstract void Prepare(PointF position);
     }
 }

@@ -4,7 +4,11 @@ namespace DiagramsProject
 {
     public class SubroutineShape : Shape
     {
-        public SubroutineShape(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
+        public SubroutineShape(Graphics graphics, string text, Styling styling) : base(graphics, text, styling)
+        {
+        }
+
+        public override void Prepare(PointF position)
         {
             Bounds = new RectangleF(position.X, position.Y, Text.Width, Text.Height);
             float halfWidth = Bounds.Width / 2;
@@ -15,7 +19,9 @@ namespace DiagramsProject
         public override void DrawShape()
         {
             const float lineDistance = 12;
-            new Rectangle(Graphics, Text.ActualText, Styling, new PointF(Bounds.X, Bounds.Y)).DrawShape();
+            var rectangle = new Rectangle(Graphics, Text.ActualText, Styling);
+            rectangle.Prepare(new PointF(Bounds.X, Bounds.Y));
+            rectangle.DrawShape();
             Graphics.DrawLine(Styling.ShapePen, Bounds.X + lineDistance, Bounds.Y, Bounds.X + lineDistance, Bounds.Bottom);
             Graphics.DrawLine(Styling.ShapePen, Bounds.Right - lineDistance, Bounds.Y, Bounds.Right - lineDistance, Bounds.Bottom);
         }

@@ -8,10 +8,14 @@ namespace DiagramsProject
         const float ShapeEndWidth = 20;
         readonly bool isLeftOriented;
 
-        public Parallelogram(Graphics graphics, string text, Styling styling, PointF position, bool isLeftOriented) : base(graphics, text, styling)
+        public Parallelogram(Graphics graphics, string text, Styling styling, bool isLeftOriented) : base(graphics, text, styling)
+        {
+            this.isLeftOriented = isLeftOriented;
+        }
+
+        public override void Prepare(PointF position)
         {
             Bounds = new RectangleF(position.X, position.Y, Text.Width + ShapeEndWidth + ShapeEndWidth, Text.Height);
-            this.isLeftOriented = isLeftOriented;
             float halfWidth = Bounds.Width / 2;
             float halfHeight = Bounds.Height / 2;
             Text.Position = new PointF(position.X + halfWidth, position.Y + halfHeight);

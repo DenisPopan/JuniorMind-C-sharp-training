@@ -1,4 +1,6 @@
 ﻿using DiagramsProject.Shapes;
+using QuikGraph;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
@@ -6,6 +8,8 @@ namespace DiagramsProject
 {
     class Program
     {
+        public delegate void Sure(Graphics graphics, Shape firstShape, Shape secondShape, sbyte linkType, Styling styling, string text = "");
+
         static void Main()
         {
             // Initialising bitmap and Graphics
@@ -28,58 +32,81 @@ namespace DiagramsProject
 
             // Drawing
             // simple rectangle
-            var rectangle = new Rectangle(g, drawString, fancyStyling, new PointF(60, 100));
+            var rectangle = new Rectangle(g, drawString, fancyStyling);
+            rectangle.Prepare(new PointF(60, 100));
             rectangle.DrawShape();
 
             // circle - (x,y) + distance(default) + radius = circle center
-            new Circle(g, drawString, basicStyling, new PointF(380, 200)).DrawShape();
+            var circle = new Circle(g, drawString, basicStyling);
+            circle.Prepare(new PointF(380, 200));
+            circle.DrawShape();
 
             // rhombus
-            new Rhombus(g, drawString, fancyStyling, new PointF(700, 200)).DrawShape();
+            var rhombus = new Rhombus(g, drawString, fancyStyling);
+            rhombus.Prepare(new PointF(700, 200));
+            rhombus.DrawShape();
 
             // rectangle with rounded corners
-            new RectangleWithRoundedCorners(g, drawString, basicStyling, new PointF(430, 100)).DrawShape();
+            var rectangleRoundedCorners = new RectangleWithRoundedCorners(g, drawString, basicStyling);
+            rectangleRoundedCorners.Prepare(new PointF(430, 100));
+            rectangleRoundedCorners.DrawShape();
 
             // rounded rectangle - jumatate din inaltime sa fie radius la ambele
-            new RoundedRectangle(g, drawString, basicStyling, new PointF(900, 100)).DrawShape();
+            var roundedRectangle = new RoundedRectangle(g, drawString, basicStyling);
+            roundedRectangle.Prepare(new PointF(900, 100));
 
             // subroutine shape
-            new SubroutineShape(g, drawString, fancyStyling, new PointF(1200, 100)).DrawShape();
+            var subroutine = new SubroutineShape(g, drawString, fancyStyling);
+            subroutine.Prepare(new PointF(1200, 100));
+            subroutine.DrawShape();
 
             // Asymmetric shape
-            var asim = new AsymmetricShape(g, drawString, basicStyling, new PointF(950, 300), true);
+            var asim = new AsymmetricShape(g, drawString, basicStyling, true);
+            asim.Prepare(new PointF(950, 300));
             asim.DrawShape();
 
             // Asymmetric shape reversed
-            var asimrev = new AsymmetricShape(g, drawString, basicStyling, new PointF(1200, 300), false);
+            var asimrev = new AsymmetricShape(g, drawString, basicStyling, false);
+            asimrev.Prepare(new PointF(1200, 300));
             asimrev.DrawShape();
 
             // Hexagon
-            new Hexagon(g, drawString, basicStyling, new PointF(100, 500)).DrawShape();
+            var hexagon = new Hexagon(g, drawString, basicStyling);
+            hexagon.Prepare(new PointF(100, 500));
+            hexagon.DrawShape();
 
             // Normal paralelogram
-            new Parallelogram(g, drawString, fancyStyling, new PointF(350, 500), true).DrawShape();
+            var paralelogram = new Parallelogram(g, drawString, fancyStyling, true);
+            paralelogram.Prepare(new PointF(350, 500));
+            paralelogram.DrawShape();
 
             // Reversed paralelogram
-            new Parallelogram(g, drawString, basicStyling, new PointF(600, 500), false).DrawShape();
+            var paralelogram1 = new Parallelogram(g, drawString, basicStyling, false);
+            paralelogram1.Prepare(new PointF(600, 500));
+            paralelogram1.DrawShape();
 
             // Basic Trapezoid
-            new Trapezoid(g, drawString, basicStyling, new PointF(900, 500), false).DrawShape();
+            var trapezoid1 = new Trapezoid(g, drawString, basicStyling, false);
+            trapezoid1.Prepare(new PointF(900, 500));
+            trapezoid1.DrawShape();
 
             // Reversed Trapezoid
-            var trapezoid = new Trapezoid(g, drawString, fancyStyling, new PointF(1100, 500), true);
+            var trapezoid = new Trapezoid(g, drawString, fancyStyling, true);
+            trapezoid.Prepare(new PointF(1100, 500));
             trapezoid.DrawShape();
 
             // Cylinder
-            var cylinder = new Cylinder(g, drawString, basicStyling, new PointF(80, 250));
+            var cylinder = new Cylinder(g, drawString, basicStyling);
+            cylinder.Prepare(new PointF(80, 250));
             cylinder.DrawShape();
 
             var subgraph = new Subgraph(g, "Subgraph Title", subgraphStyling, new Shape[] { asimrev });
+            subgraph.Prepare(new PointF(0, 0));
             subgraph.DrawShape();
+
             Styling linkStyling = new Styling(Color.Orange, Color.Green, Color.Purple, new Font(fontFamily, 23));
             linkStyling.ShapePen.Width = 3;
-            Draw.DrawLink(g, rectangle, trapezoid, 2, linkStyling, "text");
-
+            Draw.DrawLink(g, rectangle, subgraph, 2, linkStyling, "text");
             bmp.Save(@"C:\Users\popan\Desktop\image.png", System.Drawing.Imaging.ImageFormat.Png);
         }
     }

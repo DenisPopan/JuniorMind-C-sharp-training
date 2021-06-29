@@ -8,10 +8,14 @@ namespace DiagramsProject
         readonly bool isLeftOriented;
         readonly float specialEndWidth;
 
-        public AsymmetricShape(Graphics graphics, string text, Styling styling, PointF position, bool isLeftOriented) : base(graphics, text, styling)
+        public AsymmetricShape(Graphics graphics, string text, Styling styling, bool isLeftOriented) : base(graphics, text, styling)
         {
             this.isLeftOriented = isLeftOriented;
             specialEndWidth = 0.6f * (Text.Height - 10);
+        }
+
+        public override void Prepare(PointF position)
+        {
             Bounds = new RectangleF(position.X, position.Y, Text.Width + specialEndWidth, Text.Height);
             Text.Position = new PointF(
                 isLeftOriented ? position.X + specialEndWidth + (Bounds.Width - specialEndWidth) / 2 : position.X + (Bounds.Width - specialEndWidth) / 2,

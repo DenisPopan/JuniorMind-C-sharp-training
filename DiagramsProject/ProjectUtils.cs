@@ -3,9 +3,9 @@ using System.Drawing;
 
 namespace DiagramsProject
 {
-    public static class Utils
+    public static class ProjectUtils
     {
-        public static PointF FindIntersection(PointF s1, PointF e1, PointF s2, PointF e2)
+        public static PointF FindIntersectionOfTwoLines(PointF s1, PointF e1, PointF s2, PointF e2)
         {
             float a1 = e1.Y - s1.Y;
             float b1 = s1.X - e1.X;

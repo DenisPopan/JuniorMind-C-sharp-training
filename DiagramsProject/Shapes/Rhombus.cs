@@ -6,7 +6,11 @@ namespace DiagramsProject
 {
     public class Rhombus : Shape
     {
-        public Rhombus(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
+        public Rhombus(Graphics graphics, string text, Styling styling) : base(graphics, text, styling)
+        {
+        }
+
+        public override void Prepare(PointF position)
         {
             float width = Math.Max(Text.Width, Text.Height);
             Bounds = new RectangleF(position.X, position.Y, width, width);

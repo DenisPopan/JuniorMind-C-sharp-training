@@ -4,11 +4,15 @@ namespace DiagramsProject
 {
     public class Cylinder : Shape
     {
-        readonly RectangleF ellipseRectangle;
-        readonly RectangleF middleRectangle;
-        readonly RectangleF arcRectangle;
+        RectangleF ellipseRectangle;
+        RectangleF middleRectangle;
+        RectangleF arcRectangle;
 
-        public Cylinder(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
+        public Cylinder(Graphics graphics, string text, Styling styling) : base(graphics, text, styling)
+        {
+        }
+
+        public override void Prepare(PointF position)
         {
             float ellipseHeight = 10 + 0.15f * Text.Width;
             const int divider = 2;

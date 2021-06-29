@@ -12,10 +12,14 @@ namespace DiagramsProject.Shapes
 
         public Subgraph(Graphics graphics, string text, Styling styling, Shape[] containedShapes) : base(graphics, text, styling)
         {
-            Utils.EnsureIsNotNull(graphics, nameof(graphics));
+            ProjectUtils.EnsureIsNotNull(graphics, nameof(graphics));
             this.containedShapes = containedShapes;
-            left = graphics.VisibleClipBounds.Right;
-            top = graphics.VisibleClipBounds.Bottom;
+        }
+
+        public override void Prepare(PointF position)
+        {
+            left = Graphics.VisibleClipBounds.Right;
+            top = Graphics.VisibleClipBounds.Bottom;
             FindBounds();
             FixBounds();
             Bounds = new RectangleF(left, top, right - left, bottom - top);

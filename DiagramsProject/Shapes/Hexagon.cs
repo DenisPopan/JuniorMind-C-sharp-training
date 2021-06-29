@@ -6,9 +6,13 @@ namespace DiagramsProject
     public class Hexagon : Shape
     {
         const float SpecialEndWidth = 12;
-        readonly float halfHeight;
+        float halfHeight;
 
-        public Hexagon(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
+        public Hexagon(Graphics graphics, string text, Styling styling) : base(graphics, text, styling)
+        {
+        }
+
+        public override void Prepare(PointF position)
         {
             Bounds = new RectangleF(position.X, position.Y, Text.Width + SpecialEndWidth + SpecialEndWidth, Text.Height);
             const float divider = 2;

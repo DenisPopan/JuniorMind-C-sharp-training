@@ -5,7 +5,11 @@ namespace DiagramsProject
 {
     public class RoundedRectangle : Shape
     {
-        public RoundedRectangle(Graphics graphics, string text, Styling styling, PointF position) : base(graphics, text, styling)
+        public RoundedRectangle(Graphics graphics, string text, Styling styling) : base(graphics, text, styling)
+        {
+        }
+
+        public override void Prepare(PointF position)
         {
             Bounds = new RectangleF(position.X, position.Y, Text.Width, Text.Height);
             float halfWidth = Bounds.Width / 2;
