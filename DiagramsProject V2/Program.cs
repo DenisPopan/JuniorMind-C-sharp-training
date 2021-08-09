@@ -1,11 +1,13 @@
 ﻿using System;
+using System.IO;
 
-namespace DiagramsProject_V2
+namespace DiagramsProjectV2
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            string text = File.ReadAllText(@"C:\Users\popan\Desktop\InputText.txt");
             Console.WriteLine("Hello World!");
         }
     }
