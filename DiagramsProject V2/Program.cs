@@ -25,10 +25,13 @@ namespace DiagramsProjectV2
             using Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
 
+            string[] nodes = text.Split("---");
+
             // Initialising font, format, brushes, pen and measuring the text
             using FontFamily fontFamily = new FontFamily("Arial");
             using Font font = new (fontFamily, 23);
-            SizeF stringSize = g.MeasureString(text, font);
+            SizeF stringSize = g.MeasureString(nodes[0], font);
+            SizeF stringSize2 = g.MeasureString(nodes[1], font);
             using var rectangleBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
             using var rectanglePen = new Pen(Color.Black);
             using var textBrush = new SolidBrush(Color.Black);
@@ -41,11 +44,16 @@ namespace DiagramsProjectV2
             const float widthAdjustment = 30;
             const float heightAdjustment = 10;
             var rectangle = new RectangleF(50, 50, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
+            var rectangle2 = new RectangleF(50, 150, stringSize2.Width + widthAdjustment, stringSize2.Height + heightAdjustment);
 
             // Drawing
             g.FillRectangle(rectangleBrush, rectangle);
             g.DrawRectangle(rectanglePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-            g.DrawString(text, font, textBrush, 50 + (stringSize.Width + widthAdjustment) / 2, 50 + (stringSize.Height + heightAdjustment) / 2, format);
+            g.DrawString(nodes[0], font, textBrush, 50 + (stringSize.Width + widthAdjustment) / 2, 50 + (stringSize.Height + heightAdjustment) / 2, format);
+
+            g.FillRectangle(rectangleBrush, rectangle2);
+            g.DrawRectangle(rectanglePen, rectangle2.X, rectangle2.Y, rectangle2.Width, rectangle2.Height);
+            g.DrawString(nodes[1], font, textBrush, 50 + (stringSize2.Width + widthAdjustment) / 2, 150 + (stringSize2.Height + heightAdjustment) / 2, format);
 
             Console.WriteLine("Enter the file path where the PNG file will be saved:");
             bmp.Save(Console.ReadLine(), System.Drawing.Imaging.ImageFormat.Png);
