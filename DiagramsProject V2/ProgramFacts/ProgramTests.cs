@@ -5,7 +5,7 @@ namespace ProgramFacts
     public class ProgramTests
     {
         [Fact]
-        public void ProgramShouldBeAbleToReadTextFromAFile()
+        public void IncorrectFilePathShouldThrowAnException()
         {
             throw new System.NotImplementedException();
         }
