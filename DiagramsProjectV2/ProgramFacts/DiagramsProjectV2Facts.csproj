@@ -45,7 +45,7 @@
 
 
 	<ItemGroup>
-	  <ProjectReference Include="..\DiagramsProject V2.csproj" />
+	  <ProjectReference Include="..\DiagramsProjectV2.csproj" />
 	</ItemGroup>
 
 </Project>

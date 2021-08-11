@@ -6,13 +6,12 @@ namespace DiagramsProjectV2
 {
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            Console.WriteLine("Enter the file path:");
-            string text;
+            string[] text;
             try
             {
-                text = File.ReadAllText(Console.ReadLine());
+                text = File.ReadAllLines(args[0]);
             }
             catch (IOException)
             {
@@ -25,7 +24,7 @@ namespace DiagramsProjectV2
             using Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
 
-            string[] nodes = text.Split("---");
+            string[] nodes = text[1].Split(" --- ");
 
             // Initialising font, format, brushes, pen and measuring the text
             using FontFamily fontFamily = new FontFamily("Arial");
@@ -55,8 +54,7 @@ namespace DiagramsProjectV2
             g.DrawRectangle(rectanglePen, rectangle2.X, rectangle2.Y, rectangle2.Width, rectangle2.Height);
             g.DrawString(nodes[1], font, textBrush, 50 + (stringSize2.Width + widthAdjustment) / 2, 150 + (stringSize2.Height + heightAdjustment) / 2, format);
 
-            Console.WriteLine("Enter the file path where the PNG file will be saved:");
-            bmp.Save(Console.ReadLine(), System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
         }
     }
 }
