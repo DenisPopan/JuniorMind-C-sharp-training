@@ -8,10 +8,10 @@ namespace DiagramsProjectV2
     {
         static void Main(string[] args)
         {
-            string[] text;
+            string[] commands;
             try
             {
-                text = File.ReadAllLines(args[0]);
+                commands = File.ReadAllLines(args[0]);
             }
             catch (IOException)
             {
@@ -19,42 +19,39 @@ namespace DiagramsProjectV2
                 return;
             }
 
-            // Initialising bitmap and Graphics
+            // Initialising bitmap and styling class instance
             using Bitmap bmp = new Bitmap(1920, 1080);
             using Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.White);
+            var styling = new Styling();
+            styling.Graphics = g;
 
-            string[] nodes = text[1].Split(" --- ");
+            string[] nodes = commands[1].Split(" --- ");
 
-            // Initialising font, format, brushes, pen and measuring the text
-            using FontFamily fontFamily = new FontFamily("Arial");
-            using Font font = new (fontFamily, 23);
-            SizeF stringSize = g.MeasureString(nodes[0], font);
-            SizeF stringSize2 = g.MeasureString(nodes[1], font);
-            using var rectangleBrush = new SolidBrush(Color.FromArgb(161, 177, 247));
-            using var rectanglePen = new Pen(Color.Black);
-            using var textBrush = new SolidBrush(Color.Black);
-            using var format = new StringFormat
-            {
-                Alignment = StringAlignment.Center,
-                LineAlignment = StringAlignment.Center
-            };
+            DrawSimpleRectangle(nodes[0], new PointF(50, 50), styling);
+            DrawSimpleRectangle(nodes[1], new PointF(50, 150), styling);
+
+            bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
+        }
+
+        static void DrawSimpleRectangle(string text, PointF position, Styling styling)
+        {
+            SizeF stringSize = styling.Graphics.MeasureString(text, styling.Font);
 
             const float widthAdjustment = 30;
             const float heightAdjustment = 10;
-            var rectangle = new RectangleF(50, 50, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
-            var rectangle2 = new RectangleF(50, 150, stringSize2.Width + widthAdjustment, stringSize2.Height + heightAdjustment);
+            var rectangle = new RectangleF(position.X, position.Y, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
 
             // Drawing
-            g.FillRectangle(rectangleBrush, rectangle);
-            g.DrawRectangle(rectanglePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-            g.DrawString(nodes[0], font, textBrush, 50 + (stringSize.Width + widthAdjustment) / 2, 50 + (stringSize.Height + heightAdjustment) / 2, format);
-
-            g.FillRectangle(rectangleBrush, rectangle2);
-            g.DrawRectangle(rectanglePen, rectangle2.X, rectangle2.Y, rectangle2.Width, rectangle2.Height);
-            g.DrawString(nodes[1], font, textBrush, 50 + (stringSize2.Width + widthAdjustment) / 2, 150 + (stringSize2.Height + heightAdjustment) / 2, format);
-
-            bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
+            styling.Graphics.FillRectangle(styling.ShapeBrush, rectangle);
+            styling.Graphics.DrawRectangle(styling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            styling.Graphics.DrawString(
+                text,
+                styling.Font,
+                styling.TextBrush,
+                rectangle.X + (stringSize.Width + widthAdjustment) / 2,
+                rectangle.Y + (stringSize.Height + heightAdjustment) / 2,
+                styling.Format);
         }
     }
 }
