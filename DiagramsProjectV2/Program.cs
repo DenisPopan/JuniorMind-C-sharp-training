@@ -28,21 +28,27 @@ namespace DiagramsProjectV2
 
             string[] nodes = commands[1].Split(" --- ");
 
-            DrawSimpleRectangle(nodes[0], new PointF(50, 50), styling);
-            DrawSimpleRectangle(nodes[1], new PointF(50, 150), styling);
+            const float widthAdjustment = 30;
+            const float heightAdjustment = 10;
+            SizeF stringSize = styling.Graphics.MeasureString(nodes[0], styling.Font);
+            var rectangle = new RectangleF(50, 50, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
+
+            stringSize = styling.Graphics.MeasureString(nodes[1], styling.Font);
+            var rectangle1 = new RectangleF(50, 150, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
+
+            DrawSimpleRectangle(nodes[0], rectangle, styling);
+            DrawSimpleRectangle(nodes[1], rectangle1, styling);
+            DrawLink(rectangle, rectangle1, styling);
 
             bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
         }
 
-        static void DrawSimpleRectangle(string text, PointF position, Styling styling)
+        static void DrawSimpleRectangle(string text, RectangleF rectangle, Styling styling)
         {
             SizeF stringSize = styling.Graphics.MeasureString(text, styling.Font);
 
             const float widthAdjustment = 30;
             const float heightAdjustment = 10;
-            var rectangle = new RectangleF(position.X, position.Y, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
-
-            // Drawing
             styling.Graphics.FillRectangle(styling.ShapeBrush, rectangle);
             styling.Graphics.DrawRectangle(styling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
             styling.Graphics.DrawString(
@@ -52,6 +58,11 @@ namespace DiagramsProjectV2
                 rectangle.X + (stringSize.Width + widthAdjustment) / 2,
                 rectangle.Y + (stringSize.Height + heightAdjustment) / 2,
                 styling.Format);
+        }
+
+        static void DrawLink(RectangleF rect1, RectangleF rect2, Styling styling)
+        {
+            styling.Graphics.DrawLine(styling.ShapePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
         }
     }
 }
