@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 namespace DiagramsProjectV2
 {
-    class Program
+    public class Program
     {
+        public static List<Node> Nodes { get; } = new List<Node>();
+
+        public static int LastNodeId { get; set; }
+
         static void Main(string[] args)
         {
             string[] commands;
@@ -26,21 +31,30 @@ namespace DiagramsProjectV2
             var styling = new Styling();
             styling.Graphics = g;
 
-            string[] nodes = commands[1].Split(" --- ");
+            string[] nodesText = commands[1].Split(" --- ");
 
-            const float widthAdjustment = 30;
-            const float heightAdjustment = 10;
-            SizeF stringSize = styling.Graphics.MeasureString(nodes[0], styling.Font);
-            var rectangle = new RectangleF(50, 50, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
+            AddNode(g, nodesText[0]);
+            AddNode(g, nodesText[1]);
 
-            stringSize = styling.Graphics.MeasureString(nodes[1], styling.Font);
-            var rectangle1 = new RectangleF(50, 150, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
-
-            DrawSimpleRectangle(nodes[0], rectangle, styling);
-            DrawSimpleRectangle(nodes[1], rectangle1, styling);
-            DrawLink(rectangle, rectangle1, styling);
+            DrawSimpleRectangle(Nodes[0].Text, Nodes[0].Rectangle, styling);
+            DrawSimpleRectangle(Nodes[1].Text, Nodes[1].Rectangle, styling);
+            DrawLink(Nodes[0].Rectangle, Nodes[1].Rectangle, styling);
 
             bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
+        }
+
+        private static void AddNode(Graphics g, string text)
+        {
+            if (LastNodeId == 0)
+            {
+                Nodes.Add(new Node(g, 1, text, 50, 50));
+                LastNodeId = 1;
+            }
+            else
+            {
+                LastNodeId++;
+                Nodes.Add(new Node(g, LastNodeId, text, 50, 150));
+            }
         }
 
         static void DrawSimpleRectangle(string text, RectangleF rectangle, Styling styling)
