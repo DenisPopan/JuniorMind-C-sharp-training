@@ -43,5 +43,13 @@ namespace ProgramFacts
             Assert.Equal(1, Program.Nodes[0].Level);
             Assert.Equal(2, Program.Nodes[1].Level);
         }
+
+        [Fact]
+        public void WhenSecondNodeHasLevel1ItShouldSwitchToLevel2()
+        {
+            string[] commands = { "Graph TD", "A --- B", "C --- A" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal(2, Program.Nodes[0].Level);
+        }
     }
 }

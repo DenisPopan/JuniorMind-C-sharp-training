@@ -18,32 +18,38 @@ namespace DiagramsProjectV2
             ProjectUtils.EnsureIsNotNull(commands, nameof(commands));
 
             string[] nodesText;
-            bool firstNodeExists;
-            bool secondNodeExists;
+            Node firstNode;
+            Node secondNode;
 
             for (int i = 1; i < commands.Length; i++)
             {
                 nodesText = commands[i].Split(" --- ");
-                firstNodeExists = Nodes.Exists(x => x.Text.Equals(nodesText[0]));
-                secondNodeExists = Nodes.Exists(x => x.Text.Equals(nodesText[1]));
-                if (!firstNodeExists)
+                firstNode = Nodes.Find(x => x.Text.Equals(nodesText[0]));
+                secondNode = Nodes.Find(x => x.Text.Equals(nodesText[1]));
+                if (firstNode == null)
                 {
-                    var firstNode = AddNode(nodesText[0]);
-                    if (!secondNodeExists)
+                    firstNode = AddNode(nodesText[0]);
+                    secondNode ??= AddNode(nodesText[1]);
+
+                    if (secondNode.Level == 1 || secondNode.Level == 0)
                     {
-                        var secondNode = AddNode(nodesText[1]);
-                        AddEdge(firstNode, secondNode);
                         secondNode.Parent = firstNode;
-                        firstNode.Level = 1;
                         secondNode.Level = 2;
                     }
+
+                    firstNode.Level = secondNode.Level - 1;
+                    AddEdge(firstNode, secondNode);
                 }
             }
         }
 
         static Node AddNode(string text)
         {
-            Nodes.Add(new Node(Nodes.Count + 1, text));
+            if (!Nodes.Exists(x => x.Text.Equals(text)))
+            {
+                Nodes.Add(new Node(Nodes.Count + 1, text));
+            }
+
             return Nodes[Nodes.Count - 1];
         }
 
