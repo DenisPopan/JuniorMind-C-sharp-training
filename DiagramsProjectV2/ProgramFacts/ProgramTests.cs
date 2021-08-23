@@ -1,4 +1,5 @@
 using DiagramsProjectV2;
+using System.IO;
 using Xunit;
 
 namespace ProgramFacts
@@ -6,9 +7,14 @@ namespace ProgramFacts
     public class ProgramTests
     {
         [Fact]
-        public void IncorrectFilePathShouldThrowAnException()
+        public void NewFlowchartNodesShouldBeAddedToTheList()
         {
-            throw new System.NotImplementedException();
+            string[] commands = { "Graph TD", "A --- B" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal(1, Program.Nodes[0].Id);
+            Assert.Equal("A", Program.Nodes[0].Text);
+            Assert.Equal(2, Program.Nodes[1].Id);
+            Assert.Equal("B", Program.Nodes[1].Text);
         }
     }
 }

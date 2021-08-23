@@ -11,7 +11,32 @@ namespace DiagramsProjectV2
 
         public static int LastNodeId { get; set; }
 
-        internal static void AddNode(string text)
+        public static void AddFlowchartElements(string[] commands)
+        {
+            ProjectUtils.EnsureIsNotNull(commands, nameof(commands));
+
+            string[] nodesText;
+            bool firstNodeExists;
+            bool secondNodeExists;
+
+            for (int i = 1; i < commands.Length; i++)
+            {
+                nodesText = commands[i].Split(" --- ");
+                firstNodeExists = Nodes.Exists(x => x.Text.Equals(nodesText[0]));
+                secondNodeExists = Nodes.Exists(x => x.Text.Equals(nodesText[1]));
+                if (!firstNodeExists)
+                {
+                    AddNode(nodesText[0]);
+                }
+
+                if (!secondNodeExists)
+                {
+                    AddNode(nodesText[1]);
+                }
+            }
+        }
+
+        static void AddNode(string text)
         {
             Nodes.Add(new Node(Nodes.Count + 1, text));
         }
@@ -36,20 +61,7 @@ namespace DiagramsProjectV2
             var styling = new Styling();
             styling.Graphics = g;
 
-            string[] nodesText;
-            for (int i = 1; i < commands.Length; i++)
-            {
-                nodesText = commands[i].Split(" --- ");
-                if (!Nodes.Exists(x => x.Text.Equals(nodesText[0])))
-                {
-                    AddNode(nodesText[0]);
-                }
-
-                if (!Nodes.Exists(x => x.Text.Equals(nodesText[1])))
-                {
-                    AddNode(nodesText[1]);
-                }
-            }
+            AddFlowchartElements(commands);
 
             Nodes[0].Build(g, 50, 50);
             Nodes[1].Build(g, 50, 150);
