@@ -25,16 +25,16 @@ namespace DiagramsProjectV2
             {
                 nodesText = commands[i].Split(" --- ");
                 firstNode = Nodes.Find(x => x.Text.Equals(nodesText[0]));
-                secondNode = Nodes.Find(x => x.Text.Equals(nodesText[1]));
                 if (firstNode == null)
                 {
                     firstNode = AddNode(nodesText[0]);
-                    secondNode ??= AddNode(nodesText[1]);
+                    secondNode = AddNode(nodesText[1]);
 
                     if (secondNode.Level == 1 || secondNode.Level == 0)
                     {
                         secondNode.Parent = firstNode;
                         secondNode.Level = 2;
+                        firstNode.AddChild(secondNode);
                     }
 
                     firstNode.Level = secondNode.Level - 1;
@@ -45,12 +45,14 @@ namespace DiagramsProjectV2
 
         static Node AddNode(string text)
         {
-            if (!Nodes.Exists(x => x.Text.Equals(text)))
+            var node = Nodes.Find(x => x.Text.Equals(text));
+            if (node == null)
             {
                 Nodes.Add(new Node(Nodes.Count + 1, text));
+                node = Nodes[Nodes.Count - 1];
             }
 
-            return Nodes[Nodes.Count - 1];
+            return node;
         }
 
         static void AddEdge(Node firstNode, Node secondNode)

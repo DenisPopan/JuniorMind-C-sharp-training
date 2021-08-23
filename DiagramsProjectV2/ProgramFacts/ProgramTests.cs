@@ -45,11 +45,29 @@ namespace ProgramFacts
         }
 
         [Fact]
+        public void FirstNodesChildShouldBeTheSecondNodeIfBothAreNew()
+        {
+            string[] commands = { "Graph TD", "A --- B" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal(2, Program.Nodes[0].GetChildren()[0].Id);
+        }
+
+        [Fact]
         public void WhenSecondNodeHasLevel1ItShouldSwitchToLevel2()
         {
             string[] commands = { "Graph TD", "A --- B", "C --- A" };
             Program.AddFlowchartElements(commands);
             Assert.Equal(2, Program.Nodes[0].Level);
+        }
+
+        [Fact]
+        public void WhenANodeChangesLevelAllItsChildrenShouldDoSoToo()
+        {
+            string[] commands = { "Graph TD", "A --- B", "C --- A" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal(2, Program.Nodes[0].Level);
+            Assert.Equal(3, Program.Nodes[1].Level);
+            Assert.Equal(1, Program.Nodes[2].Level);
         }
     }
 }
