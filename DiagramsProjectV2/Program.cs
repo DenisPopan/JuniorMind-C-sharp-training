@@ -32,6 +32,7 @@ namespace DiagramsProjectV2
                     if (!secondNodeExists)
                     {
                         var secondNode = AddNode(nodesText[1]);
+                        Edges.Add(new Edge(firstNode, secondNode));
                     }
                 }
             }

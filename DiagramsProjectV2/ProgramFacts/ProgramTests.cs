@@ -16,5 +16,15 @@ namespace ProgramFacts
             Assert.Equal(2, Program.Nodes[1].Id);
             Assert.Equal("B", Program.Nodes[1].Text);
         }
+
+        [Fact]
+        public void AnEdgeShouldBeCreatedWhenTwoNewNodesAreAdded()
+        {
+            string[] commands = { "Graph TD", "A --- B" };
+            Program.AddFlowchartElements(commands);
+            Assert.Single(Program.Edges);
+            Assert.Equal("A", Program.Edges[0].FirstNode.Text);
+            Assert.Equal("B", Program.Edges[0].SecondNode.Text);
+        }
     }
 }
