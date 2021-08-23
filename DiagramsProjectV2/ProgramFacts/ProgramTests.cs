@@ -26,5 +26,13 @@ namespace ProgramFacts
             Assert.Equal("A", Program.Edges[0].FirstNode.Text);
             Assert.Equal("B", Program.Edges[0].SecondNode.Text);
         }
+
+        [Fact]
+        public void SecondNodesParentShouldBeTheFirstIfBothAreNew()
+        {
+            string[] commands = { "Graph TD", "A --- B" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal("A", Program.Nodes[1].Parent.Text);
+        }
     }
 }

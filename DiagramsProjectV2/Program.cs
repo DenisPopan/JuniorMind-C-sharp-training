@@ -33,6 +33,7 @@ namespace DiagramsProjectV2
                     {
                         var secondNode = AddNode(nodesText[1]);
                         Edges.Add(new Edge(firstNode, secondNode));
+                        secondNode.Parent = firstNode;
                     }
                 }
             }
