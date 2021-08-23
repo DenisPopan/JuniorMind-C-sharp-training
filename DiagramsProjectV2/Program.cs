@@ -7,59 +7,6 @@ namespace DiagramsProjectV2
 {
     public static class Program
     {
-        public static List<Node> Nodes { get; } = new List<Node>();
-
-        public static List<Edge> Edges { get; } = new List<Edge>();
-
-        public static int LastNodeId { get; set; }
-
-        public static void AddFlowchartElements(string[] commands)
-        {
-            ProjectUtils.EnsureIsNotNull(commands, nameof(commands));
-
-            string[] nodesText;
-            Node firstNode;
-            Node secondNode;
-
-            for (int i = 1; i < commands.Length; i++)
-            {
-                nodesText = commands[i].Split(" --- ");
-                firstNode = Nodes.Find(x => x.Text.Equals(nodesText[0]));
-                if (firstNode == null)
-                {
-                    firstNode = AddNode(nodesText[0]);
-                    secondNode = AddNode(nodesText[1]);
-
-                    if (secondNode.Level == 1 || secondNode.Level == 0)
-                    {
-                        secondNode.Parent = firstNode;
-                        secondNode.Level = 2;
-                        firstNode.AddChild(secondNode);
-                    }
-
-                    firstNode.Level = secondNode.Level - 1;
-                    AddEdge(firstNode, secondNode);
-                }
-            }
-        }
-
-        static Node AddNode(string text)
-        {
-            var node = Nodes.Find(x => x.Text.Equals(text));
-            if (node == null)
-            {
-                Nodes.Add(new Node(Nodes.Count + 1, text));
-                node = Nodes[Nodes.Count - 1];
-            }
-
-            return node;
-        }
-
-        static void AddEdge(Node firstNode, Node secondNode)
-        {
-            Edges.Add(new Edge(firstNode, secondNode));
-        }
-
         static void Main(string[] args)
         {
             string[] commands;
@@ -80,14 +27,14 @@ namespace DiagramsProjectV2
             var styling = new Styling();
             styling.Graphics = g;
 
-            AddFlowchartElements(commands);
+            var flowchart = new Flowchart(commands);
 
-            Nodes[0].Build(g, 50, 50);
-            Nodes[1].Build(g, 50, 150);
+            flowchart.Nodes[0].Build(g, 50, 50);
+            flowchart.Nodes[1].Build(g, 50, 150);
 
-            DrawSimpleRectangle(Nodes[0].Text, Nodes[0].Rectangle, styling);
-            DrawSimpleRectangle(Nodes[1].Text, Nodes[1].Rectangle, styling);
-            DrawLink(Nodes[0].Rectangle, Nodes[1].Rectangle, styling);
+            DrawSimpleRectangle(flowchart.Nodes[0].Text, flowchart.Nodes[0].Rectangle, styling);
+            DrawSimpleRectangle(flowchart.Nodes[1].Text, flowchart.Nodes[1].Rectangle, styling);
+            DrawLink(flowchart.Nodes[0].Rectangle, flowchart.Nodes[1].Rectangle, styling);
 
             bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
         }
