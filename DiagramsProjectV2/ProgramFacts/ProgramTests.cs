@@ -34,5 +34,14 @@ namespace ProgramFacts
             Program.AddFlowchartElements(commands);
             Assert.Equal("A", Program.Nodes[1].Parent.Text);
         }
+
+        [Fact]
+        public void WhenTwoNewNodesAreAddedTheFirstShouldHaveLevel1AndTheSecondLevel2()
+        {
+            string[] commands = { "Graph TD", "A --- B" };
+            Program.AddFlowchartElements(commands);
+            Assert.Equal(1, Program.Nodes[0].Level);
+            Assert.Equal(2, Program.Nodes[1].Level);
+        }
     }
 }

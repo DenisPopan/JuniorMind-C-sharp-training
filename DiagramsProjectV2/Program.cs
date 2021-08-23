@@ -32,8 +32,10 @@ namespace DiagramsProjectV2
                     if (!secondNodeExists)
                     {
                         var secondNode = AddNode(nodesText[1]);
-                        Edges.Add(new Edge(firstNode, secondNode));
+                        AddEdge(firstNode, secondNode);
                         secondNode.Parent = firstNode;
+                        firstNode.Level = 1;
+                        secondNode.Level = 2;
                     }
                 }
             }
@@ -43,6 +45,11 @@ namespace DiagramsProjectV2
         {
             Nodes.Add(new Node(Nodes.Count + 1, text));
             return Nodes[Nodes.Count - 1];
+        }
+
+        static void AddEdge(Node firstNode, Node secondNode)
+        {
+            Edges.Add(new Edge(firstNode, secondNode));
         }
 
         static void Main(string[] args)
