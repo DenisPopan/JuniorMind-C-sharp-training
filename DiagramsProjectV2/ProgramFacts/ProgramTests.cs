@@ -1,3 +1,4 @@
+using DiagramsProjectV2;
 using Xunit;
 
 namespace ProgramFacts

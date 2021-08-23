@@ -5,11 +5,16 @@ using System.IO;
 
 namespace DiagramsProjectV2
 {
-    public class Program
+    public static class Program
     {
         public static List<Node> Nodes { get; } = new List<Node>();
 
         public static int LastNodeId { get; set; }
+
+        internal static void AddNode(string text)
+        {
+            Nodes.Add(new Node(Nodes.Count + 1, text));
+        }
 
         static void Main(string[] args)
         {
@@ -31,30 +36,29 @@ namespace DiagramsProjectV2
             var styling = new Styling();
             styling.Graphics = g;
 
-            string[] nodesText = commands[1].Split(" --- ");
+            string[] nodesText;
+            for (int i = 1; i < commands.Length; i++)
+            {
+                nodesText = commands[i].Split(" --- ");
+                if (!Nodes.Exists(x => x.Text.Equals(nodesText[0])))
+                {
+                    AddNode(nodesText[0]);
+                }
 
-            AddNode(g, nodesText[0]);
-            AddNode(g, nodesText[1]);
+                if (!Nodes.Exists(x => x.Text.Equals(nodesText[1])))
+                {
+                    AddNode(nodesText[1]);
+                }
+            }
+
+            Nodes[0].Build(g, 50, 50);
+            Nodes[1].Build(g, 50, 150);
 
             DrawSimpleRectangle(Nodes[0].Text, Nodes[0].Rectangle, styling);
             DrawSimpleRectangle(Nodes[1].Text, Nodes[1].Rectangle, styling);
             DrawLink(Nodes[0].Rectangle, Nodes[1].Rectangle, styling);
 
             bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
-        }
-
-        private static void AddNode(Graphics g, string text)
-        {
-            if (LastNodeId == 0)
-            {
-                Nodes.Add(new Node(g, 1, text, 50, 50));
-                LastNodeId = 1;
-            }
-            else
-            {
-                LastNodeId++;
-                Nodes.Add(new Node(g, LastNodeId, text, 50, 150));
-            }
         }
 
         static void DrawSimpleRectangle(string text, RectangleF rectangle, Styling styling)
