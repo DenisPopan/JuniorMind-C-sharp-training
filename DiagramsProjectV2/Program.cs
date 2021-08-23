@@ -9,6 +9,8 @@ namespace DiagramsProjectV2
     {
         public static List<Node> Nodes { get; } = new List<Node>();
 
+        public static List<Edge> Edges { get; } = new List<Edge>();
+
         public static int LastNodeId { get; set; }
 
         public static void AddFlowchartElements(string[] commands)
@@ -26,19 +28,19 @@ namespace DiagramsProjectV2
                 secondNodeExists = Nodes.Exists(x => x.Text.Equals(nodesText[1]));
                 if (!firstNodeExists)
                 {
-                    AddNode(nodesText[0]);
-                }
-
-                if (!secondNodeExists)
-                {
-                    AddNode(nodesText[1]);
+                    var firstNode = AddNode(nodesText[0]);
+                    if (!secondNodeExists)
+                    {
+                        var secondNode = AddNode(nodesText[1]);
+                    }
                 }
             }
         }
 
-        static void AddNode(string text)
+        static Node AddNode(string text)
         {
             Nodes.Add(new Node(Nodes.Count + 1, text));
+            return Nodes[Nodes.Count - 1];
         }
 
         static void Main(string[] args)
