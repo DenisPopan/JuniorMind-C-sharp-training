@@ -11,7 +11,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal(1, fl.Nodes[0].Id);
             Assert.Equal("A", fl.Nodes[0].Text);
             Assert.Equal(2, fl.Nodes[1].Id);
@@ -23,7 +22,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Single(fl.Edges);
             Assert.Equal("A", fl.Edges[0].FirstNode.Text);
             Assert.Equal("B", fl.Edges[0].SecondNode.Text);
@@ -34,7 +32,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal("A", fl.Nodes[1].Parent.Text);
         }
 
@@ -43,7 +40,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal(1, fl.Nodes[0].Level);
             Assert.Equal(2, fl.Nodes[1].Level);
         }
@@ -53,7 +49,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal(2, fl.Nodes[0].GetChildren()[0].Id);
         }
 
@@ -62,7 +57,6 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B", "C --- A" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal(2, fl.Nodes[0].Level);
         }
 
@@ -71,10 +65,24 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B", "C --- A" };
             var fl = new Flowchart(commands);
-            fl.AddFlowchartElements(commands);
             Assert.Equal(2, fl.Nodes[0].Level);
             Assert.Equal(3, fl.Nodes[1].Level);
             Assert.Equal(1, fl.Nodes[2].Level);
+        }
+
+        [Fact]
+        public void IfOnlyFirstNodeExistsThenTheSecondShouldBeOneLevelBelowAndBecomeItsChild()
+        {
+            string[] commands = { "Graph TD", "A --- B", "A --- C" };
+            var fl = new Flowchart(commands);
+            Assert.Equal(1, fl.Nodes[0].Level);
+            Assert.Equal(2, fl.Nodes[1].Level);
+            Assert.Equal(2, fl.Nodes[2].Level);
+            var children = fl.Nodes[0].GetChildren();
+            Assert.Equal(2, children[0].Id);
+            Assert.Equal(3, children[1].Id);
+            Assert.Equal(1, children[0].Parent.Id);
+            Assert.Equal(1, children[1].Parent.Id);
         }
     }
 }

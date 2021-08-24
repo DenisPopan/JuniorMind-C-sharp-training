@@ -8,6 +8,7 @@ namespace DiagramsProjectV2
     {
         public Flowchart(string[] commands)
         {
+            ProjectUtils.EnsureIsNotNull(commands, nameof(commands));
             AddFlowchartElements(commands);
         }
 
@@ -15,10 +16,8 @@ namespace DiagramsProjectV2
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
-        public void AddFlowchartElements(string[] commands)
+        void AddFlowchartElements(string[] commands)
         {
-            ProjectUtils.EnsureIsNotNull(commands, nameof(commands));
-
             string[] nodesText;
             Node firstNode;
             Node secondNode;
@@ -26,12 +25,10 @@ namespace DiagramsProjectV2
             for (int i = 1; i < commands.Length; i++)
             {
                 nodesText = commands[i].Split(" --- ");
-                firstNode = Nodes.Find(x => x.Text.Equals(nodesText[0]));
-                if (firstNode == null)
+                firstNode = AddNode(nodesText[0]);
+                secondNode = AddNode(nodesText[1]);
+                if (firstNode.Level == 0)
                 {
-                    firstNode = AddNode(nodesText[0]);
-                    secondNode = AddNode(nodesText[1]);
-
                     if (secondNode.Level == 1 || secondNode.Level == 0)
                     {
                         secondNode.Parent = firstNode;
@@ -40,8 +37,18 @@ namespace DiagramsProjectV2
                     }
 
                     firstNode.Level = secondNode.Level - 1;
-                    AddEdge(firstNode, secondNode);
                 }
+                else
+                {
+                    if (secondNode.Level == 0)
+                    {
+                        secondNode.Level = firstNode.Level + 1;
+                        secondNode.Parent = firstNode;
+                        firstNode.AddChild(secondNode);
+                    }
+                }
+
+                AddEdge(firstNode, secondNode);
             }
         }
 
