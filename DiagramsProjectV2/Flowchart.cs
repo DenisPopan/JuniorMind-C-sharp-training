@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace DiagramsProjectV2
 {
@@ -15,6 +16,30 @@ namespace DiagramsProjectV2
         public List<Node> Nodes { get; } = new List<Node>();
 
         public List<Edge> Edges { get; } = new List<Edge>();
+
+        public void Draw()
+        {
+            var styling = new Styling();
+            float startX = 50;
+            float startY = 50;
+            foreach (var group in Nodes.GroupBy(x => x.Level))
+            {
+                foreach (var node in group)
+                {
+                    node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
+                    Program.DrawSimpleRectangle(node.Text, node.Rectangle, styling);
+                    startX = startX + node.Width + 100;
+                }
+
+                startY += 100;
+                startX = 50;
+            }
+
+            foreach (var edge in Edges)
+            {
+                Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle, styling);
+            }
+        }
 
         void AddFlowchartElements(string[] commands)
         {

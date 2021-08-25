@@ -18,8 +18,6 @@ namespace DiagramsProjectV2
             };
         }
 
-        public Graphics Graphics { get; set; }
-
         public SolidBrush ShapeBrush { get; }
 
         public Pen ShapePen { get; }

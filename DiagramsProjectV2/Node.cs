@@ -13,13 +13,24 @@ namespace DiagramsProjectV2
             Id = id;
             Text = text;
             children = new List<Node>();
+            const float widthAdjustment = 30;
+            const float heightAdjustment = 10;
+            using FontFamily fontFamily = new FontFamily("Arial");
+            using var font = new Font(fontFamily, 23);
+            SizeF stringSize = Program.Graphics.MeasureString(Text, font);
+            Width = stringSize.Width + widthAdjustment;
+            Height = stringSize.Height + heightAdjustment;
         }
 
         public int Id { get; }
 
-        public RectangleF Rectangle { get; private set; }
+        public RectangleF Rectangle { get; set; }
 
         public string Text { get; }
+
+        public float Width { get; }
+
+        public float Height { get; }
 
         public int Level
         {
@@ -39,17 +50,6 @@ namespace DiagramsProjectV2
         }
 
         public Node Parent { get; set; }
-
-        public void Build(Graphics graphics, float x, float y)
-        {
-            ProjectUtils.EnsureIsNotNull(graphics, nameof(graphics));
-            const float widthAdjustment = 30;
-            const float heightAdjustment = 10;
-            using FontFamily fontFamily = new FontFamily("Arial");
-            using var font = new Font(fontFamily, 23);
-            SizeF stringSize = graphics.MeasureString(Text, font);
-            Rectangle = new RectangleF(x, y, stringSize.Width + widthAdjustment, stringSize.Height + heightAdjustment);
-        }
 
         public void AddChild(Node child)
         {
