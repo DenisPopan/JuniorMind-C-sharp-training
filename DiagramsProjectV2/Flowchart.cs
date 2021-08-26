@@ -31,7 +31,7 @@ namespace DiagramsProjectV2
                     startX = startX + node.Width + 100;
                 }
 
-                startY += 100;
+                startY += 200;
                 startX = 50;
             }
 

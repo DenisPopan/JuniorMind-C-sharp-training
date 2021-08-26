@@ -1,13 +1,13 @@
 graph TD
-A --- B
-B --- C
-C --- D
-B --- G
-B --- H
+Christmas --- Go shopping
+Go shopping --- Let me think
+Let me think --- Laptop
+Go shopping --- G
+Go shopping --- H
 H --- M
 H --- z
 H --- N
-A --- bsd
-bsd --- C
+Christmas --- bsd
+bsd --- Let me think
 bsd --- G
 bsd --- H

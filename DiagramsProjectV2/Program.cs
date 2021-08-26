@@ -26,7 +26,7 @@ namespace DiagramsProjectV2
         public static void DrawLink(RectangleF rect1, RectangleF rect2, Styling styling)
         {
             ProjectUtils.EnsureIsNotNull(styling, nameof(styling));
-            Graphics.DrawLine(styling.ShapePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
+            Graphics.DrawLine(styling.EdgePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
         }
 
         static void Main(string[] args)

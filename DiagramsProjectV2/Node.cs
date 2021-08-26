@@ -13,8 +13,8 @@ namespace DiagramsProjectV2
             Id = id;
             Text = text;
             children = new List<Node>();
-            const float widthAdjustment = 30;
-            const float heightAdjustment = 10;
+            const float widthAdjustment = 20;
+            const float heightAdjustment = 35;
             using FontFamily fontFamily = new FontFamily("Arial");
             using var font = new Font(fontFamily, 23);
             SizeF stringSize = Program.Graphics.MeasureString(Text, font);
