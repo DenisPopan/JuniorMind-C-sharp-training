@@ -17,7 +17,12 @@ namespace DiagramsProjectV2
             const float heightAdjustment = 35;
             using FontFamily fontFamily = new FontFamily("Arial");
             using var font = new Font(fontFamily, 23);
-            SizeF stringSize = Program.Graphics.MeasureString(Text, font);
+            if (Canva.Graphics == null)
+            {
+                Canva.InitialiseDrawing();
+            }
+
+            SizeF stringSize = Canva.Graphics.MeasureString(Text, font);
             Width = stringSize.Width + widthAdjustment;
             Height = stringSize.Height + heightAdjustment;
         }

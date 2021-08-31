@@ -6,13 +6,11 @@ namespace DiagramsProjectV2
 {
     public static class Program
     {
-        public static Graphics Graphics { get; set; }
-
         public static void DrawSimpleRectangle(string text, RectangleF rectangle)
         {
-            Graphics.FillRectangle(BasicStyling.ShapeBrush, rectangle);
-            Graphics.DrawRectangle(BasicStyling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
-            Graphics.DrawString(
+            Canva.Graphics.FillRectangle(BasicStyling.ShapeBrush, rectangle);
+            Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            Canva.Graphics.DrawString(
                 text,
                 BasicStyling.Font,
                 BasicStyling.TextBrush,
@@ -23,7 +21,7 @@ namespace DiagramsProjectV2
 
         public static void DrawLink(RectangleF rect1, RectangleF rect2)
         {
-            Graphics.DrawLine(BasicStyling.EdgePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
+            Canva.Graphics.DrawLine(BasicStyling.EdgePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
         }
 
         static void Main(string[] args)
@@ -39,15 +37,8 @@ namespace DiagramsProjectV2
                 return;
             }
 
-            // Initialising bitmap and styling class instance
-            using Bitmap bmp = new Bitmap(1920, 1080);
-            Graphics = Graphics.FromImage(bmp);
-            Graphics.Clear(Color.White);
-
             var flowchart = new Flowchart(commands);
-            flowchart.Draw();
-
-            bmp.Save(args[1], System.Drawing.Imaging.ImageFormat.Png);
+            flowchart.Draw(args[1]);
         }
     }
 }

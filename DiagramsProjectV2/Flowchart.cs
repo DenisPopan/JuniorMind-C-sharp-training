@@ -16,8 +16,9 @@ namespace DiagramsProjectV2
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
-        public void Draw()
+        public void Draw(string location)
         {
+            Canva.InitialiseDrawing();
             float startX = 50;
             float startY = 50;
 
@@ -45,6 +46,8 @@ namespace DiagramsProjectV2
             {
                 Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle);
             }
+
+            Canva.SaveDrawing(location);
         }
 
         void AddFlowchartElements(string[] commands)
