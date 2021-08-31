@@ -8,25 +8,22 @@ namespace DiagramsProjectV2
     {
         public static Graphics Graphics { get; set; }
 
-        public static void DrawSimpleRectangle(string text, RectangleF rectangle, Styling styling)
+        public static void DrawSimpleRectangle(string text, RectangleF rectangle)
         {
-            ProjectUtils.EnsureIsNotNull(styling, nameof(styling));
-
-            Graphics.FillRectangle(styling.ShapeBrush, rectangle);
-            Graphics.DrawRectangle(styling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
+            Graphics.FillRectangle(BasicStyling.ShapeBrush, rectangle);
+            Graphics.DrawRectangle(BasicStyling.ShapePen, rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height);
             Graphics.DrawString(
                 text,
-                styling.Font,
-                styling.TextBrush,
+                BasicStyling.Font,
+                BasicStyling.TextBrush,
                 rectangle.X + rectangle.Width / 2,
                 rectangle.Y + rectangle.Height / 2,
-                styling.Format);
+                BasicStyling.Format);
         }
 
-        public static void DrawLink(RectangleF rect1, RectangleF rect2, Styling styling)
+        public static void DrawLink(RectangleF rect1, RectangleF rect2)
         {
-            ProjectUtils.EnsureIsNotNull(styling, nameof(styling));
-            Graphics.DrawLine(styling.EdgePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
+            Graphics.DrawLine(BasicStyling.EdgePen, rect1.Left + rect1.Width / 2, rect1.Bottom, rect2.Left + rect2.Width / 2, rect2.Top);
         }
 
         static void Main(string[] args)

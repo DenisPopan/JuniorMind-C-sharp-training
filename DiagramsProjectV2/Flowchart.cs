@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -19,15 +18,22 @@ namespace DiagramsProjectV2
 
         public void Draw()
         {
-            var styling = new Styling();
             float startX = 50;
             float startY = 50;
+
             foreach (var group in Nodes.GroupBy(x => x.Level))
             {
-                foreach (var node in group)
+                System.Linq.IOrderedEnumerable<Node> orderedGroup = group.OrderBy(x => x.Level);
+
+                if (group.Key > 1)
+                {
+                    orderedGroup = group.OrderBy(x => x.Parent.Id);
+                }
+
+                foreach (var node in orderedGroup)
                 {
                     node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
-                    Program.DrawSimpleRectangle(node.Text, node.Rectangle, styling);
+                    Program.DrawSimpleRectangle(node.Text, node.Rectangle);
                     startX = startX + node.Width + 100;
                 }
 
@@ -37,7 +43,7 @@ namespace DiagramsProjectV2
 
             foreach (var edge in Edges)
             {
-                Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle, styling);
+                Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle);
             }
         }
 
@@ -71,6 +77,13 @@ namespace DiagramsProjectV2
                         secondNode.Parent = firstNode;
                         firstNode.AddChild(secondNode);
                     }
+                }
+
+                if (firstNode.Id < secondNode.Parent.Id)
+                {
+                    secondNode.Parent.RemoveChild(secondNode);
+                    secondNode.Parent = firstNode;
+                    firstNode.AddChild(secondNode);
                 }
 
                 AddEdge(firstNode, secondNode);

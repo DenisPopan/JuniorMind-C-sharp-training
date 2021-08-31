@@ -84,5 +84,33 @@ namespace ProgramFacts
             Assert.Equal(1, children[0].Parent.Id);
             Assert.Equal(1, children[1].Parent.Id);
         }
+
+        [Fact]
+        public void Test()
+        {
+            string[] commands =
+            {
+                "Graph TD",
+                "Christmas --- Go shopping",
+                "Go shopping --- Let me think",
+                "Let me think --- Laptop",
+                "Go shopping --- G",
+                "Go shopping --- H",
+                "H --- M",
+                "H --- z",
+                "H --- N",
+                "Christmas --- bsd",
+                "bsd --- Let me think",
+                "bsd --- G",
+                "bsd --- H",
+                "bsd --- nn",
+                "bsd --- mna",
+                "Go shopping --- asd",
+                "Let me think --- N",
+                "Christmas --- BGH",
+                "Christmas --- HGN"
+            };
+            var fl = new Flowchart(commands);
+        }
     }
 }

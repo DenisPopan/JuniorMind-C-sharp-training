@@ -11,3 +11,9 @@ Christmas --- bsd
 bsd --- Let me think
 bsd --- G
 bsd --- H
+bsd --- nn
+bsd --- mna
+Go shopping --- asd
+Let me think --- N
+Christmas --- BGH
+Christmas --- HGN

@@ -56,6 +56,11 @@ namespace DiagramsProjectV2
             children.Add(child);
         }
 
+        public void RemoveChild(Node child)
+        {
+            children.Remove(child);
+        }
+
         public List<Node> GetChildren()
         {
             return children;
