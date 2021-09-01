@@ -86,6 +86,18 @@ namespace ProgramFacts
         }
 
         [Fact]
+        public void IfANodeHasAConnectionWithANodeAddedEarlierThanItsCurentParentThenThatNodeShouldBecomeItsParent()
+        {
+            string[] commands = { "Graph TD", "A --- B", "A --- C", "C --- D", "B --- D" };
+            var fl = new Flowchart(commands);
+            var children = fl.Nodes[1].GetChildren();
+            Assert.Equal("D", children[0].Text);
+            Assert.Equal("B", children[0].Parent.Text);
+            children = fl.Nodes[2].GetChildren();
+            Assert.Empty(children);
+        }
+
+        [Fact]
         public void Test()
         {
             string[] commands =
