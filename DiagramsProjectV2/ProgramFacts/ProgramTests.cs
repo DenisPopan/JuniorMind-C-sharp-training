@@ -98,6 +98,22 @@ namespace ProgramFacts
         }
 
         [Fact]
+        public void EveryNodeShouldHaveTheCorrectUpperEdges()
+        {
+            string[] commands = { "Graph TD", "A --- B", "A --- C", "C --- D", "B --- D" };
+            var fl = new Flowchart(commands);
+            Assert.Single(fl.Nodes[1].GetUpperEdges());
+            Assert.Equal(1, fl.Nodes[1].GetUpperEdges()[0]);
+
+            Assert.Single(fl.Nodes[2].GetUpperEdges());
+            Assert.Equal(1, fl.Nodes[2].GetUpperEdges()[0]);
+
+            Assert.Equal(2, fl.Nodes[3].GetUpperEdges().Count);
+            Assert.Equal(3, fl.Nodes[3].GetUpperEdges()[0]);
+            Assert.Equal(2, fl.Nodes[3].GetUpperEdges()[1]);
+        }
+
+        [Fact]
         public void Test()
         {
             string[] commands =

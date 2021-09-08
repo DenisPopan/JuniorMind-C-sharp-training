@@ -90,6 +90,7 @@ namespace DiagramsProjectV2
                 }
 
                 AddEdge(firstNode, secondNode);
+                secondNode.AddUpperEdge(firstNode.Id);
             }
         }
 
