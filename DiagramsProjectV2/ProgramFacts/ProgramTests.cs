@@ -102,6 +102,9 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B", "A --- C", "C --- D", "B --- D" };
             var fl = new Flowchart(commands);
+
+            Assert.Empty(fl.Nodes[0].GetUpperEdges());
+
             Assert.Single(fl.Nodes[1].GetUpperEdges());
             Assert.Equal(1, fl.Nodes[1].GetUpperEdges()[0]);
 
@@ -119,8 +122,8 @@ namespace ProgramFacts
             string[] commands =
             {
                 "Graph TD",
-                "Christmas --- Go shopping",
                 "Go shopping --- Let me think",
+                "Christmas --- Go shopping",
                 "Let me think --- Laptop",
                 "Go shopping --- G",
                 "Go shopping --- H",
@@ -139,6 +142,7 @@ namespace ProgramFacts
                 "Christmas --- HGN"
             };
             var fl = new Flowchart(commands);
+            fl.Draw("");
         }
     }
 }

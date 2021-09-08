@@ -19,19 +19,21 @@ namespace DiagramsProjectV2
         public void Draw(string location)
         {
             Canva.InitialiseDrawing();
-            float startX = 50;
+            float startX;
             float startY = 50;
+            float groupWidth;
 
-            foreach (var group in Nodes.GroupBy(x => x.Level))
+            foreach (var grouppedByLevel in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
             {
-                System.Linq.IOrderedEnumerable<Node> orderedGroup = group.OrderBy(x => x.Level);
-
-                if (group.Key > 1)
+                groupWidth = -100;
+                foreach (var node in grouppedByLevel)
                 {
-                    orderedGroup = group.OrderBy(x => x.Parent.Id);
+                    groupWidth += node.Width + 100;
                 }
 
-                foreach (var node in orderedGroup)
+                startX = Canva.Bitmap.Width / 2 - groupWidth / 2;
+
+                foreach (var node in grouppedByLevel)
                 {
                     node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
                     Program.DrawSimpleRectangle(node.Text, node.Rectangle);
@@ -39,7 +41,6 @@ namespace DiagramsProjectV2
                 }
 
                 startY += 200;
-                startX = 50;
             }
 
             foreach (var edge in Edges)
