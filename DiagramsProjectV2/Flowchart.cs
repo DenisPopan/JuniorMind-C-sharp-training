@@ -23,32 +23,49 @@ namespace DiagramsProjectV2
             float startY = 50;
             float groupWidth;
 
-            foreach (var grouppedByLevel in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
+            foreach (var groupedByLevel in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
             {
                 groupWidth = -100;
-                foreach (var node in grouppedByLevel)
-                {
-                    groupWidth += node.Width + 100;
-                }
+                groupWidth = FindGroupWidth(groupWidth, groupedByLevel);
 
                 startX = Canva.Bitmap.Width / 2 - groupWidth / 2;
 
-                foreach (var node in grouppedByLevel)
-                {
-                    node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
-                    Program.DrawSimpleRectangle(node.Text, node.Rectangle);
-                    startX = startX + node.Width + 100;
-                }
+                DrawGroup(startX, startY, groupedByLevel);
 
                 startY += 200;
             }
 
+            DrawEdges();
+
+            Canva.SaveDrawing(location);
+        }
+
+        private void DrawEdges()
+        {
             foreach (var edge in Edges)
             {
                 Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle);
             }
+        }
 
-            Canva.SaveDrawing(location);
+        private float FindGroupWidth(float groupWidth, IGrouping<int, Node> groupedByLevel)
+        {
+            foreach (var node in groupedByLevel)
+            {
+                groupWidth += node.Width + 100;
+            }
+
+            return groupWidth;
+        }
+
+        private void DrawGroup(float startX, float startY, IGrouping<int, Node> grouppedByLevel)
+        {
+            foreach (var node in grouppedByLevel)
+            {
+                node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
+                Program.DrawSimpleRectangle(node.Text, node.Rectangle);
+                startX = startX + node.Width + 100;
+            }
         }
 
         void AddFlowchartElements(string[] commands)
