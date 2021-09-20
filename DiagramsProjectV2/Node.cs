@@ -37,6 +37,8 @@ namespace DiagramsProjectV2
 
         public float Width { get; }
 
+        public float ChildrenWidth { get; set; }
+
         public float Height { get; }
 
         public int Level
@@ -81,6 +83,11 @@ namespace DiagramsProjectV2
         public List<Node> GetChildren()
         {
             return children;
+        }
+
+        public int GetChildrenCount()
+        {
+            return children.Count;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -19,18 +20,18 @@ namespace DiagramsProjectV2
         public void Draw(string location)
         {
             Canva.InitialiseDrawing();
-            float startX;
+            float startX = 50;
             float startY = 50;
-            float groupWidth;
+            FindChildrenWidth();
+            DrawGroup(ref startX, startY, Nodes.Where(x => x.Level == 1).OrderBy(x => x.Level));
+            startY += 200;
 
-            foreach (var groupedByLevel in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
+            foreach (var levelGroup in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
             {
-                groupWidth = -100;
-                groupWidth = FindGroupWidth(groupWidth, groupedByLevel);
-
-                startX = Canva.Bitmap.Width / 2 - groupWidth / 2;
-
-                DrawGroup(startX, startY, groupedByLevel);
+                foreach (var node in levelGroup)
+                {
+                    DrawGroup(node.Rectangle.Right - node.Width / 2 - node.ChildrenWidth / 2, startY, node.GetChildren());
+                }
 
                 startY += 200;
             }
@@ -48,23 +49,42 @@ namespace DiagramsProjectV2
             }
         }
 
-        private float FindGroupWidth(float groupWidth, IGrouping<int, Node> groupedByLevel)
+        private void FindChildrenWidth()
+        {
+            foreach (var node in Nodes.OrderByDescending(x => x.Level))
+            {
+                node.ChildrenWidth = node.GetChildrenCount() == 0 ? node.Width : CalculateChildrenWidth(node.GetChildren());
+            }
+        }
+
+        private float CalculateChildrenWidth(List<Node> children)
+        {
+            float width = -100;
+            foreach (var child in children)
+            {
+                width = width + child.ChildrenWidth + 100;
+            }
+
+            return width;
+        }
+
+        private void DrawGroup(ref float startX, float startY, IOrderedEnumerable<Node> groupedByLevel)
         {
             foreach (var node in groupedByLevel)
             {
-                groupWidth += node.Width + 100;
+                node.Rectangle = new RectangleF(startX + node.ChildrenWidth / 2, startY, node.Width, node.Height);
+                Program.DrawSimpleRectangle(node.Text, node.Rectangle);
+                startX = startX + node.ChildrenWidth + 100;
             }
-
-            return groupWidth;
         }
 
-        private void DrawGroup(float startX, float startY, IGrouping<int, Node> grouppedByLevel)
+        private void DrawGroup(float startX, float startY, List<Node> children)
         {
-            foreach (var node in grouppedByLevel)
+            foreach (var node in children)
             {
-                node.Rectangle = new RectangleF(startX, startY, node.Width, node.Height);
+                node.Rectangle = new RectangleF(node.GetChildrenCount() < 2 ? startX : startX + node.ChildrenWidth / 2, startY, node.Width, node.Height);
                 Program.DrawSimpleRectangle(node.Text, node.Rectangle);
-                startX = startX + node.Width + 100;
+                startX = startX + node.ChildrenWidth + 100;
             }
         }
 
@@ -92,17 +112,7 @@ namespace DiagramsProjectV2
                 }
                 else
                 {
-                    if (secondNode.Level == 0)
-                    {
-                        secondNode.Level = firstNode.Level + 1;
-                        secondNode.Parent = firstNode;
-                        firstNode.AddChild(secondNode);
-                    }
-                }
-
-                if (firstNode.Id < secondNode.Parent.Id)
-                {
-                    secondNode.Parent.RemoveChild(secondNode);
+                    secondNode.Level = firstNode.Level + 1;
                     secondNode.Parent = firstNode;
                     firstNode.AddChild(secondNode);
                 }

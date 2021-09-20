@@ -1,19 +1,33 @@
 graph TD
-Christmas --- Go shopping
-Go shopping --- Let me think
-Let me think --- Laptop
-Go shopping --- G
-Go shopping --- H
+A --- B
+B --- C
+B --- LL
+B --- OO
+B --- PP
+B --- MAN
+C --- D
+H --- OP
+H --- L
+L --- DA
+L --- MA
 H --- M
 H --- z
 H --- N
-Christmas --- bsd
-bsd --- Let me think
+A --- bsd
 bsd --- G
 bsd --- H
 bsd --- nn
 bsd --- mna
-Go shopping --- asd
-Let me think --- N
-Christmas --- BGH
-Christmas --- HGN
+A --- BGH
+BGH --- fe
+nn --- of
+C --- AL
+z --- me
+z --- not
+z --- po
+z --- ho
+ho --- la
+N --- J
+V --- NA
+NA --- BS
+BGH --- FF

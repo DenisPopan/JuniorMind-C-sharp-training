@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace DiagramsProjectV2
 {
@@ -7,11 +6,10 @@ namespace DiagramsProjectV2
     {
         public static Graphics Graphics { get; private set; }
 
-        public static Bitmap Bitmap { get; private set; } = new Bitmap(1920, 1080);
+        public static Bitmap Bitmap { get; } = new Bitmap(4000, 2000);
 
         public static void InitialiseDrawing()
         {
-            Bitmap = new Bitmap(1920, 1080);
             Graphics = Graphics.FromImage(Bitmap);
             Graphics.Clear(Color.White);
         }
