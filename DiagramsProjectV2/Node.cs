@@ -6,7 +6,6 @@ namespace DiagramsProjectV2
     public class Node
     {
         readonly List<Node> children;
-        readonly List<int> upperEdges;
         int level;
 
         public Node(int id, string text)
@@ -14,7 +13,6 @@ namespace DiagramsProjectV2
             Id = id;
             Text = text;
             children = new List<Node>();
-            upperEdges = new List<int>();
             const float widthAdjustment = 20;
             const float heightAdjustment = 35;
             using FontFamily fontFamily = new FontFamily("Arial");
@@ -63,16 +61,6 @@ namespace DiagramsProjectV2
         public void AddChild(Node child)
         {
             children.Add(child);
-        }
-
-        public void AddUpperEdge(int id)
-        {
-            upperEdges.Add(id);
-        }
-
-        public List<int> GetUpperEdges()
-        {
-            return upperEdges;
         }
 
         public void RemoveChild(Node child)

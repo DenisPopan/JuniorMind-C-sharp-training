@@ -1,4 +1,6 @@
 graph TD
+ke --- wer
+ke --- noh
 A --- B
 B --- C
 B --- LL
@@ -25,8 +27,8 @@ C --- AL
 z --- me
 z --- not
 z --- po
-z --- ho
-ho --- la
+z --- hoooooo
+hoooooo --- la
 N --- J
 V --- NA
 NA --- BS
