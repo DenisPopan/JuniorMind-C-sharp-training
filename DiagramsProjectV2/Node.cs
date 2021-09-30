@@ -8,7 +8,7 @@ namespace DiagramsProjectV2
         readonly List<Node> children;
         int level;
 
-        public Node(int id, string text)
+        public Node(string id, string text)
         {
             Id = id;
             Text = text;
@@ -27,7 +27,7 @@ namespace DiagramsProjectV2
             Height = stringSize.Height + heightAdjustment;
         }
 
-        public int Id { get; }
+        public string Id { get; }
 
         public RectangleF Rectangle { get; set; }
 

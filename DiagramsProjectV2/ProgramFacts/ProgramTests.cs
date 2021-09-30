@@ -11,9 +11,9 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            Assert.Equal(1, fl.Nodes[0].Id);
+            Assert.Equal("A", fl.Nodes[0].Id);
             Assert.Equal("A", fl.Nodes[0].Text);
-            Assert.Equal(2, fl.Nodes[1].Id);
+            Assert.Equal("B", fl.Nodes[1].Id);
             Assert.Equal("B", fl.Nodes[1].Text);
         }
 
@@ -49,7 +49,7 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            Assert.Equal(2, fl.Nodes[0].GetChildren()[0].Id);
+            Assert.Equal("B", fl.Nodes[0].GetChildren()[0].Id);
         }
 
         [Fact]
@@ -79,51 +79,10 @@ namespace ProgramFacts
             Assert.Equal(2, fl.Nodes[1].Level);
             Assert.Equal(2, fl.Nodes[2].Level);
             var children = fl.Nodes[0].GetChildren();
-            Assert.Equal(2, children[0].Id);
-            Assert.Equal(3, children[1].Id);
-            Assert.Equal(1, children[0].Parent.Id);
-            Assert.Equal(1, children[1].Parent.Id);
-        }
-
-        [Fact]
-        public void IfANodeHasAConnectionWithANodeAddedEarlierThanItsCurentParentThenThatNodeShouldBecomeItsParent()
-        {
-            string[] commands = { "Graph TD", "A --- B", "A --- C", "C --- D", "B --- D" };
-            var fl = new Flowchart(commands);
-            var children = fl.Nodes[1].GetChildren();
-            Assert.Equal("D", children[0].Text);
-            Assert.Equal("B", children[0].Parent.Text);
-            children = fl.Nodes[2].GetChildren();
-            Assert.Empty(children);
-        }
-
-        [Fact]
-        public void Test()
-        {
-            string[] commands =
-            {
-                "Graph TD",
-                "Go shopping --- Let me think",
-                "Christmas --- Go shopping",
-                "Let me think --- Laptop",
-                "Go shopping --- G",
-                "Go shopping --- H",
-                "H --- M",
-                "H --- z",
-                "H --- N",
-                "Christmas --- bsd",
-                "bsd --- Let me think",
-                "bsd --- G",
-                "bsd --- H",
-                "bsd --- nn",
-                "bsd --- mna",
-                "Go shopping --- asd",
-                "Let me think --- N",
-                "Christmas --- BGH",
-                "Christmas --- HGN"
-            };
-            var fl = new Flowchart(commands);
-            fl.Draw("");
+            Assert.Equal("B", children[0].Id);
+            Assert.Equal("C", children[1].Id);
+            Assert.Equal("A", children[0].Parent.Id);
+            Assert.Equal("A", children[1].Parent.Id);
         }
     }
 }

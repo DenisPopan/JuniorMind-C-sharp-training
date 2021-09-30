@@ -55,7 +55,7 @@ namespace DiagramsProjectV2
             float width = -100;
             foreach (var child in children)
             {
-                width = child.GetChildrenCount() == 0 ? width + child.Width + 100 : width + Math.Max(child.Width, child.ChildrenWidth) + 100;
+                width = width + Math.Max(child.Width, child.ChildrenWidth) + 100;
             }
 
             return width;
@@ -124,9 +124,8 @@ namespace DiagramsProjectV2
                         secondNode.Parent = firstNode;
                         secondNode.Level = 2;
                         firstNode.AddChild(secondNode);
+                        firstNode.Level = 1;
                     }
-
-                    firstNode.Level = secondNode.Level - 1;
                 }
                 else
                 {
@@ -144,7 +143,7 @@ namespace DiagramsProjectV2
             var node = Nodes.Find(x => x.Text.Equals(text));
             if (node == null)
             {
-                Nodes.Add(new Node(Nodes.Count + 1, text));
+                Nodes.Add(new Node(text, text));
                 node = Nodes[Nodes.Count - 1];
             }
 
