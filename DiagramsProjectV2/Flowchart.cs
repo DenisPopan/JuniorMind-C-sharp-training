@@ -129,9 +129,13 @@ namespace DiagramsProjectV2
                 }
                 else
                 {
-                    secondNode.Level = firstNode.Level + 1;
-                    secondNode.Parent = firstNode;
-                    firstNode.AddChild(secondNode);
+                    if (firstNode.Level >= secondNode.Level)
+                    {
+                        secondNode.Parent?.RemoveChild(secondNode);
+                        secondNode.Level = firstNode.Level + 1;
+                        secondNode.Parent = firstNode;
+                        firstNode.AddChild(secondNode);
+                    }
                 }
 
                 AddEdge(firstNode, secondNode);
