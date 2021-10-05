@@ -86,18 +86,21 @@ namespace ProgramFacts
         }
 
         [Fact]
-        public void IfSecondNodeHasAParentThenItShouldNoLongerBeItsChild()
+        public void IfSecondNodeHasAParentThenItShouldNoLongerBeItsChildIfTheFirstNodeIsHigherInLevel()
         {
-            string[] commands = { "Graph TD", "A --- B", "A --- C", "B --- D", "C --- D" };
+            string[] commands = { "Graph TD", "A --- B", "A --- C", "B --- D", "D --- C" };
             var fl = new Flowchart(commands);
             Assert.Equal(1, fl.Nodes[0].Level);
             Assert.Equal(2, fl.Nodes[1].Level);
-            Assert.Equal(2, fl.Nodes[2].Level);
+            Assert.Equal(4, fl.Nodes[2].Level);
+            Assert.Equal(3, fl.Nodes[3].Level);
             var children = fl.Nodes[0].GetChildren();
             Assert.Equal("B", children[0].Id);
-            Assert.Equal("C", children[1].Id);
-            Assert.Equal("A", children[0].Parent.Id);
-            Assert.Equal("A", children[1].Parent.Id);
+            Assert.Equal(1, fl.Nodes[0].GetChildrenCount());
+            Assert.Equal(1, fl.Nodes[3].GetChildrenCount());
+            var children1 = fl.Nodes[3].GetChildren();
+            Assert.Equal("C", children1[0].Id);
+            Assert.Equal("D", children1[0].Parent.Id);
         }
     }
 }

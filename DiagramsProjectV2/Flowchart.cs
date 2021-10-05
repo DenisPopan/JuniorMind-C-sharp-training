@@ -121,25 +121,33 @@ namespace DiagramsProjectV2
                 {
                     if (secondNode.Level == 1 || secondNode.Level == 0)
                     {
-                        secondNode.Parent = firstNode;
-                        secondNode.Level = 2;
-                        firstNode.AddChild(secondNode);
                         firstNode.Level = 1;
+                        SetParentChildRelationship(firstNode, secondNode);
                     }
                 }
                 else
                 {
+                    if (secondNode.Level == 0)
+                    {
+                        SetParentChildRelationship(firstNode, secondNode);
+                    }
+
                     if (firstNode.Level >= secondNode.Level)
                     {
                         secondNode.Parent?.RemoveChild(secondNode);
-                        secondNode.Level = firstNode.Level + 1;
-                        secondNode.Parent = firstNode;
-                        firstNode.AddChild(secondNode);
+                        SetParentChildRelationship(firstNode, secondNode);
                     }
                 }
 
                 AddEdge(firstNode, secondNode);
             }
+        }
+
+        void SetParentChildRelationship(Node firstNode, Node secondNode)
+        {
+            secondNode.Parent = firstNode;
+            secondNode.Level = firstNode.Level + 1;
+            firstNode.AddChild(secondNode);
         }
 
         Node AddNode(string text)
