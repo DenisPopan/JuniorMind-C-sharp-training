@@ -12,7 +12,7 @@ namespace DiagramsProjectV2
 
         public static SolidBrush TextBrush { get; } = new SolidBrush(Color.Black);
 
-        public static Font Font { get; } = new Font(new FontFamily("Arial"), 19);
+        public static Font Font { get; } = new Font(new FontFamily("Arial"), 23);
 
         public static StringFormat Format { get; } = new StringFormat
         {

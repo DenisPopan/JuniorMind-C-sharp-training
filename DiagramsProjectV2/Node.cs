@@ -15,14 +15,12 @@ namespace DiagramsProjectV2
             children = new List<Node>();
             const float widthAdjustment = 20;
             const float heightAdjustment = 35;
-            using FontFamily fontFamily = new FontFamily("Arial");
-            using var font = new Font(fontFamily, 23);
             if (Canva.Graphics == null)
             {
                 Canva.InitialiseDrawing();
             }
 
-            SizeF stringSize = Canva.Graphics.MeasureString(Text, font);
+            SizeF stringSize = Canva.Graphics.MeasureString(Text, BasicStyling.Font);
             Width = stringSize.Width + widthAdjustment;
             Height = stringSize.Height + heightAdjustment;
         }

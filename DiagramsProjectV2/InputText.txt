@@ -26,3 +26,15 @@ N --- J
 V --- NA
 NA --- BS
 BGH --- FF
+H --- LAS
+H --- BAS
+H --- NAS
+H --- VAS
+A --- MEEE
+MEEE --- ZEP
+MEEE --- GFEP
+MEEE --- DEP
+MEEE --- REP
+C --- of
+ZEP --- of
+ZEP --- N

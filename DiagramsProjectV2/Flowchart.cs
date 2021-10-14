@@ -20,6 +20,13 @@ namespace DiagramsProjectV2
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
+        public void MoveTo(Node node, int index)
+        {
+            var item = node;
+            Nodes.Remove(node);
+            Nodes.Insert(index, item);
+        }
+
         public void Draw(string location)
         {
             float startY = 50;
@@ -65,9 +72,12 @@ namespace DiagramsProjectV2
         {
             foreach (var levelGroup in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
             {
-                foreach (var node in levelGroup)
+                if (levelGroup.Key > 1)
                 {
-                    DrawGroup(node.Rectangle.Right - node.Width / 2 - node.ChildrenWidth / 2, startY, node.GetChildren());
+                    foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
+                    {
+                        DrawGroup(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
+                    }
                 }
 
                 startY = currentLevelHeightEndPoint + 130;
