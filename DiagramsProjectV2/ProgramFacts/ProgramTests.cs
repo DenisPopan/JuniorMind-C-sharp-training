@@ -1,5 +1,6 @@
 using DiagramsProjectV2;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -50,7 +51,8 @@ namespace ProgramFacts
         {
             string[] commands = { "Graph TD", "A --- B" };
             var fl = new Flowchart(commands);
-            Assert.Equal("B", fl.Nodes[0].GetChildren()[0].Id);
+            var children = fl.Nodes[0].GetChildren();
+            Assert.Equal("B", children[0].Id);
         }
 
         [Fact]
@@ -111,19 +113,19 @@ namespace ProgramFacts
             var fl = new Flowchart(commands);
             Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
 
-            fl.MoveTo(fl.Nodes.Find(x => x.Id.Equals("A")), 2);
+            fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 2);
             Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("B")));
             Assert.Equal(2, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
             Assert.Equal(1, fl.Nodes.FindIndex(x => x.Id.Equals("C")));
             Assert.Equal(3, fl.Nodes.FindIndex(x => x.Id.Equals("D")));
 
-            fl.MoveTo(fl.Nodes.Find(x => x.Id.Equals("A")), 3);
+            fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 3);
             Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("B")));
             Assert.Equal(3, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
             Assert.Equal(1, fl.Nodes.FindIndex(x => x.Id.Equals("C")));
             Assert.Equal(2, fl.Nodes.FindIndex(x => x.Id.Equals("D")));
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => fl.MoveTo(fl.Nodes.Find(x => x.Id.Equals("A")), 4));
+            Assert.Throws<ArgumentOutOfRangeException>(() => fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 4));
         }
     }
 }

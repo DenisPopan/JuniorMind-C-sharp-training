@@ -19,5 +19,9 @@ namespace DiagramsProjectV2
             Alignment = StringAlignment.Center,
             LineAlignment = StringAlignment.Center
         };
+
+        public static float WidthAdjustment { get; } = 20;
+
+        public static float HeightAdjustment { get; } = 35;
     }
 }

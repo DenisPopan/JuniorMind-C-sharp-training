@@ -1,28 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace DiagramsProjectV2
 {
     public class Node
     {
-        readonly List<Node> children;
         int level;
 
-        public Node(string id, string text)
+        public Node(string id, string text, Flowchart flowchart)
         {
             Id = id;
             Text = text;
-            children = new List<Node>();
-            const float widthAdjustment = 20;
-            const float heightAdjustment = 35;
-            if (Canva.Graphics == null)
-            {
-                Canva.InitialiseDrawing();
-            }
+            Flowchart = flowchart;
 
             SizeF stringSize = Canva.Graphics.MeasureString(Text, BasicStyling.Font);
-            Width = stringSize.Width + widthAdjustment;
-            Height = stringSize.Height + heightAdjustment;
+            Width = stringSize.Width + BasicStyling.WidthAdjustment;
+            Height = stringSize.Height + BasicStyling.HeightAdjustment;
         }
 
         public string Id { get; }
@@ -47,7 +41,7 @@ namespace DiagramsProjectV2
             set
             {
                 level = value;
-                foreach (var child in children)
+                foreach (var child in GetChildren())
                 {
                     child.Level = level + 1;
                 }
@@ -56,24 +50,16 @@ namespace DiagramsProjectV2
 
         public Node Parent { get; set; }
 
-        public void AddChild(Node child)
-        {
-            children.Add(child);
-        }
-
-        public void RemoveChild(Node child)
-        {
-            children.Remove(child);
-        }
+        Flowchart Flowchart { get; }
 
         public List<Node> GetChildren()
         {
-            return children;
+            return Flowchart.Nodes.Where(x => x.Level > 1 && x.Parent.Equals(this)).ToList();
         }
 
         public int GetChildrenCount()
         {
-            return children.Count;
+            return Flowchart.Nodes.Count(x => x.Level > 1 && x.Parent.Equals(this));
         }
     }
 }

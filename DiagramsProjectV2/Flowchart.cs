@@ -8,6 +8,7 @@ namespace DiagramsProjectV2
     public class Flowchart
     {
         float currentLevelHeightEndPoint;
+        int nodesOrderID;
 
         public Flowchart(string[] commands)
         {
@@ -20,7 +21,7 @@ namespace DiagramsProjectV2
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
-        public void MoveTo(Node node, int index)
+        public void MoveNodeTo(Node node, int index)
         {
             var item = node;
             Nodes.Remove(node);
@@ -30,7 +31,6 @@ namespace DiagramsProjectV2
         public void Draw(string location)
         {
             float startY = 50;
-            Canva.InitialiseDrawing();
 
             FindChildrenWidth();
 
@@ -48,13 +48,14 @@ namespace DiagramsProjectV2
         {
             foreach (var node in Nodes.OrderByDescending(x => x.Level))
             {
-                node.ChildrenWidth = CalculateChildrenWidth(node.GetChildren());
+                var children = Nodes.Where(x => x.Level > 1 && x.Parent.Equals(node));
+                node.ChildrenWidth = CalculateChildrenWidth(children);
             }
         }
 
-        private float CalculateChildrenWidth(List<Node> children)
+        private float CalculateChildrenWidth(IEnumerable<Node> children)
         {
-            if (children.Count == 0)
+            if (!children.Any())
             {
                 return 0;
             }
@@ -118,6 +119,7 @@ namespace DiagramsProjectV2
 
         void AddFlowchartElements(string[] commands)
         {
+            Canva.InitialiseDrawing();
             string[] nodesText;
             Node firstNode;
             Node secondNode;
@@ -144,7 +146,6 @@ namespace DiagramsProjectV2
 
                     if (firstNode.Level >= secondNode.Level)
                     {
-                        secondNode.Parent?.RemoveChild(secondNode);
                         SetParentChildRelationship(firstNode, secondNode);
                     }
                 }
@@ -157,7 +158,6 @@ namespace DiagramsProjectV2
         {
             secondNode.Parent = firstNode;
             secondNode.Level = firstNode.Level + 1;
-            firstNode.AddChild(secondNode);
         }
 
         Node AddNode(string text)
@@ -165,8 +165,9 @@ namespace DiagramsProjectV2
             var node = Nodes.Find(x => x.Text.Equals(text));
             if (node == null)
             {
-                Nodes.Add(new Node(text, text));
-                node = Nodes[Nodes.Count - 1];
+                Nodes.Add(new Node(text, text, this, nodesOrderID));
+                nodesOrderID++;
+                node = Nodes[^1];
             }
 
             return node;
