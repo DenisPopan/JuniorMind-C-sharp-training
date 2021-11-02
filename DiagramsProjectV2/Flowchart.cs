@@ -8,7 +8,7 @@ namespace DiagramsProjectV2
     public class Flowchart
     {
         float currentLevelHeightEndPoint;
-        int nodesOrderID;
+        int levels;
 
         public Flowchart(string[] commands)
         {
@@ -17,7 +17,7 @@ namespace DiagramsProjectV2
             currentLevelHeightEndPoint = 0;
         }
 
-        public List<Node> Nodes { get; } = new List<Node>();
+        public List<Node> Nodes { get; private set; } = new List<Node>();
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
@@ -32,6 +32,8 @@ namespace DiagramsProjectV2
         {
             float startY = 50;
 
+            FixNodesOrder();
+
             FindChildrenWidth();
 
             DrawGroup(50, startY, Nodes.Where(x => x.Level == 1));
@@ -42,6 +44,21 @@ namespace DiagramsProjectV2
             DrawEdges();
 
             Canva.SaveDrawing(location);
+        }
+
+        private void FixNodesOrder()
+        {
+            List<Node> tempList = new List<Node>();
+            tempList.AddRange(Nodes.Where(x => x.Level == 1));
+            for (int i = 1; i < levels; i++)
+            {
+                foreach (var node in tempList.Where(x => x.Level == i).ToList())
+                {
+                    tempList.AddRange(node.GetChildren());
+                }
+            }
+
+            Nodes = new List<Node>(tempList);
         }
 
         private void FindChildrenWidth()
@@ -71,14 +88,11 @@ namespace DiagramsProjectV2
 
         private void DrawChildren(float startY)
         {
-            foreach (var levelGroup in Nodes.OrderBy(x => x.Level).GroupBy(x => x.Level))
+            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).OrderBy(x => x.Level).GroupBy(x => x.Level))
             {
-                if (levelGroup.Key > 1)
+                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
                 {
-                    foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
-                    {
-                        DrawGroup(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
-                    }
+                    DrawGroup(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
                 }
 
                 startY = currentLevelHeightEndPoint + 130;
@@ -150,8 +164,20 @@ namespace DiagramsProjectV2
                     }
                 }
 
+                UpdateLevelsNumber(secondNode);
+
                 AddEdge(firstNode, secondNode);
             }
+        }
+
+        private void UpdateLevelsNumber(Node secondNode)
+        {
+            if (levels >= secondNode.Level)
+            {
+                return;
+            }
+
+            levels = secondNode.Level;
         }
 
         void SetParentChildRelationship(Node firstNode, Node secondNode)
@@ -165,8 +191,7 @@ namespace DiagramsProjectV2
             var node = Nodes.Find(x => x.Text.Equals(text));
             if (node == null)
             {
-                Nodes.Add(new Node(text, text, this, nodesOrderID));
-                nodesOrderID++;
+                Nodes.Add(new Node(text, text, this));
                 node = Nodes[^1];
             }
 
