@@ -34,17 +34,27 @@ namespace DiagramsProjectV2
 
             FixNodesOrder();
 
-            TreatSpecialCases();
-
             FindChildrenWidth();
 
             startY = DrawFirstLevel(startY);
 
             DrawChildren(startY);
 
+            TreatSpecialCases();
+
+            Draaw();
+
             DrawEdges();
 
             Canva.SaveDrawing(location);
+        }
+
+        void Draaw()
+        {
+            foreach (var node in Nodes)
+            {
+                Program.DrawSimpleRectangle(node.Text, node.Rectangle);
+            }
         }
 
         private void TreatSpecialCases()
@@ -59,9 +69,64 @@ namespace DiagramsProjectV2
                     leftPillarPosition = Canva.Bitmap.Width + 1;
                     rightPillarPosition = -1;
                     FindPillarsPosition(ref leftPillarPosition, ref rightPillarPosition, groupedEdges.ToList());
-                    groupedEdges.Key.Parent = Nodes[(leftPillarPosition + rightPillarPosition) / 2];
+                    float midPillarsDistance = (Nodes[leftPillarPosition].Rectangle.Right + Nodes[rightPillarPosition].Rectangle.Left) / 2;
+                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, 100, 100);
+                    var (closestParentNode, closestParentDistanceDif) =
+                        FindClosestParentNode(midPillarsDistance, Nodes[(leftPillarPosition + rightPillarPosition) / 2], Nodes[(leftPillarPosition + rightPillarPosition) / 2 + 1]);
+                    var (closestChildNode, closestChildDistanceDif) = FindClosestChildNode(leftPillarPosition, rightPillarPosition, midPillarsDistance);
+                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, closestParentDistanceDif < closestChildDistanceDif ? 100 : 200, 100);
                 }
             }
+        }
+
+        private (Node, float) FindClosestChildNode(int leftPillarPosition, int rightPillarPosition, float midDistance)
+        {
+            float minimumDistance = 9999999;
+            int nodeToReturnListPosition = 0;
+            foreach (var child in Nodes.Where(x => x.Level > 1 && x.Parent.ListPosition >= leftPillarPosition && x.Parent.ListPosition <= rightPillarPosition))
+            {
+                if (child.Rectangle.X < midDistance)
+                {
+                    if (midDistance - child.Rectangle.Left < minimumDistance)
+                    {
+                        minimumDistance = midDistance - child.Rectangle.Left;
+                        nodeToReturnListPosition = child.ListPosition;
+                    }
+                }
+                else
+                {
+                    if (child.Rectangle.Right - midDistance < minimumDistance)
+                    {
+                        minimumDistance = child.Rectangle.Right - midDistance;
+                        nodeToReturnListPosition = child.ListPosition;
+                    }
+                }
+            }
+
+            return (Nodes[nodeToReturnListPosition], minimumDistance);
+        }
+
+        private (Node, float) FindClosestParentNode(float midDistance, Node node1, Node node2)
+        {
+            var leftNodeDistanceDif = midDistance - node1.Rectangle.Right;
+            var rightNodeDistanceDif = node2.Rectangle.Left - midDistance;
+            if (leftNodeDistanceDif < rightNodeDistanceDif)
+            {
+                return (node1, leftNodeDistanceDif);
+            }
+            else if (rightNodeDistanceDif < leftNodeDistanceDif)
+            {
+                return (node2, rightNodeDistanceDif);
+            }
+            else
+            {
+                return (node1, leftNodeDistanceDif);
+            }
+        }
+
+        private PointF NodeCenter(Node node)
+        {
+            return new PointF(node.Rectangle.Left + node.Rectangle.Width / 2, node.Rectangle.Top + node.Rectangle.Height / 2);
         }
 
         private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
@@ -151,7 +216,6 @@ namespace DiagramsProjectV2
         private float DrawFirstLevel(float startY)
         {
             SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
-            DrawGroup(Nodes.Where(x => x.Level == 1));
             startY = currentLevelHeightEndPoint + 130;
             return startY;
         }
@@ -163,7 +227,6 @@ namespace DiagramsProjectV2
                 foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
                 {
                     SetNodesCoordinates(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
-                    DrawGroup(groupedByParent);
                 }
 
                 startY = currentLevelHeightEndPoint + 130;
