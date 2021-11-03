@@ -34,9 +34,12 @@ namespace DiagramsProjectV2
 
             FixNodesOrder();
 
+            TreatSpecialCases();
+
             FindChildrenWidth();
 
-            DrawGroup(50, startY, Nodes.Where(x => x.Level == 1));
+            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
+            DrawGroup(Nodes.Where(x => x.Level == 1));
             startY = currentLevelHeightEndPoint + 130;
 
             DrawChildren(startY);
@@ -44,6 +47,45 @@ namespace DiagramsProjectV2
             DrawEdges();
 
             Canva.SaveDrawing(location);
+        }
+
+        private void TreatSpecialCases()
+        {
+            int leftPillarPosition;
+            int rightPillarPosition;
+
+            foreach (var groupedEdges in Edges.GroupBy(x => x.SecondNode))
+            {
+                if (NodeHasMoreThanOneUpperEdge(groupedEdges))
+                {
+                    leftPillarPosition = Canva.Bitmap.Width + 1;
+                    rightPillarPosition = -1;
+                    FindPillarsPosition(ref leftPillarPosition, ref rightPillarPosition, groupedEdges.ToList());
+                    groupedEdges.Key.Parent = Nodes[(leftPillarPosition + rightPillarPosition) / 2];
+                }
+            }
+        }
+
+        private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
+        {
+            return upperEdges.Count() > 1;
+        }
+
+        private void FindPillarsPosition(ref int leftPillarPosition, ref int rightPillarPosition, List<Edge> upperEdges)
+        {
+            foreach (var upperEdge in upperEdges)
+            {
+                var firstNodePosition = upperEdge.FirstNode.ListPosition;
+                if (firstNodePosition < leftPillarPosition)
+                {
+                    leftPillarPosition = firstNodePosition;
+                }
+
+                if (firstNodePosition > rightPillarPosition)
+                {
+                    rightPillarPosition = firstNodePosition;
+                }
+            }
         }
 
         private void FixNodesOrder()
@@ -86,20 +128,7 @@ namespace DiagramsProjectV2
             return width;
         }
 
-        private void DrawChildren(float startY)
-        {
-            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).OrderBy(x => x.Level).GroupBy(x => x.Level))
-            {
-                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
-                {
-                    DrawGroup(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
-                }
-
-                startY = currentLevelHeightEndPoint + 130;
-            }
-        }
-
-        private void DrawGroup(float startX, float startY, IEnumerable<Node> children)
+        private void SetNodesCoordinates(float startX, float startY, IEnumerable<Node> children)
         {
             foreach (var node in children)
             {
@@ -118,7 +147,27 @@ namespace DiagramsProjectV2
                 {
                     currentLevelHeightEndPoint = node.Rectangle.Bottom;
                 }
+            }
+        }
 
+        private void DrawChildren(float startY)
+        {
+            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).OrderBy(x => x.Level).GroupBy(x => x.Level))
+            {
+                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
+                {
+                    SetNodesCoordinates(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
+                    DrawGroup(groupedByParent);
+                }
+
+                startY = currentLevelHeightEndPoint + 130;
+            }
+        }
+
+        private void DrawGroup(IEnumerable<Node> children)
+        {
+            foreach (var node in children)
+            {
                 Program.DrawSimpleRectangle(node.Text, node.Rectangle);
             }
         }

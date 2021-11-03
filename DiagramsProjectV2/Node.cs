@@ -50,6 +50,14 @@ namespace DiagramsProjectV2
 
         public Node Parent { get; set; }
 
+        public int ListPosition
+        {
+            get
+            {
+                return Flowchart.Nodes.FindIndex(x => x.Equals(this));
+            }
+        }
+
         Flowchart Flowchart { get; }
 
         public List<Node> GetChildren()
