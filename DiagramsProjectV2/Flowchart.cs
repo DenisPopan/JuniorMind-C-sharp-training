@@ -38,9 +38,7 @@ namespace DiagramsProjectV2
 
             FindChildrenWidth();
 
-            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
-            DrawGroup(Nodes.Where(x => x.Level == 1));
-            startY = currentLevelHeightEndPoint + 130;
+            startY = DrawFirstLevel(startY);
 
             DrawChildren(startY);
 
@@ -150,9 +148,17 @@ namespace DiagramsProjectV2
             }
         }
 
+        private float DrawFirstLevel(float startY)
+        {
+            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
+            DrawGroup(Nodes.Where(x => x.Level == 1));
+            startY = currentLevelHeightEndPoint + 130;
+            return startY;
+        }
+
         private void DrawChildren(float startY)
         {
-            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).OrderBy(x => x.Level).GroupBy(x => x.Level))
+            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).GroupBy(x => x.Level))
             {
                 foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
                 {
