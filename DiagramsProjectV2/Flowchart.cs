@@ -28,7 +28,7 @@ namespace DiagramsProjectV2
             Nodes.Insert(index, item);
         }
 
-        public void Draw(string location)
+        public void DrawFlowchart(string location)
         {
             float startY = 50;
 
@@ -36,119 +36,89 @@ namespace DiagramsProjectV2
 
             FindChildrenWidth();
 
-            startY = DrawFirstLevel(startY);
+            startY = SetFirstLevelCoordinates(startY);
 
-            DrawChildren(startY);
+            SetChildrenCoordinates(startY);
 
-            TreatSpecialCases();
+            ////TreatSpecialCases();
 
-            Draaw();
+            DrawNodes();
 
             DrawEdges();
 
             Canva.SaveDrawing(location);
         }
 
-        void Draaw()
+        void AddFlowchartElements(string[] commands)
         {
-            foreach (var node in Nodes)
-            {
-                Program.DrawSimpleRectangle(node.Text, node.Rectangle);
-            }
-        }
+            Canva.InitialiseDrawing();
+            string[] nodesText;
+            Node firstNode;
+            Node secondNode;
 
-        private void TreatSpecialCases()
-        {
-            int leftPillarPosition;
-            int rightPillarPosition;
-
-            foreach (var groupedEdges in Edges.GroupBy(x => x.SecondNode))
+            for (int i = 1; i < commands.Length; i++)
             {
-                if (NodeHasMoreThanOneUpperEdge(groupedEdges))
+                nodesText = commands[i].Split(" --- ");
+                firstNode = AddNode(nodesText[0]);
+                secondNode = AddNode(nodesText[1]);
+                if (firstNode.Level == 0)
                 {
-                    leftPillarPosition = Canva.Bitmap.Width + 1;
-                    rightPillarPosition = -1;
-                    FindPillarsPosition(ref leftPillarPosition, ref rightPillarPosition, groupedEdges.ToList());
-                    float midPillarsDistance = (Nodes[leftPillarPosition].Rectangle.Right + Nodes[rightPillarPosition].Rectangle.Left) / 2;
-                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, 100, 100);
-                    var (closestParentNode, closestParentDistanceDif) =
-                        FindClosestParentNode(midPillarsDistance, Nodes[(leftPillarPosition + rightPillarPosition) / 2], Nodes[(leftPillarPosition + rightPillarPosition) / 2 + 1]);
-                    var (closestChildNode, closestChildDistanceDif) = FindClosestChildNode(leftPillarPosition, rightPillarPosition, midPillarsDistance);
-                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, closestParentDistanceDif < closestChildDistanceDif ? 100 : 200, 100);
-                }
-            }
-        }
-
-        private (Node, float) FindClosestChildNode(int leftPillarPosition, int rightPillarPosition, float midDistance)
-        {
-            float minimumDistance = 9999999;
-            int nodeToReturnListPosition = 0;
-            foreach (var child in Nodes.Where(x => x.Level > 1 && x.Parent.ListPosition >= leftPillarPosition && x.Parent.ListPosition <= rightPillarPosition))
-            {
-                if (child.Rectangle.X < midDistance)
-                {
-                    if (midDistance - child.Rectangle.Left < minimumDistance)
+                    if (secondNode.Level == 1 || secondNode.Level == 0)
                     {
-                        minimumDistance = midDistance - child.Rectangle.Left;
-                        nodeToReturnListPosition = child.ListPosition;
+                        firstNode.Level = 1;
+                        SetParentChildRelationship(firstNode, secondNode);
                     }
                 }
                 else
                 {
-                    if (child.Rectangle.Right - midDistance < minimumDistance)
+                    if (secondNode.Level == 0)
                     {
-                        minimumDistance = child.Rectangle.Right - midDistance;
-                        nodeToReturnListPosition = child.ListPosition;
+                        SetParentChildRelationship(firstNode, secondNode);
+                    }
+
+                    if (firstNode.Level >= secondNode.Level)
+                    {
+                        SetParentChildRelationship(firstNode, secondNode);
                     }
                 }
-            }
 
-            return (Nodes[nodeToReturnListPosition], minimumDistance);
-        }
+                UpdateLevelsNumber(secondNode);
 
-        private (Node, float) FindClosestParentNode(float midDistance, Node node1, Node node2)
-        {
-            var leftNodeDistanceDif = midDistance - node1.Rectangle.Right;
-            var rightNodeDistanceDif = node2.Rectangle.Left - midDistance;
-            if (leftNodeDistanceDif < rightNodeDistanceDif)
-            {
-                return (node1, leftNodeDistanceDif);
-            }
-            else if (rightNodeDistanceDif < leftNodeDistanceDif)
-            {
-                return (node2, rightNodeDistanceDif);
-            }
-            else
-            {
-                return (node1, leftNodeDistanceDif);
+                AddEdge(firstNode, secondNode);
             }
         }
 
-        private PointF NodeCenter(Node node)
+        Node AddNode(string text)
         {
-            return new PointF(node.Rectangle.Left + node.Rectangle.Width / 2, node.Rectangle.Top + node.Rectangle.Height / 2);
-        }
-
-        private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
-        {
-            return upperEdges.Count() > 1;
-        }
-
-        private void FindPillarsPosition(ref int leftPillarPosition, ref int rightPillarPosition, List<Edge> upperEdges)
-        {
-            foreach (var upperEdge in upperEdges)
+            var node = Nodes.Find(x => x.Text.Equals(text));
+            if (node == null)
             {
-                var firstNodePosition = upperEdge.FirstNode.ListPosition;
-                if (firstNodePosition < leftPillarPosition)
-                {
-                    leftPillarPosition = firstNodePosition;
-                }
-
-                if (firstNodePosition > rightPillarPosition)
-                {
-                    rightPillarPosition = firstNodePosition;
-                }
+                Nodes.Add(new Node(text, text, this));
+                node = Nodes[^1];
             }
+
+            return node;
+        }
+
+        void AddEdge(Node firstNode, Node secondNode)
+        {
+            Edges.Add(new Edge(firstNode, secondNode));
+        }
+
+        private void UpdateLevelsNumber(Node secondNode)
+        {
+            if (levels >= secondNode.Level)
+            {
+                return;
+            }
+
+            levels = secondNode.Level;
+        }
+
+        void SetParentChildRelationship(Node firstNode, Node secondNode)
+        {
+            secondNode.Parent = firstNode;
+            secondNode.Level = firstNode.Level + 1;
         }
 
         private void FixNodesOrder()
@@ -191,6 +161,26 @@ namespace DiagramsProjectV2
             return width;
         }
 
+        private float SetFirstLevelCoordinates(float startY)
+        {
+            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
+            startY = currentLevelHeightEndPoint + 130;
+            return startY;
+        }
+
+        private void SetChildrenCoordinates(float startY)
+        {
+            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).GroupBy(x => x.Level))
+            {
+                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
+                {
+                    SetNodesCoordinates(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
+                }
+
+                startY = currentLevelHeightEndPoint + 130;
+            }
+        }
+
         private void SetNodesCoordinates(float startX, float startY, IEnumerable<Node> children)
         {
             foreach (var node in children)
@@ -206,36 +196,112 @@ namespace DiagramsProjectV2
                     startX = startX + node.ChildrenWidth + 100;
                 }
 
-                if (node.Rectangle.Bottom > currentLevelHeightEndPoint)
-                {
-                    currentLevelHeightEndPoint = node.Rectangle.Bottom;
-                }
+                UpdateLevelHeightEndPoint(node);
             }
         }
 
-        private float DrawFirstLevel(float startY)
+        private void UpdateLevelHeightEndPoint(Node node)
         {
-            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
-            startY = currentLevelHeightEndPoint + 130;
-            return startY;
-        }
-
-        private void DrawChildren(float startY)
-        {
-            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).GroupBy(x => x.Level))
+            if (node.Rectangle.Bottom <= currentLevelHeightEndPoint)
             {
-                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
-                {
-                    SetNodesCoordinates(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
-                }
+                return;
+            }
 
-                startY = currentLevelHeightEndPoint + 130;
+            currentLevelHeightEndPoint = node.Rectangle.Bottom;
+        }
+
+        private void TreatSpecialCases()
+        {
+            int leftPillarPosition;
+            int rightPillarPosition;
+
+            foreach (var groupedEdges in Edges.GroupBy(x => x.SecondNode))
+            {
+                if (NodeHasMoreThanOneUpperEdge(groupedEdges))
+                {
+                    leftPillarPosition = Canva.Bitmap.Width + 1;
+                    rightPillarPosition = -1;
+                    FindPillarsPosition(ref leftPillarPosition, ref rightPillarPosition, groupedEdges.ToList());
+                    float midPillarsDistance = (Nodes[leftPillarPosition].Rectangle.Right + Nodes[rightPillarPosition].Rectangle.Left) / 2;
+                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, 100, 100);
+                    var (closestParentNode, closestParentDistanceDif) =
+                        FindClosestParentNode(midPillarsDistance, Nodes[(leftPillarPosition + rightPillarPosition) / 2], Nodes[(leftPillarPosition + rightPillarPosition) / 2 + 1]);
+                    var (closestChildNode, closestChildDistanceDif) = FindClosestChildNode(leftPillarPosition, rightPillarPosition, midPillarsDistance);
+                    Canva.Graphics.DrawRectangle(BasicStyling.ShapePen, midPillarsDistance, 600, closestParentDistanceDif < closestChildDistanceDif ? 100 : 200, 100);
+                }
             }
         }
 
-        private void DrawGroup(IEnumerable<Node> children)
+        private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
         {
-            foreach (var node in children)
+            return upperEdges.Count() > 1;
+        }
+
+        private void FindPillarsPosition(ref int leftPillarPosition, ref int rightPillarPosition, List<Edge> upperEdges)
+        {
+            foreach (var upperEdge in upperEdges)
+            {
+                var firstNodePosition = upperEdge.FirstNode.ListPosition;
+                if (firstNodePosition < leftPillarPosition)
+                {
+                    leftPillarPosition = firstNodePosition;
+                }
+
+                if (firstNodePosition > rightPillarPosition)
+                {
+                    rightPillarPosition = firstNodePosition;
+                }
+            }
+        }
+
+        private (Node, float) FindClosestParentNode(float midDistance, Node node1, Node node2)
+        {
+            var leftNodeDistanceDif = midDistance - node1.Rectangle.Right;
+            var rightNodeDistanceDif = node2.Rectangle.Left - midDistance;
+            if (leftNodeDistanceDif < rightNodeDistanceDif)
+            {
+                return (node1, leftNodeDistanceDif);
+            }
+            else if (rightNodeDistanceDif < leftNodeDistanceDif)
+            {
+                return (node2, rightNodeDistanceDif);
+            }
+            else
+            {
+                return (node1, leftNodeDistanceDif);
+            }
+        }
+
+        private (Node, float) FindClosestChildNode(int leftPillarPosition, int rightPillarPosition, float midDistance)
+        {
+            float minimumDistance = 9999999;
+            int nodeToReturnListPosition = 0;
+            foreach (var child in Nodes.Where(x => x.Level > 1 && x.Parent.ListPosition >= leftPillarPosition && x.Parent.ListPosition <= rightPillarPosition))
+            {
+                if (child.Rectangle.X < midDistance)
+                {
+                    if (midDistance - child.Rectangle.Left < minimumDistance)
+                    {
+                        minimumDistance = midDistance - child.Rectangle.Left;
+                        nodeToReturnListPosition = child.ListPosition;
+                    }
+                }
+                else
+                {
+                    if (child.Rectangle.Right - midDistance < minimumDistance)
+                    {
+                        minimumDistance = child.Rectangle.Right - midDistance;
+                        nodeToReturnListPosition = child.ListPosition;
+                    }
+                }
+            }
+
+            return (Nodes[nodeToReturnListPosition], minimumDistance);
+        }
+
+        void DrawNodes()
+        {
+            foreach (var node in Nodes)
             {
                 Program.DrawSimpleRectangle(node.Text, node.Rectangle);
             }
@@ -247,78 +313,6 @@ namespace DiagramsProjectV2
             {
                 Program.DrawLink(edge.FirstNode.Rectangle, edge.SecondNode.Rectangle);
             }
-        }
-
-        void AddFlowchartElements(string[] commands)
-        {
-            Canva.InitialiseDrawing();
-            string[] nodesText;
-            Node firstNode;
-            Node secondNode;
-
-            for (int i = 1; i < commands.Length; i++)
-            {
-                nodesText = commands[i].Split(" --- ");
-                firstNode = AddNode(nodesText[0]);
-                secondNode = AddNode(nodesText[1]);
-                if (firstNode.Level == 0)
-                {
-                    if (secondNode.Level == 1 || secondNode.Level == 0)
-                    {
-                        firstNode.Level = 1;
-                        SetParentChildRelationship(firstNode, secondNode);
-                    }
-                }
-                else
-                {
-                    if (secondNode.Level == 0)
-                    {
-                        SetParentChildRelationship(firstNode, secondNode);
-                    }
-
-                    if (firstNode.Level >= secondNode.Level)
-                    {
-                        SetParentChildRelationship(firstNode, secondNode);
-                    }
-                }
-
-                UpdateLevelsNumber(secondNode);
-
-                AddEdge(firstNode, secondNode);
-            }
-        }
-
-        private void UpdateLevelsNumber(Node secondNode)
-        {
-            if (levels >= secondNode.Level)
-            {
-                return;
-            }
-
-            levels = secondNode.Level;
-        }
-
-        void SetParentChildRelationship(Node firstNode, Node secondNode)
-        {
-            secondNode.Parent = firstNode;
-            secondNode.Level = firstNode.Level + 1;
-        }
-
-        Node AddNode(string text)
-        {
-            var node = Nodes.Find(x => x.Text.Equals(text));
-            if (node == null)
-            {
-                Nodes.Add(new Node(text, text, this));
-                node = Nodes[^1];
-            }
-
-            return node;
-        }
-
-        void AddEdge(Node firstNode, Node secondNode)
-        {
-            Edges.Add(new Edge(firstNode, secondNode));
         }
     }
 }

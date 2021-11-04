@@ -38,7 +38,7 @@ namespace DiagramsProjectV2
             }
 
             var flowchart = new Flowchart(commands);
-            flowchart.Draw(args[1]);
+            flowchart.DrawFlowchart(args[1]);
         }
     }
 }
