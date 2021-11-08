@@ -26,19 +26,20 @@ namespace DiagramsProjectV2
 
         static void Main(string[] args)
         {
-            string[] commands;
             try
             {
-                commands = File.ReadAllLines(args[0]);
+                var dirInfo = new DirectoryInfo(args[0]);
+                foreach (var inputTextFile in dirInfo.GetFiles("*.txt"))
+                {
+                    var commands = inputTextFile.OpenText().ReadToEnd().Split("\r\n");
+                    var flowchart = new Flowchart(commands);
+                    flowchart.DrawFlowchart(args[0] + "\\" + inputTextFile.Name[0..^4] + ".png");
+                }
             }
             catch (IOException)
             {
                 Console.WriteLine("File path does not exist or it is incorrect!");
-                return;
             }
-
-            var flowchart = new Flowchart(commands);
-            flowchart.DrawFlowchart(args[1]);
         }
     }
 }
