@@ -30,6 +30,7 @@ namespace DiagramsProjectV2
 
         public void DrawFlowchart(string location)
         {
+            ////in phase 3 we need to treat the case related to phase 1
             float startY = 50;
 
             FixNodesListOrder();
@@ -40,7 +41,7 @@ namespace DiagramsProjectV2
 
             SetChildrenCoordinates(startY);
 
-            ////TreatSpecialCases();
+            TreatSpecialCases();
 
             FindChildrenWidth();
 
@@ -69,7 +70,7 @@ namespace DiagramsProjectV2
                 secondNode = AddNode(nodesText[1]);
                 if (firstNode.Level == 0)
                 {
-                    if (secondNode.Level == 1 || secondNode.Level == 0)
+                    if (secondNode.Level == 0 || secondNode.Level == 1 || secondNode.Level == 2)
                     {
                         firstNode.Level = 1;
                         SetParentChildRelationship(firstNode, secondNode);
@@ -225,8 +226,8 @@ namespace DiagramsProjectV2
             {
                 if (NodeHasMoreThanOneUpperEdge(groupedEdges))
                 {
-                    leftPillarListPosition = Canva.Bitmap.Width + 1;
-                    rightPillarListPosition = -1;
+                    leftPillarListPosition = Nodes.Count + 1;
+                    rightPillarListPosition = 0;
                     FindPillarsListPosition(ref leftPillarListPosition, ref rightPillarListPosition, groupedEdges.ToList());
                     float midPillarsDistance = (Nodes[leftPillarListPosition].Rectangle.Right + Nodes[rightPillarListPosition].Rectangle.Left) / 2;
                     var (closestParentNode, closestParentDistanceDif) =
@@ -248,19 +249,19 @@ namespace DiagramsProjectV2
             return upperEdges.Count() > 1;
         }
 
-        private void FindPillarsListPosition(ref int leftPillarPosition, ref int rightPillarPosition, List<Edge> upperEdges)
+        private void FindPillarsListPosition(ref int leftPillarListPosition, ref int rightPillarListPosition, List<Edge> upperEdges)
         {
             foreach (var upperEdge in upperEdges)
             {
-                var firstNodePosition = upperEdge.FirstNode.ListPosition;
-                if (firstNodePosition < leftPillarPosition)
+                var firstNodeListPosition = upperEdge.FirstNode.ListPosition;
+                if (firstNodeListPosition < leftPillarListPosition)
                 {
-                    leftPillarPosition = firstNodePosition;
+                    leftPillarListPosition = firstNodeListPosition;
                 }
 
-                if (firstNodePosition > rightPillarPosition)
+                if (firstNodeListPosition > rightPillarListPosition)
                 {
-                    rightPillarPosition = firstNodePosition;
+                    rightPillarListPosition = firstNodeListPosition;
                 }
             }
         }
