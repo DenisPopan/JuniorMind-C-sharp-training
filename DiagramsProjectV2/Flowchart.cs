@@ -31,6 +31,7 @@ namespace DiagramsProjectV2
         public void DrawFlowchart(string location)
         {
             ////in phase 3 we need to treat the case related to phase 1
+            ////cazul cand nodurile sunt vecini si e un singur copil
             float startY = 50;
 
             FixNodesListOrder();
@@ -235,10 +236,13 @@ namespace DiagramsProjectV2
                     var (closestChildNode, closestChildDistanceDif) = FindClosestChildNode(leftPillarListPosition, rightPillarListPosition, midPillarsDistance);
                     if (closestParentDistanceDif > closestChildDistanceDif)
                     {
-                        ////groupedEdges.Key.Parent.ChildrenWidth -= groupedEdges.Key.ChildrenWidth;
                         groupedEdges.Key.Parent = closestChildNode.Parent;
-                        /////groupedEdges.Key.Parent.ChildrenWidth += groupedEdges.Key.ChildrenWidth;
                         MoveNodeTo(groupedEdges.Key, closestChildNode.ListPosition);
+                    }
+                    else
+                    {
+                        groupedEdges.Key.Parent = closestChildNode.Parent;
+                        MoveToClosestBrotherPosition(groupedEdges, midPillarsDistance, closestParentNode);
                     }
                 }
             }
@@ -268,7 +272,7 @@ namespace DiagramsProjectV2
 
         private (Node, float) FindClosestParentNode(float midDistance, Node node1, Node node2)
         {
-            var leftNodeDistanceDif = midDistance - node1.Rectangle.Right;
+            float leftNodeDistanceDif = node1.Rectangle.X > midDistance ? node1.Rectangle.Left - midDistance : midDistance - node1.Rectangle.Right;
             var rightNodeDistanceDif = node2.Rectangle.Left - midDistance;
             if (leftNodeDistanceDif < rightNodeDistanceDif)
             {
@@ -309,6 +313,21 @@ namespace DiagramsProjectV2
             }
 
             return (Nodes[nodeToReturnListPosition], minimumDistance);
+        }
+
+        private void MoveToClosestBrotherPosition(IGrouping<Node, Edge> groupedEdges, float midPillarsDistance, Node closestParentNode)
+        {
+            if (!HasChildren(closestParentNode))
+            {
+                return;
+            }
+
+            MoveNodeTo(groupedEdges.Key, FindClosestChildNode(closestParentNode.ListPosition, closestParentNode.ListPosition, midPillarsDistance).Item1.ListPosition);
+        }
+
+        private bool HasChildren(Node node)
+        {
+            return node.GetChildrenCount() > 0;
         }
 
         void DrawNodes()
