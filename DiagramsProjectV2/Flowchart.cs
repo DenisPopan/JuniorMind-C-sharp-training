@@ -31,7 +31,7 @@ namespace DiagramsProjectV2
         public void DrawFlowchart(string location)
         {
             ////in phase 3 we need to treat the case related to phase 1
-            ////cazul cand nodurile sunt vecini si e un singur copil
+            ////cazul cand nodurile sunt vecini si e un singur copil si cel in care au root diferit
             float startY = 50;
 
             FixNodesListOrder();
@@ -230,19 +230,22 @@ namespace DiagramsProjectV2
                     leftPillarListPosition = Nodes.Count + 1;
                     rightPillarListPosition = 0;
                     FindPillarsListPosition(ref leftPillarListPosition, ref rightPillarListPosition, groupedEdges.ToList());
+
                     float midPillarsDistance = (Nodes[leftPillarListPosition].Rectangle.Right + Nodes[rightPillarListPosition].Rectangle.Left) / 2;
                     var (closestParentNode, closestParentDistanceDif) =
-                        FindClosestParentNode(midPillarsDistance, Nodes[(leftPillarListPosition + rightPillarListPosition) / 2], Nodes[(leftPillarListPosition + rightPillarListPosition) / 2 + 1]);
+                        FindClosestParentNode(midPillarsDistance, leftPillarListPosition, rightPillarListPosition);
                     var (closestChildNode, closestChildDistanceDif) = FindClosestChildNode(leftPillarListPosition, rightPillarListPosition, midPillarsDistance);
+
                     if (closestParentDistanceDif > closestChildDistanceDif)
                     {
                         groupedEdges.Key.Parent = closestChildNode.Parent;
                         MoveNodeTo(groupedEdges.Key, closestChildNode.ListPosition);
+                        Canva.Graphics.DrawLine(BasicStyling.EdgePen, midPillarsDistance, 300, midPillarsDistance, 800);
                     }
                     else
                     {
-                        groupedEdges.Key.Parent = closestChildNode.Parent;
-                        MoveToClosestBrotherPosition(groupedEdges, midPillarsDistance, closestParentNode);
+                        groupedEdges.Key.Parent = closestParentNode;
+                        MoveToClosestBrotherPosition(groupedEdges.Key, midPillarsDistance, closestParentNode);
                     }
                 }
             }
@@ -270,22 +273,31 @@ namespace DiagramsProjectV2
             }
         }
 
-        private (Node, float) FindClosestParentNode(float midDistance, Node node1, Node node2)
+        private (Node, float) FindClosestParentNode(float midDistance, int leftPillarListPosition, int rightPillarListPosition)
         {
-            float leftNodeDistanceDif = node1.Rectangle.X > midDistance ? node1.Rectangle.Left - midDistance : midDistance - node1.Rectangle.Right;
-            var rightNodeDistanceDif = node2.Rectangle.Left - midDistance;
-            if (leftNodeDistanceDif < rightNodeDistanceDif)
+            float minimumDistance = 9999999;
+            int nodeToReturnListPosition = 0;
+            for (int i = leftPillarListPosition; i <= rightPillarListPosition; i++)
             {
-                return (node1, leftNodeDistanceDif);
+                if (Nodes[i].Rectangle.X < midDistance)
+                {
+                    if (midDistance - Nodes[i].Rectangle.Right < minimumDistance)
+                    {
+                        minimumDistance = midDistance - Nodes[i].Rectangle.Right;
+                        nodeToReturnListPosition = Nodes[i].ListPosition;
+                    }
+                }
+                else
+                {
+                    if (Nodes[i].Rectangle.Left - midDistance < minimumDistance)
+                    {
+                        minimumDistance = Nodes[i].Rectangle.Left - midDistance;
+                        nodeToReturnListPosition = Nodes[i].ListPosition;
+                    }
+                }
             }
-            else if (rightNodeDistanceDif < leftNodeDistanceDif)
-            {
-                return (node2, rightNodeDistanceDif);
-            }
-            else
-            {
-                return (node1, leftNodeDistanceDif);
-            }
+
+            return (Nodes[nodeToReturnListPosition], minimumDistance);
         }
 
         private (Node, float) FindClosestChildNode(int leftPillarPosition, int rightPillarPosition, float midDistance)
@@ -296,17 +308,17 @@ namespace DiagramsProjectV2
             {
                 if (child.Rectangle.X < midDistance)
                 {
-                    if (midDistance - child.Rectangle.Left < minimumDistance)
+                    if (midDistance - child.Rectangle.Right < minimumDistance)
                     {
-                        minimumDistance = midDistance - child.Rectangle.Left;
+                        minimumDistance = midDistance - child.Rectangle.Right;
                         nodeToReturnListPosition = child.ListPosition;
                     }
                 }
                 else
                 {
-                    if (child.Rectangle.Right - midDistance < minimumDistance)
+                    if (child.Rectangle.Left - midDistance < minimumDistance)
                     {
-                        minimumDistance = child.Rectangle.Right - midDistance;
+                        minimumDistance = child.Rectangle.Left - midDistance;
                         nodeToReturnListPosition = child.ListPosition;
                     }
                 }
@@ -315,14 +327,14 @@ namespace DiagramsProjectV2
             return (Nodes[nodeToReturnListPosition], minimumDistance);
         }
 
-        private void MoveToClosestBrotherPosition(IGrouping<Node, Edge> groupedEdges, float midPillarsDistance, Node closestParentNode)
+        private void MoveToClosestBrotherPosition(Node nodeToMove, float midPillarsDistance, Node closestParentNode)
         {
             if (!HasChildren(closestParentNode))
             {
                 return;
             }
 
-            MoveNodeTo(groupedEdges.Key, FindClosestChildNode(closestParentNode.ListPosition, closestParentNode.ListPosition, midPillarsDistance).Item1.ListPosition);
+            MoveNodeTo(nodeToMove, FindClosestChildNode(closestParentNode.ListPosition, closestParentNode.ListPosition, midPillarsDistance).Item1.ListPosition);
         }
 
         private bool HasChildren(Node node)
