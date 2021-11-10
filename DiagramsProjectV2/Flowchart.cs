@@ -32,6 +32,7 @@ namespace DiagramsProjectV2
         {
             ////in phase 3 we need to treat the case related to phase 1
             ////cazul cand nodurile sunt vecini si e un singur copil si cel in care au root diferit(aici s-ar putea sa fie rezolvat deja)
+            //// cand tratez cazurile speciale sa le tratez de pe nivel pe nivel, trebuie ordonate UpperEdges
             float startY = 50;
 
             FixNodesListOrder();
@@ -228,8 +229,16 @@ namespace DiagramsProjectV2
 
                     float midPillarsPoint = (Nodes[leftPillarListPosition].Rectangle.Right + Nodes[rightPillarListPosition].Rectangle.Left) / 2;
 
+                    if (AreNeighboursAndHaveSimilarChildrenNumber(leftPillarListPosition, rightPillarListPosition))
+                    {
+                        MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, edgesGroupedBySecondNode.Key.Parent);
+                        continue;
+                    }
+
                     var (closestParentToMidPoint, closestParentDistanceToMidPoint) =
-                        FindClosestNodeAndItsDistanceToMidPillarsPoint(midPillarsPoint, Nodes.Where(x => x.ListPosition >= leftPillarListPosition && x.ListPosition <= rightPillarListPosition));
+                        FindClosestNodeAndItsDistanceToMidPillarsPoint(
+                            midPillarsPoint,
+                            Nodes.Where(x => x.ListPosition >= leftPillarListPosition && x.ListPosition <= rightPillarListPosition));
                     var (closestChildToMidPoint, closestChildDistanceToMidPoint) = FindClosestNodeAndItsDistanceToMidPillarsPoint(
                         midPillarsPoint,
                         Nodes.Where(x => x.Level > 1 && x.Parent.ListPosition >= leftPillarListPosition && x.Parent.ListPosition <= rightPillarListPosition));
@@ -241,7 +250,7 @@ namespace DiagramsProjectV2
                     }
                     else
                     {
-                        MoveNodeToClosestChildToMidPillarsPoint(edgesGroupedBySecondNode.Key, midPillarsPoint, closestParentToMidPoint);
+                        MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestParentToMidPoint);
                     }
 
                     ////Canva.Graphics.DrawLine(BasicStyling.EdgePen, midPillarsDistance, 300, midPillarsDistance, 800);
@@ -253,6 +262,12 @@ namespace DiagramsProjectV2
                     SetChildrenCoordinates(startY);
                 }
             }
+        }
+
+        private bool AreNeighboursAndHaveSimilarChildrenNumber(int leftPillarListPosition, int rightPillarListPosition)
+        {
+            return leftPillarListPosition == rightPillarListPosition - 1 &&
+                Math.Abs(Nodes[leftPillarListPosition].GetChildrenCount() - Nodes[rightPillarListPosition].GetChildrenCount()) < 2;
         }
 
         private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
@@ -279,8 +294,8 @@ namespace DiagramsProjectV2
 
         private (Node, float) FindClosestNodeAndItsDistanceToMidPillarsPoint(float midPoint, IEnumerable<Node> nodes)
         {
-            float minimumDistance = 9999999;
             Node nodeToReturn = nodes.First();
+            float minimumDistance = 9999999;
             foreach (var node in nodes)
             {
                 if (node.Rectangle.X < midPoint)
@@ -306,7 +321,7 @@ namespace DiagramsProjectV2
             return (nodeToReturn, minimumDistance);
         }
 
-        private void MoveNodeToClosestChildToMidPillarsPoint(Node nodeToMove, float midPillarsPoint, Node closestParentNodeToMidPillarsPoint)
+        private void MoveNodeToClosestChildToMidPillarsPointPosition(Node nodeToMove, float midPillarsPoint, Node closestParentNodeToMidPillarsPoint)
         {
             if (!HasChildren(closestParentNodeToMidPillarsPoint))
             {

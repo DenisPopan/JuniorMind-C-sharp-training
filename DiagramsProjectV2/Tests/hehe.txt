@@ -26,4 +26,5 @@ N --- J
 V --- NA
 NA --- BS
 BGH --- FF
-G --- D
+fe --- OP
+fe --- L
