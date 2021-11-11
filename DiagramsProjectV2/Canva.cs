@@ -26,7 +26,7 @@ namespace DiagramsProjectV2
 
         public static void SaveDrawing(string location)
         {
-            var finalImage = ResizeImage(Bitmap, (int)(Bitmap.Width / 1.5), (int)(Bitmap.Height / 1.5));
+            var finalImage = ResizeImage(Bitmap, Bitmap.Width / 2, Bitmap.Height / 2);
             finalImage.Save(location, ImageFormat.Png);
             finalImage.Dispose();
         }

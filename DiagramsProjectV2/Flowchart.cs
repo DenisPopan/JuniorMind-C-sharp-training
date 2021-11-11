@@ -220,7 +220,7 @@ namespace DiagramsProjectV2
             int leftPillarListPosition;
             int rightPillarListPosition;
 
-            foreach (var edgesGroupedBySecondNode in Edges.GroupBy(x => x.SecondNode))
+            foreach (var edgesGroupedBySecondNode in Edges.OrderBy(x => x.SecondNode.Level).GroupBy(x => x.SecondNode))
             {
                 if (NodeHasMoreThanOneUpperEdge(edgesGroupedBySecondNode))
                 {
@@ -234,6 +234,8 @@ namespace DiagramsProjectV2
                     if (AreNeighboursAndHaveSimilarChildrenNumber(leftPillarListPosition, rightPillarListPosition))
                     {
                         MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, edgesGroupedBySecondNode.Key.Parent);
+                        currentLevelHeightEndPoint = startY;
+                        SetChildrenCoordinates(startY);
                         continue;
                     }
 
