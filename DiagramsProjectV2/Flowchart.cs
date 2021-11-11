@@ -45,6 +45,8 @@ namespace DiagramsProjectV2
 
             TreatSpecialCases(startY);
 
+            Canva.UpdateBitmapSize(FindFurthestNodeRectangleRight() + 50, (int)currentLevelHeightEndPoint + 50);
+
             DrawNodes();
 
             DrawEdges();
@@ -54,7 +56,7 @@ namespace DiagramsProjectV2
 
         void AddFlowchartElements(string[] commands)
         {
-            Canva.InitialiseDrawing(commands.Length);
+            Canva.InitialiseDrawing();
             string[] nodesText;
             Node firstNode;
             Node secondNode;
@@ -338,6 +340,21 @@ namespace DiagramsProjectV2
         private bool HasChildren(Node node)
         {
             return node.GetChildrenCount() > 0;
+        }
+
+        int FindFurthestNodeRectangleRight()
+        {
+            float furthestNodeRight = -1;
+            foreach (var nodesGroup in Nodes.GroupBy(x => x.Level))
+            {
+                var lastNodeFromLevel = nodesGroup.Last();
+                if (lastNodeFromLevel.Rectangle.Right > furthestNodeRight)
+                {
+                    furthestNodeRight = lastNodeFromLevel.Rectangle.Right;
+                }
+            }
+
+            return (int)furthestNodeRight;
         }
 
         void DrawNodes()
