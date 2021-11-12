@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# S3240: The simplest possible condition syntax should be used
+dotnet_diagnostic.S3240.severity = none

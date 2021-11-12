@@ -249,7 +249,7 @@ namespace DiagramsProjectV2
                 if (closestParentDistanceToMidPoint > closestChildDistanceToMidPoint)
                 {
                     edgesGroupedBySecondNode.Key.Parent = closestChildToMidPoint.Parent;
-                    MoveNodeTo(edgesGroupedBySecondNode.Key, closestChildToMidPoint.Rectangle.X < midPillarsPoint ? closestChildToMidPoint.ListPosition + 1 : closestChildToMidPoint.ListPosition);
+                    MoveNodeBasedOnListPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestChildToMidPoint);
                 }
                 else
                 {
@@ -257,7 +257,7 @@ namespace DiagramsProjectV2
                 }
 
                 ////Canva.Graphics.DrawLine(BasicStyling.EdgePen, midPillarsDistance, 300, midPillarsDistance, 800);
-
+                FixNodesListOrder();
                 FindChildrenWidth();
                 SetFirstLevelCoordinates(50);
 
@@ -335,6 +335,18 @@ namespace DiagramsProjectV2
             {
                 nodeToMove.Parent = closestParentNodeToMidPillarsPoint;
                 var closestChildToMidPoint = FindClosestNodeAndItsDistanceToMidPillarsPoint(midPillarsPoint, closestParentNodeToMidPillarsPoint.GetChildren()).Item1;
+                MoveNodeBasedOnListPosition(nodeToMove, midPillarsPoint, closestChildToMidPoint);
+            }
+        }
+
+        private void MoveNodeBasedOnListPosition(Node nodeToMove, float midPillarsPoint, Node closestChildToMidPoint)
+        {
+            if (nodeToMove.ListPosition < closestChildToMidPoint.ListPosition)
+            {
+                MoveNodeTo(nodeToMove, closestChildToMidPoint.Rectangle.X < midPillarsPoint ? closestChildToMidPoint.ListPosition : closestChildToMidPoint.ListPosition - 1);
+            }
+            else
+            {
                 MoveNodeTo(nodeToMove, closestChildToMidPoint.Rectangle.X < midPillarsPoint ? closestChildToMidPoint.ListPosition + 1 : closestChildToMidPoint.ListPosition);
             }
         }
