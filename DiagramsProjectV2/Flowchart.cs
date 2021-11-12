@@ -32,7 +32,6 @@ namespace DiagramsProjectV2
         {
             ////in phase 3 we need to treat the case related to phase 1
             ////cazul cand nodurile sunt vecini si e un singur copil si cel in care au root diferit(aici s-ar putea sa fie rezolvat deja)
-            //// cand tratez cazurile speciale sa le tratez de pe nivel pe nivel, trebuie ordonate UpperEdges
             float startY = 50;
 
             FixNodesListOrder();
