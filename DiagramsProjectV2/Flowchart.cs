@@ -234,6 +234,7 @@ namespace DiagramsProjectV2
                     if (AreNeighboursAndHaveSimilarChildrenNumber(leftPillarListPosition, rightPillarListPosition))
                     {
                         MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, edgesGroupedBySecondNode.Key.Parent);
+                        SetFirstLevelCoordinates(50);
                         currentLevelHeightEndPoint = startY;
                         SetChildrenCoordinates(startY);
                         continue;
@@ -260,6 +261,7 @@ namespace DiagramsProjectV2
                     ////Canva.Graphics.DrawLine(BasicStyling.EdgePen, midPillarsDistance, 300, midPillarsDistance, 800);
 
                     FindChildrenWidth();
+                    SetFirstLevelCoordinates(50);
 
                     currentLevelHeightEndPoint = startY;
 
