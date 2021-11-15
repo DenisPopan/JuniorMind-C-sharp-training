@@ -21,28 +21,18 @@ namespace DiagramsProjectV2
 
         public List<Edge> Edges { get; } = new List<Edge>();
 
-        public void MoveNodeTo(Node node, int index)
-        {
-            var item = node;
-            Nodes.Remove(node);
-            Nodes.Insert(index, item);
-        }
-
         public void DrawFlowchart(string location)
         {
             ////in phase 3 we need to treat the case related to phase 1
-            ////cazul cand nodurile sunt vecini si e un singur copil si cel in care au root diferit(aici s-ar putea sa fie rezolvat deja)
-            float startY = 50;
+            ////cazul cand nodurile au root diferit(aici s-ar putea sa fie rezolvat deja)
 
             FixNodesListOrder();
 
             FindChildrenWidth();
 
-            startY = SetFirstLevelCoordinates(startY);
+            SetCoordinatesForEachLevel();
 
-            SetChildrenCoordinates(startY);
-
-            TreatSpecialCases(startY);
+            TreatSpecialCases();
 
             Canva.UpdateBitmapSize(FindFurthestNodeRectangleRight() + 50, (int)currentLevelHeightEndPoint + 50);
 
@@ -165,20 +155,25 @@ namespace DiagramsProjectV2
             return width;
         }
 
-        private float SetFirstLevelCoordinates(float startY)
+        private void SetCoordinatesForEachLevel()
         {
-            SetNodesCoordinates(50, startY, Nodes.Where(x => x.Level == 1));
-            startY = currentLevelHeightEndPoint + 130;
-            return startY;
-        }
-
-        private void SetChildrenCoordinates(float startY)
-        {
-            foreach (var levelGroup in Nodes.Where(x => x.Level > 1).GroupBy(x => x.Level))
+            currentLevelHeightEndPoint = 50;
+            float startY = currentLevelHeightEndPoint;
+            foreach (var levelGroup in Nodes.GroupBy(x => x.Level))
             {
-                foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
+                if (levelGroup.Key == 1)
                 {
-                    SetNodesCoordinates(groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2, startY, groupedByParent);
+                    SetNodesCoordinates(50, 50, levelGroup);
+                }
+                else
+                {
+                    foreach (var groupedByParent in levelGroup.GroupBy(x => x.Parent))
+                    {
+                        SetNodesCoordinates(
+                            groupedByParent.Key.Rectangle.Right - groupedByParent.Key.Width / 2 - groupedByParent.Key.ChildrenWidth / 2,
+                            startY,
+                            groupedByParent);
+                    }
                 }
 
                 startY = currentLevelHeightEndPoint + 130;
@@ -214,12 +209,12 @@ namespace DiagramsProjectV2
             currentLevelHeightEndPoint = node.Rectangle.Bottom;
         }
 
-        private void TreatSpecialCases(float startY)
+        private void TreatSpecialCases()
         {
             int leftPillarListPosition;
             int rightPillarListPosition;
 
-            foreach (var edgesGroupedBySecondNode in Edges.OrderBy(x => x.SecondNode.Level).GroupBy(x => x.SecondNode).Where(x => NodeHasMoreThanOneUpperEdge(x)))
+            foreach (var edgesGroupedBySecondNode in Edges.OrderBy(x => x.SecondNode.Level).GroupBy(x => x.SecondNode).Where(x => NodeHasMoreThanOneEdge(x)))
             {
                 leftPillarListPosition = Nodes.Count + 1;
                 rightPillarListPosition = 0;
@@ -230,39 +225,33 @@ namespace DiagramsProjectV2
 
                 if (AreNeighboursAndHaveSimilarChildrenNumber(leftPillarListPosition, rightPillarListPosition))
                 {
-                    MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, edgesGroupedBySecondNode.Key.Parent);
-                    SetFirstLevelCoordinates(50);
-                    currentLevelHeightEndPoint = startY;
-                    SetChildrenCoordinates(startY);
+                    MoveNodeToClosestNeighbourToPillarsMidPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, edgesGroupedBySecondNode.Key.Parent);
+                    SetCoordinatesForEachLevel();
                     continue;
                 }
 
-                var (closestParentToMidPoint, closestParentDistanceToMidPoint) =
+                var (closestParentToPillarsMidPoint, closestParentDistanceToPillarsMidPoint) =
                     FindClosestNodeAndItsDistanceToMidPillarsPoint(
                         midPillarsPoint,
                         Nodes.Where(x => x.ListPosition >= leftPillarListPosition && x.ListPosition <= rightPillarListPosition));
-                var (closestChildToMidPoint, closestChildDistanceToMidPoint) = FindClosestNodeAndItsDistanceToMidPillarsPoint(
+                var (closestNeighbourToPillarsMidPoint, closestNeighbourDistanceToPillarsMidPoint) = FindClosestNodeAndItsDistanceToMidPillarsPoint(
                     midPillarsPoint,
                     Nodes.Where(x => x.Level > 1 && x.Parent.ListPosition >= leftPillarListPosition && x.Parent.ListPosition <= rightPillarListPosition));
 
-                if (closestParentDistanceToMidPoint > closestChildDistanceToMidPoint)
+                if (closestParentDistanceToPillarsMidPoint > closestNeighbourDistanceToPillarsMidPoint)
                 {
-                    edgesGroupedBySecondNode.Key.Parent = closestChildToMidPoint.Parent;
-                    MoveNodeBasedOnListPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestChildToMidPoint);
+                    edgesGroupedBySecondNode.Key.Parent = closestNeighbourToPillarsMidPoint.Parent;
+                    MoveNodeBasedOnListPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestNeighbourToPillarsMidPoint);
                 }
                 else
                 {
-                    MoveNodeToClosestChildToMidPillarsPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestParentToMidPoint);
+                    MoveNodeToClosestNeighbourToPillarsMidPointPosition(edgesGroupedBySecondNode.Key, midPillarsPoint, closestParentToPillarsMidPoint);
                 }
 
                 ////Canva.Graphics.DrawLine(BasicStyling.EdgePen, midPillarsDistance, 300, midPillarsDistance, 800);
                 FixNodesListOrder();
                 FindChildrenWidth();
-                SetFirstLevelCoordinates(50);
-
-                currentLevelHeightEndPoint = startY;
-
-                SetChildrenCoordinates(startY);
+                SetCoordinatesForEachLevel();
             }
         }
 
@@ -272,7 +261,7 @@ namespace DiagramsProjectV2
                 Math.Abs(Nodes[leftPillarListPosition].GetChildrenCount() - Nodes[rightPillarListPosition].GetChildrenCount()) < 2;
         }
 
-        private bool NodeHasMoreThanOneUpperEdge(IEnumerable<Edge> upperEdges)
+        private bool NodeHasMoreThanOneEdge(IEnumerable<Edge> upperEdges)
         {
             return upperEdges.Count() > 1;
         }
@@ -323,12 +312,11 @@ namespace DiagramsProjectV2
             return (nodeToReturn, minimumDistance);
         }
 
-        private void MoveNodeToClosestChildToMidPillarsPointPosition(Node nodeToMove, float midPillarsPoint, Node closestParentNodeToMidPillarsPoint)
+        private void MoveNodeToClosestNeighbourToPillarsMidPointPosition(Node nodeToMove, float midPillarsPoint, Node closestParentNodeToMidPillarsPoint)
         {
             if (!HasChildren(closestParentNodeToMidPillarsPoint))
             {
                 nodeToMove.Parent = closestParentNodeToMidPillarsPoint;
-                FixNodesListOrder();
             }
             else
             {
@@ -348,6 +336,13 @@ namespace DiagramsProjectV2
             {
                 MoveNodeTo(nodeToMove, closestChildToMidPoint.Rectangle.X < midPillarsPoint ? closestChildToMidPoint.ListPosition + 1 : closestChildToMidPoint.ListPosition);
             }
+        }
+
+        void MoveNodeTo(Node node, int index)
+        {
+            var item = node;
+            Nodes.Remove(node);
+            Nodes.Insert(index, item);
         }
 
         private bool HasChildren(Node node)
