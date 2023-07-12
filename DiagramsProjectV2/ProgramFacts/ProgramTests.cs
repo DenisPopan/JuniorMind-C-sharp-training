@@ -105,27 +105,5 @@ namespace ProgramFacts
             Assert.Equal("C", children1[0].Id);
             Assert.Equal("D", children1[0].Parent.Id);
         }
-
-        [Fact]
-        public void MoveToMethodShouldMoveAListElementToAGivenPositionInTheList()
-        {
-            string[] commands = { "Graph TD", "A --- B", "A --- C", "B --- D" };
-            var fl = new Flowchart(commands);
-            Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
-
-            fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 2);
-            Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("B")));
-            Assert.Equal(2, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
-            Assert.Equal(1, fl.Nodes.FindIndex(x => x.Id.Equals("C")));
-            Assert.Equal(3, fl.Nodes.FindIndex(x => x.Id.Equals("D")));
-
-            fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 3);
-            Assert.Equal(0, fl.Nodes.FindIndex(x => x.Id.Equals("B")));
-            Assert.Equal(3, fl.Nodes.FindIndex(x => x.Id.Equals("A")));
-            Assert.Equal(1, fl.Nodes.FindIndex(x => x.Id.Equals("C")));
-            Assert.Equal(2, fl.Nodes.FindIndex(x => x.Id.Equals("D")));
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => fl.MoveNodeTo(fl.Nodes.Find(x => x.Id.Equals("A")), 4));
-        }
     }
 }

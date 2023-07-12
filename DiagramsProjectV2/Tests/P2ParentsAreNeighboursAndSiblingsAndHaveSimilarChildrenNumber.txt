@@ -26,4 +26,8 @@ N --- J
 V --- NA
 NA --- BS
 BGH --- FF
-G --- D
+G --- zem
+G --- vm
+G --- ram
+G --- zvoi
+G --- L

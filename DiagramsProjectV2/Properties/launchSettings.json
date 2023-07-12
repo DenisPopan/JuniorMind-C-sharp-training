@@ -2,7 +2,7 @@
   "profiles": {
     "DiagramsProject V2": {
       "commandName": "Project",
-      "commandLineArgs": "C:\\Users\\popan\\Documents\\GitHub\\PopanDenis-JuniorMind-repository\\DiagramsProjectV2\\InputText.txt C:\\Users\\popan\\Desktop\\image.png"
+      "commandLineArgs": "C:\\Users\\popan\\Documents\\GitHub\\PopanDenis-JuniorMind-repository\\DiagramsProjectV2\\Tests"
     }
   }
 }
